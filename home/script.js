@@ -118,7 +118,7 @@ let speed = 0.09
 let activated = false
 window.addEventListener("mousedown", (event) => {
   activated = true
-  header.classList.add('translate')
+  header.classList.add('disparition')
   card.classList.remove('apparition')
   card.classList.add('disparition')
   mousetext.classList.remove('apparition')
@@ -138,7 +138,7 @@ window.addEventListener("mousedown", (event) => {
 })
 window.addEventListener("mouseup", (event) => {
   activated = false
-  header.classList.remove('translate')
+  header.classList.remove('disparition')
   card.classList.remove('disparition')
   card.classList.add('apparition')
   mousetext.classList.remove('disparition')
