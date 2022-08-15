@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded',function(event){
-  var dataText = [ "Hello, I'm Gowtham Sridhar, Bot Developer / Extroverted cyborg"];
+  var dataText = [ "Hello, I'm Gowtham Sridhar, Robotics engineer / Extroverted cyborg"];
   
   function typeWriter(text, i, fnCallback) {
 
