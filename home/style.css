@@ -267,15 +267,15 @@ header .navigation li a {
     height: 50px
 }
 .content .social li:nth-child(1) a:hover:after {
-    background-image: url(https://github.com/JackCree/CSSexercices/blob/main/portfolio2021/img/behance.png?raw=true);
+    background-image: url(../img/github.png);
 }
 .content .social li:nth-child(2) a:hover:after {
-    background-image: url(https://github.com/JackCree/CSSexercices/blob/main/portfolio2021/img/deviantart.png?raw=true);
+    background-image: url(../img/instagram.png);
 }
 .content .social li:nth-child(3) a:hover:after {
-    background-image: url(https://github.com/JackCree/CSSexercices/blob/main/portfolio2021/img/github.png?raw=true);
+    background-image: url(../img/linkedin.png);
 }
-.content .social li:nth-child(4) a:hover:after {
+/* .content .social li:nth-child(4) a:hover:after {
     background-image: url(https://github.com/JackCree/CSSexercices/blob/main/portfolio2021/img/instagram.png?raw=true);
 }
 .content .social li:nth-child(5) a:hover:after {
@@ -286,7 +286,7 @@ header .navigation li a {
 }
 .content .social li:nth-child(7) a:hover:after {
     background-image: url(https://github.com/JackCree/CSSexercices/blob/main/portfolio2021/img/twitter.png?raw=true);
-}
+} */
 .content .social li a i {
 	position: relative;
 	color: rgba(255,255,255,0.5)

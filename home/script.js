@@ -92,10 +92,10 @@ const title = document.querySelector("#intro .lightspeed-title")
 const social01 = document.querySelector("#socialnetwork01")
 const social02 = document.querySelector("#socialnetwork02")
 const social03 = document.querySelector("#socialnetwork03")
-const social04 = document.querySelector("#socialnetwork04")
-const social05 = document.querySelector("#socialnetwork05")
-const social06 = document.querySelector("#socialnetwork06")
-const social07 = document.querySelector("#socialnetwork07")
+// const social04 = document.querySelector("#socialnetwork04")
+// const social05 = document.querySelector("#socialnetwork05")
+// const social06 = document.querySelector("#socialnetwork06")
+// const social07 = document.querySelector("#socialnetwork07")
 
 const socialdescription = document.querySelector(".social-description")
 
@@ -130,10 +130,10 @@ window.addEventListener("mousedown", (event) => {
   social01.classList.add('disparition')
   social02.classList.add('disparition')
   social03.classList.add('disparition')
-  social04.classList.add('disparition')
-  social05.classList.add('disparition')
-  social06.classList.add('disparition')
-  social07.classList.add('disparition')
+  // social04.classList.add('disparition')
+  // social05.classList.add('disparition')
+  // social06.classList.add('disparition')
+  // social07.classList.add('disparition')
   contactbutton.classList.add('disparition')
 })
 window.addEventListener("mouseup", (event) => {
@@ -150,10 +150,10 @@ window.addEventListener("mouseup", (event) => {
   social01.classList.remove('disparition')
   social02.classList.remove('disparition')
   social03.classList.remove('disparition')
-  social04.classList.remove('disparition')
-  social05.classList.remove('disparition')
-  social06.classList.remove('disparition')
-  social07.classList.remove('disparition')
+  // social04.classList.remove('disparition')
+  // social05.classList.remove('disparition')
+  // social06.classList.remove('disparition')
+  // social07.classList.remove('disparition')
   contactbutton.classList.remove('disparition')
 })
 
@@ -171,10 +171,10 @@ window.addEventListener("touchstart",(event) => {
   social01.classList.add('disparition')
   social02.classList.add('disparition')
   social03.classList.add('disparition')
-  social04.classList.add('disparition')
-  social05.classList.add('disparition')
-  social06.classList.add('disparition')
-  social07.classList.add('disparition')
+  // social04.classList.add('disparition')
+  // social05.classList.add('disparition')
+  // social06.classList.add('disparition')
+  // social07.classList.add('disparition')
   contactbutton.classList.add('disparition')
 })
 window.addEventListener("touchend",(event) => {
@@ -190,10 +190,10 @@ window.addEventListener("touchend",(event) => {
   social01.classList.remove('disparition')
   social02.classList.remove('disparition')
   social03.classList.remove('disparition')
-  social04.classList.remove('disparition')
-  social05.classList.remove('disparition')
-  social06.classList.remove('disparition')
-  social07.classList.remove('disparition')
+  // social04.classList.remove('disparition')
+  // social05.classList.remove('disparition')
+  // social06.classList.remove('disparition')
+  // social07.classList.remove('disparition')
   contactbutton.classList.remove('disparition')
 })
 
@@ -244,57 +244,57 @@ social03.addEventListener("mouseleave", function(event) {
   socialdescription.innerText = ""
   social03.classList.remove('apparition')
 })
-social04.addEventListener("mouseenter", function(event) {
-  socialdescription.classList.add('visible')
-  for (var i=1; i <= 5; i++) {
-      let div = document.createElement("div")
-      div.classList.add("text");
-      div.innerText = "My animations"
-      socialdescription.append(div);   
-    }
-  social04.classList.add('apparition')
-})
-social04.addEventListener("mouseleave", function(event) {
-  socialdescription.classList.remove('visible')
-  socialdescription.innerText = ""
-  social04.classList.remove('apparition')
-})
-social05.addEventListener("mouseenter", function(event) {
-  socialdescription.classList.add('visible')
-  for (var i=1; i <= 5; i++) {
-      let div = document.createElement("div")
-      div.classList.add("text");
-      div.innerText = "My Code Playground"
-      socialdescription.append(div);   
-    }
-  social05.classList.add('apparition')
-})
-social05.addEventListener("mouseleave", function(event) {
-  socialdescription.classList.remove('visible')
-  socialdescription.innerText = ""
-  social05.classList.remove('apparition')
-})
-social06.addEventListener("mouseenter", function(event) {
-  socialdescription.classList.add('visible')
-  for (var i=1; i <= 5; i++) {
-      let div = document.createElement("div")
-      div.classList.add("text");
-      div.innerText = "My Blog"
-      socialdescription.append(div);   
-    }
-  social06.classList.add('apparition')
-})
-social06.addEventListener("mouseleave", function(event) {
-  socialdescription.classList.remove('visible')
-  socialdescription.innerText = ""
-  social06.classList.remove('apparition')
-})
-social07.addEventListener("mouseenter", function(event) {
-  social07.classList.add('apparition')
-})
-social07.addEventListener("mouseleave", function(event) {
-  social07.classList.remove('apparition')
-})
+// social04.addEventListener("mouseenter", function(event) {
+//   socialdescription.classList.add('visible')
+//   for (var i=1; i <= 5; i++) {
+//       let div = document.createElement("div")
+//       div.classList.add("text");
+//       div.innerText = "My animations"
+//       socialdescription.append(div);   
+//     }
+//   social04.classList.add('apparition')
+// })
+// social04.addEventListener("mouseleave", function(event) {
+//   socialdescription.classList.remove('visible')
+//   socialdescription.innerText = ""
+//   social04.classList.remove('apparition')
+// })
+// social05.addEventListener("mouseenter", function(event) {
+//   socialdescription.classList.add('visible')
+//   for (var i=1; i <= 5; i++) {
+//       let div = document.createElement("div")
+//       div.classList.add("text");
+//       div.innerText = "My Code Playground"
+//       socialdescription.append(div);   
+//     }
+//   social05.classList.add('apparition')
+// })
+// social05.addEventListener("mouseleave", function(event) {
+//   socialdescription.classList.remove('visible')
+//   socialdescription.innerText = ""
+//   social05.classList.remove('apparition')
+// })
+// social06.addEventListener("mouseenter", function(event) {
+//   socialdescription.classList.add('visible')
+//   for (var i=1; i <= 5; i++) {
+//       let div = document.createElement("div")
+//       div.classList.add("text");
+//       div.innerText = "My Blog"
+//       socialdescription.append(div);   
+//     }
+//   social06.classList.add('apparition')
+// })
+// social06.addEventListener("mouseleave", function(event) {
+//   socialdescription.classList.remove('visible')
+//   socialdescription.innerText = ""
+//   social06.classList.remove('apparition')
+// })
+// social07.addEventListener("mouseenter", function(event) {
+//   social07.classList.add('apparition')
+// })
+// social07.addEventListener("mouseleave", function(event) {
+//   social07.classList.remove('apparition')
+// })
 contactbutton.addEventListener("mouseenter", function(event) {
   contactbutton.classList.add('apparition')
 })
