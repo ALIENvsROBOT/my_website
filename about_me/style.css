@@ -38,6 +38,11 @@
   font-size: 0.6em;
   font-weight: 200;
 }
+
+.main-title .xsmall {
+  font-size: 0.50em;
+  font-weight: 400;
+}
 @media only screen and (max-width: 768px) {
   .demo-1 .main-title {
     font-size: 3em;
