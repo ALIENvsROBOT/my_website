@@ -46,13 +46,14 @@ section article.skills div span:nth-child(1) {
   bottom: 0;
   left: 0;
   right: 0;
-  margin: auto;
+  margin:5px;
   background: #fff;
   height: 100%;
   width: 100%;
 }
 section article.skills div span:nth-child(2) {
   z-index: -1;
+  margin:5px;
   position: absolute;
   top: 0;
   bottom: 0;
