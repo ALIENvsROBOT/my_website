@@ -197,53 +197,53 @@ window.addEventListener("touchend",(event) => {
   contactbutton.classList.remove('disparition')
 })
 
-social01.addEventListener("mouseenter", function(event) {
-  socialdescription.classList.add('visible')
-  for (var i=1; i <= 5; i++) {
-      let div = document.createElement("div")
-      div.classList.add("text");
-      div.innerText = "My Design projects"
-      socialdescription.append(div);   
-    }
-  social01.classList.add('apparition')
-})
+// social01.addEventListener("mouseenter", function(event) {
+//   socialdescription.classList.add('visible')
+//   for (var i=1; i <= 5; i++) {
+//       let div = document.createElement("div")
+//       div.classList.add("text");
+//       div.innerText = "My Design projects"
+//       socialdescription.append(div);   
+//     }
+//   social01.classList.add('apparition')
+// })
 
-social01.addEventListener("mouseleave", function(event) {
-  socialdescription.classList.remove('visible')
-  socialdescription.innerText = ""
-  social01.classList.remove('apparition')
+// social01.addEventListener("mouseleave", function(event) {
+//   socialdescription.classList.remove('visible')
+//   socialdescription.innerText = ""
+//   social01.classList.remove('apparition')
 
-})
-social02.addEventListener("mouseenter", function(event) {
-  socialdescription.classList.add('visible')
-  for (var i=1; i <= 5; i++) {
-      let div = document.createElement("div")
-      div.classList.add("text");
-      div.innerText = "My artworks"
-      socialdescription.append(div);   
-    }
-  social02.classList.add('apparition')
-})
-social02.addEventListener("mouseleave", function(event) {
-  socialdescription.classList.remove('visible')
-  socialdescription.innerText = ""
-  social02.classList.remove('apparition')
-})
-social03.addEventListener("mouseenter", function(event) {
-  socialdescription.classList.add('visible')
-  for (var i=1; i <= 5; i++) {
-      let div = document.createElement("div")
-      div.classList.add("text");
-      div.innerText = "My dev projects"
-      socialdescription.append(div);   
-    }
-  social03.classList.add('apparition')
-})
-social03.addEventListener("mouseleave", function(event) {
-  socialdescription.classList.remove('visible')
-  socialdescription.innerText = ""
-  social03.classList.remove('apparition')
-})
+// })
+// social02.addEventListener("mouseenter", function(event) {
+//   socialdescription.classList.add('visible')
+//   for (var i=1; i <= 5; i++) {
+//       let div = document.createElement("div")
+//       div.classList.add("text");
+//       div.innerText = "My artworks"
+//       socialdescription.append(div);   
+//     }
+//   social02.classList.add('apparition')
+// })
+// social02.addEventListener("mouseleave", function(event) {
+//   socialdescription.classList.remove('visible')
+//   socialdescription.innerText = ""
+//   social02.classList.remove('apparition')
+// })
+// social03.addEventListener("mouseenter", function(event) {
+//   socialdescription.classList.add('visible')
+//   for (var i=1; i <= 5; i++) {
+//       let div = document.createElement("div")
+//       div.classList.add("text");
+//       div.innerText = "My dev projects"
+//       socialdescription.append(div);   
+//     }
+//   social03.classList.add('apparition')
+// })
+// social03.addEventListener("mouseleave", function(event) {
+//   socialdescription.classList.remove('visible')
+//   socialdescription.innerText = ""
+//   social03.classList.remove('apparition')
+// })
 // social04.addEventListener("mouseenter", function(event) {
 //   socialdescription.classList.add('visible')
 //   for (var i=1; i <= 5; i++) {
