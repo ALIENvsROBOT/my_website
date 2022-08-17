@@ -5,8 +5,7 @@ html {
   overflow: hidden;
   position: relative;
   background-color: rgba(13, 23, 58, 1);
-  top: -30%;
-  left: -5%;
+  
   
 }
 
@@ -33,11 +32,10 @@ html {
 
 .wrapper {
   bottom: 0;
-  left: 0;
   margin: auto;
-  position: absolute;
-  right: 0;
-  top: 0;
+  position:relative;
+  top: 14%;
+  left: -10%;
   height: 205px;
   width: 161px;
 }

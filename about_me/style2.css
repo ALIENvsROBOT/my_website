@@ -3,9 +3,9 @@
   height: 100%;
   margin: 0;
   overflow: hidden;
-  position: relative;
-  top: 30%;
-  left: 30%;
+  position:fixed;
+  top: 0%;
+  left: 60%;
   z-index: 1;
 }
 .reactor-container {
