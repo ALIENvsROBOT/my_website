@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  background-color: #000;
 }
 .port-set {
 height: 100%;
@@ -31,7 +30,7 @@ z-index: 0;
   display: grid;
   grid-template-rows: repeat(8, 1fr);
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 10px;
+  grid-gap: 1px;
   margin: auto;
 position: relative;
 width: 440px;
@@ -42,7 +41,7 @@ top: -46.970em;
   display: grid;
   grid-template-rows: repeat(8, 1fr);
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 10px;
+  grid-gap: 1px;
   margin: auto;
 position: relative;
 width: 440px;
