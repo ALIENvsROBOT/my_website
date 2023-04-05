@@ -75,7 +75,7 @@ section article.skills div:nth-child(3) span:nth-child(2) {
   animation-delay: 0.1s;
 }
 section article.skills div:nth-child(4) span:nth-child(2) {
-  width: 70%;
+  width: 100%;
   animation-delay: 0.15s;
 }
 section article.skills div:nth-child(5) span:nth-child(2) {
@@ -91,7 +91,7 @@ section article.skills div:nth-child(7) span:nth-child(2) {
   animation-delay: 0.3s;
 }
 section article.skills div:nth-child(8) span:nth-child(2) {
-  width: 75%;
+  width: 60%;
   animation-delay: 0.35s;
 }
 section:before {
