@@ -1,0 +1,7 @@
+This folder should contain the following images:
+
+1. profile.jpg - A professional photo of Gowtham Sridhar (960x1200 recommended)
+2. about-image.jpg - An image for the about section (800x600 recommended)
+3. favicon.ico - Website favicon
+
+You can replace these placeholder images with actual photos. 

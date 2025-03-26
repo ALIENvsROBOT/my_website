@@ -1,0 +1,103 @@
+Gowtham Sridhar
+Date of birth: 10/08/1999
+
+Nationality: Indian
+
+Phone number: (+91) 8072567115 (Mobile)
+
+Phone number: (+43) 67764766031 (Mobile)
+
+Email address: gowtham.sridher5@gmail.com
+
+LinkedIn: https://www.linkedin.com/in/gowtham-sridher/
+
+Address: Wien, Austria (Home)
+
+ABOUT ME
+Enthusiastic about advancing my expertise at the forefront of Human-Computer Interaction, Robotics, and creating
+innovative interaction for the physical world. Committed to embracing challenging projects in the areas of robotics and
+human-computer interaction, employing innovative and efficient coding solutions. Passionate about working hands-on
+with wires and processors, I steadfastly believe that intricate problems demand intelligent and streamlined
+approaches.
+
+WORK EXPERIENCE
+09/10/2023 – CURRENT Vienna, Austria
+
+JUNIOR SCIENTIST AIT - CENTER FOR TECHNOLOGY EXPERIENCE
+I'm working at the Center for Technology Experience in AIT. My job includes prototyping XR application, creating
+innovative real-world interaction with technology, researching on User Interface for beyond screens, Tangible User
+Interface and hardware prototyping.
+Project:
+1. Gaze, Gesture and home automation - https://bit.ly/3Yk5Ssw
+04/2022 – 05/2023 Salzburg, Austria
+
+JUNIOR RESEARCHER SALZBURG RESEARCH
+• My contribution includes improving the navigation, Navigating ARTI Chasi robot using overhead camera, AruCo
+marker detection, Go-to-goal using Aruco marker, Collision avoidance for panda robotic arm, Tracking the AruCo
+marker with Franka Panda. Finally developed voice controlled robot manipulation.
+• Video Link: https://bit.ly/3fAGlY5
+• video2 Link: https://bit.ly/423kStS
+05/2021 – 07/2021 Mumbai, India
+
+INTERNSHIP E-YANTRA (IIT BOMBAY)
+• Project: Robot soccer Project
+• Description: We used We used webots and ROS to make robots play soccer game autonomously with the use of
+different algorithm like - Object tracking, image processing, navigation, multi-robot communication, path
+planning and localization.
+• Link: https://youtu.be/CnEWpmM_0lk
+
+EDUCATION AND TRAINING
+09/2022 – 18/02/2025 Salzburg, Austria
+
+M.SC - HUMAN-COMPUTER INTERACTION (JOINT DEGREE) Paris Lodron Universität Salzburg
+09/2022 – 18/02/2025 Salzburg, Austria
+
+M.SC - HUMAN-COMPUTER INTERACTION (JOINT DEGREE) Fachhochschule Salzburg
+05/2017 – 04/2021 Chennai, India
+
+B.TECH - MECHATRONICS ENGINEERING Hindustan Institute of Technology and Science
+DIGITAL SKILLS
+Creating innovative interaction in physical world
+Human-Computer Interaction
+Physical prototyping
+Python
+C++ Unity Unreal Embedded system
+Computer vision
+Robotics
+Tangible User Interface
+ROS
+Neural Nets
+
+PROJECTS
+11/09/2024 – 21/09/2024
+
+Gaze, Gesture and home automation
+Link https://bit.ly/3Yk5Ssw
+
+TABLE UI - TAngiBLE User Interface
+https://www.linkedin.com/posts/gowtham-sridher_salz21-tech-technology-activity-7171597243039268865-Cqpp?
+utm_source=share&utm_medium=member_desktop
+
+EnthusiastiCan - Enthusiastic Trash Can
+https://www.linkedin.com/posts/gowtham-sridher_technology-computervision-hciactivity-7067467022225334272-4oqj?utm_source=share&utm_medium=member_desktop
+
+Voice controlled robotic arm
+https://bit.ly/423kStS
+
+Multi-functional mobile robot - (Object tracking, leader follower, tag navigation)
+https://www.linkedin.com/posts/gowtham-sridher_machinelearning-robotics-deeplearningactivity-6705461583381979137-3c-O
+
+Vision-based sorting system using a robotic manipulator for industry 4.0 using ROS
+https://www.linkedin.com/posts/gowtham-sridher_robotics-robots-robot-activity-6782132472672067584-YAaX
+
+Developed Navigation, path planning and motion planner for Mobile robot (arti chasi and Franka
+panda)
+https://bit.ly/3fAGlY5
+
+robXtask - A platform that allows any non- programmer to control robots using blocks. ( Back- end )
+https://robxtask.salzburgresearch.at/de/
+
+EMG-Based Control of a 5 DOF Robotic Manipulator
+https://ieeexplore.ieee.org/document/9198439
+
+

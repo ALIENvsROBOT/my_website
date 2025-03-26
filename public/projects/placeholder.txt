@@ -1,0 +1,10 @@
+This folder should contain the following project images:
+
+1. project1.jpg - Gaze, Gesture and Home Automation (600x350 recommended)
+2. project2.jpg - TABLE UI - TAngiBLE User Interface (600x350 recommended)
+3. project3.jpg - EnthusiastiCan - Enthusiastic Trash Can (600x350 recommended)
+4. project4.jpg - Voice Controlled Robotic Arm (600x350 recommended)
+5. project5.jpg - Multi-functional Mobile Robot (600x350 recommended)
+6. project6.jpg - Vision-based Sorting System (600x350 recommended)
+
+You can replace these placeholder images with actual project photos or screenshots. 

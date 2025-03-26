@@ -1,0 +1,1 @@
+Place your CV file named "Gowtham_Sridhar_CV.pdf" in the public directory for it to be accessible through the website's CV download links. 
