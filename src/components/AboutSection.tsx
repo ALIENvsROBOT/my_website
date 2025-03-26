@@ -69,8 +69,17 @@ const ABOUT_PARAGRAPHS = [
 // Skills list based on CV
 const SKILLS = ["Human-Computer Interaction", "Robotics", "XR Applications", "Physical Prototyping", "Computer Vision", "Python", "C++", "Unity", "ROS", "Embedded Systems", "Tangible User Interface", "Neural Nets"];
 
+// Define Experience type based on the experience data structure
+type Experience = {
+  title: string;
+  company: string;
+  period: string;
+  location: string;
+  description: string;
+};
+
 // Experience timeline component
-const ExperienceTimeline = ({ experiences }) => (
+const ExperienceTimeline = ({ experiences }: { experiences: Experience[] }) => (
   <div className="space-y-6 mt-4">
     {experiences.map((experience, index) => (
       <motion.div
