@@ -8,7 +8,7 @@ const navLinks = [
   { href: '#home', label: 'Home' },
   { href: '#about', label: 'About' },
   { href: '#projects', label: 'Projects' },
-  { href: '#experience', label: 'Experience' },
+  { href: '#about', label: 'Experience' },
   { href: '#contact', label: 'Contact' },
 ];
 
@@ -56,7 +56,18 @@ const Navbar = () => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith('#')) {
       e.preventDefault();
-      const targetId = href.substring(1);
+      let targetId = href.substring(1);
+      
+      // Special case for Experience link
+      if (href === '#about' && e.currentTarget.textContent === 'Experience') {
+        // Set a custom hash that includes 'experience' to trigger the Experience tab
+        window.history.pushState(null, '', '#about?tab=experience');
+        targetId = 'about';
+      } else {
+        // Update URL hash without scrolling
+        window.history.pushState(null, '', href);
+      }
+      
       const element = document.getElementById(targetId);
       if (element) {
         const offsetPosition = element.getBoundingClientRect().top + window.scrollY - 100;
@@ -65,9 +76,6 @@ const Navbar = () => {
           top: offsetPosition,
           behavior: 'smooth'
         });
-        
-        // Update URL hash without scrolling
-        window.history.pushState(null, '', href);
         
         // Set active section manually to avoid flicker
         setActiveSection(targetId);

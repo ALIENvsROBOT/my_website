@@ -1,7 +1,39 @@
+# Images Required for Portfolio Website
+
 This folder should contain the following images:
 
-1. profile.jpg - A professional photo of Gowtham Sridhar (960x1200 recommended)
-2. about-image.jpg - An image for the about section (800x600 recommended)
-3. favicon.ico - Website favicon
+## Essential Images
+1. profile.jpg - Your professional photo (960x1200 recommended)
+2. tech-bg.png - Technology background pattern for decorative elements (800x600)
+3. favicon.ico - Website favicon (32x32)
 
-You can replace these placeholder images with actual photos. 
+## Project Images (600x350 recommended)
+4. project-gaze-gesture.jpg - Gaze, Gesture and Home Automation project
+5. project-table-ui.jpg - TABLE UI - TAngiBLE User Interface project
+6. project-enthusiastican.jpg - EnthusiastiCan trash can project
+7. project-voice-robot.jpg - Voice Controlled Robotic Arm project
+8. project-mobile-robot.jpg - Multi-functional Mobile Robot project
+9. project-sorting.jpg - Vision-based Sorting System project
+10. project-navigation.jpg - Navigation & Path Planning project
+11. project-robxtask.jpg - robXtask platform project
+12. project-emg.jpg - EMG-Based Control project
+
+## Background and Decorative Elements
+13. hero-bg.jpg - Abstract background for hero section (optional, 1920x1080)
+14. particles.png - Small particle textures for background effects (optional)
+15. about-image.jpg - Image for the about section (800x600 recommended)
+
+## How to use these images:
+- Place all images in this `/public/images/` directory
+- The code is already set up to reference these images
+- If you don't have a specific image, the site will show a placeholder or fallback
+- For project images, the naming convention helps identify which project each image belongs to
+
+## Image formats:
+- Use JPG for photos and complex images
+- Use PNG for images that need transparency
+- Use SVG for icons when possible (better scaling)
+
+## Note:
+If you don't have all these images yet, the website will still work with placeholders.
+The code has fallback mechanisms for missing images. 

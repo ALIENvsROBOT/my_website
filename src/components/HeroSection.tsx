@@ -9,16 +9,19 @@ import { PlaceholderImage } from './common';
 
 // Tech decoration component to fill empty spaces - optimized
 function TechDecoration({ className }: { className?: string }) {
+  const [imageError, setImageError] = useState(false);
+  
   return (
     <div className={`relative tech-decoration ${className}`}>
       <div className="absolute inset-0 overflow-hidden rounded-lg opacity-20">
         <PlaceholderImage 
-          src="/tech-bg.png" 
+          src={publicPath("/images/tech-bg.png")}
           alt="Tech Background"
           width="100%"
           height="100%"
           fallbackType="abstract"
           className="object-cover w-full h-full"
+          onError={() => setImageError(true)}
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-highlight/10 opacity-30 rounded-lg"></div>
@@ -119,6 +122,23 @@ const HeroSection = () => {
   const [currentQuote, setCurrentQuote] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   
+  // Add standalone scroll functions for buttons
+  const scrollToProjects = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const projectsSection = document.getElementById('projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToContact = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
   useEffect(() => {
     // Check if device is mobile based on screen width
     const checkIfMobile = () => {
@@ -140,14 +160,13 @@ const HeroSection = () => {
     const timer = setTimeout(() => {
       const elements = {
         title: '.hero-title span',
-        subtitle: '.hero-subtitle',
-        button: '.hero-button'
+        subtitle: '.hero-subtitle'
       };
       
       // Use simpler animations on mobile
       if (isMobile) {
-        gsap.set([elements.title, elements.subtitle, elements.button], { opacity: 0 });
-        gsap.to([elements.title, elements.subtitle, elements.button], { 
+        gsap.set([elements.title, elements.subtitle], { opacity: 0 });
+        gsap.to([elements.title, elements.subtitle], { 
           opacity: 1, 
           duration: 0.5,
           stagger: 0.1,
@@ -170,12 +189,6 @@ const HeroSection = () => {
           duration: 0.6,
           ease: 'power3.out',
         }, '-=0.4')
-        .from(elements.button, {
-          scale: 0.9,
-          opacity: 0,
-          duration: 0.5,
-          ease: 'back.out(1.7)',
-        }, '-=0.2')
         .call(() => setIsHologramVisible(true));
       }
     }, 100);
@@ -200,30 +213,39 @@ const HeroSection = () => {
       ref={containerRef}
       className="relative min-h-screen flex items-start pt-8 overflow-hidden"
     >
-      {/* Only show scan lines on desktop */}
-      {!isMobile && <div className="absolute inset-0 bg-scan-lines pointer-events-none z-[5]"></div>}
+      {/* Premium rich background overlay with depth */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0F2E] via-[#12133D] to-[#0A0E20] z-[1]"></div>
       
-      {/* Tech background elements to fill empty space - reduced for mobile */}
-      <div className="absolute left-[5%] top-[25%] w-[150px] opacity-80 z-[2]">
+      {/* Rich gradient vignette */}
+      <div className="absolute inset-0 bg-radial-gradient z-[2] opacity-60"></div>
+      
+      {/* Premium gradient accents */}
+      <div className="absolute top-[10%] left-[5%] w-[40%] h-[30%] rounded-full opacity-[0.08] bg-gradient-to-r from-indigo-600 to-purple-600 blur-[120px] z-[2]"></div>
+      <div className="absolute bottom-[15%] right-[5%] w-[35%] h-[25%] rounded-full opacity-[0.08] bg-gradient-to-r from-blue-600 to-teal-600 blur-[100px] z-[2]"></div>
+      
+      {/* Premium golden accent */}
+      <div className="absolute top-[40%] right-[15%] w-[20%] h-[15%] rounded-full opacity-[0.03] bg-gradient-to-r from-amber-400 to-amber-600 blur-[80px] z-[2]"></div>
+      
+      {/* Subtle texture overlay - using CSS instead of image */}
+      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay z-[3] pointer-events-none noise-texture"></div>
+      
+      {/* Subtle horizontal lines */}
+      <div className="absolute inset-0 z-[3] pointer-events-none premium-lines"></div>
+      
+      {/* Only show scan lines on desktop, but make them more subtle */}
+      {!isMobile && <div className="absolute inset-0 bg-scan-lines opacity-10 pointer-events-none z-[4]"></div>}
+      
+      {/* Rest of the content - increase z-index to ensure it's above the background */}
+      <div className="absolute left-[5%] top-[25%] w-[150px] opacity-80 z-[5]">
         <TechDecoration />
       </div>
-      {!isMobile && (
-        <>
-          <div className="absolute right-[8%] top-[30%] w-[100px] opacity-60 z-[2] hidden md:block">
-            <TechDecoration />
-          </div>
-          <div className="absolute left-[12%] bottom-[15%] w-[120px] opacity-70 z-[2] hidden md:block">
-            <TechDecoration />
-          </div>
-        </>
-      )}
       
-      {/* Tech particles - reduced count for mobile */}
-      {Array.from({ length: particleCount }).map((_, i) => {
-        const size = 20 + Math.random() * 60;
+      {/* Tech particles - reduced and more refined */}
+      {Array.from({ length: Math.max(5, particleCount / 2) }).map((_, i) => {
+        const size = 15 + Math.random() * 40;
         const top = Math.random() * 90;
         const left = Math.random() * 90;
-        const blur = 10 + Math.random() * 40;
+        const blur = 10 + Math.random() * 30;
         return (
           <div 
             key={i}
@@ -233,7 +255,8 @@ const HeroSection = () => {
               height: `${size}px`, 
               top: `${top}%`, 
               left: `${left}%`,
-              backgroundColor: i % 3 === 0 ? 'rgba(99, 102, 241, 0.15)' : i % 3 === 1 ? 'rgba(139, 92, 246, 0.15)' : 'rgba(56, 189, 248, 0.15)',
+              // More luxurious, subtle colors
+              backgroundColor: i % 3 === 0 ? 'rgba(129, 140, 248, 0.08)' : i % 3 === 1 ? 'rgba(167, 139, 250, 0.08)' : 'rgba(79, 209, 197, 0.08)',
               filter: `blur(${blur}px)`,
               animationDelay: `${i * 0.7}s`
             }}
@@ -315,39 +338,28 @@ const HeroSection = () => {
                 <p className="text-lightText/90 text-sm italic">{techQuotes[currentQuote]}</p>
               </motion.div>
               
-              <div className="flex flex-wrap gap-3 mb-6">
-                <motion.a 
-                  href="#projects"
-                  className="hero-button premium-button glow-accent"
-                  whileHover={!isMobile ? { scale: 1.05 } : undefined}
-                  whileTap={!isMobile ? { scale: 0.95 } : undefined}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
+              {/* Buttons container with absolute positioning for maximum visibility */}
+              <div className="fixed-buttons relative" style={{ position: 'relative', zIndex: 9999 }}>
+                <button 
+                  className="action-button project-button mr-3 py-3 px-5 rounded-full bg-secondary text-white font-medium flex items-center gap-2 hover:bg-secondary/80 transition"
+                  onClick={scrollToProjects}
                 >
                   <span>View My Projects</span>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
-                </motion.a>
+                </button>
                 
-                <motion.a 
-                  href="#contact"
-                  className="hero-button premium-button bg-transparent border-secondary/30 hover:border-secondary/50 glow-accent"
-                  whileHover={!isMobile ? { scale: 1.05 } : undefined}
-                  whileTap={!isMobile ? { scale: 0.95 } : undefined}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
+                <button 
+                  className="action-button contact-button py-3 px-5 rounded-full bg-transparent border border-secondary/70 text-white font-medium flex items-center gap-2 hover:bg-secondary/20 transition"
+                  onClick={scrollToContact}
                 >
                   <span>Contact Me</span>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
-                </motion.a>
+                </button>
               </div>
               
               {/* Data visualization element - conditionally rendered */}
