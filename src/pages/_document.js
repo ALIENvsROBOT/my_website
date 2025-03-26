@@ -1,15 +1,13 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
-  // Get the correct asset prefix for GitHub Pages
-  const prefix = process.env.NODE_ENV === 'production' 
-    ? '/my_website' 
-    : '';
+  // For custom domain, we don't need a prefix
+  const prefix = '';
 
   return (
     <Html lang="en">
       <Head>
-        {/* Force assets to use absolute URLs */}
+        {/* Custom domain doesn't need special asset prefixes */}
         <meta name="asset-prefix" content={prefix} />
       </Head>
       <body>

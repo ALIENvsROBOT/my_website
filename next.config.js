@@ -4,9 +4,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Set correct paths for GitHub Pages repository
-  basePath: process.env.NODE_ENV === 'production' ? '/my_website' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/my_website' : '',
+  // In production, don't use basePath for custom domain
+  basePath: '',
+  // Don't use assetPrefix for custom domain
+  assetPrefix: '',
   trailingSlash: true, // Recommended for GitHub Pages compatibility
   reactStrictMode: true,
   swcMinify: true,
