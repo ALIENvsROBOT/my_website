@@ -4,8 +4,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // No need for basePath with custom domain, but we need to set assetPrefix
-  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://www.gowthamsridhar.com' : '',
+  // Set correct paths for GitHub Pages repository
+  basePath: process.env.NODE_ENV === 'production' ? '/my_website' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/my_website' : '',
   trailingSlash: true, // Recommended for GitHub Pages compatibility
   reactStrictMode: true,
   swcMinify: true,

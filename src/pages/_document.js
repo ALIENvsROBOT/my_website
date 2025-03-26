@@ -3,7 +3,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 export default function Document() {
   // Get the correct asset prefix for GitHub Pages
   const prefix = process.env.NODE_ENV === 'production' 
-    ? 'https://www.gowthamsridhar.com' 
+    ? '/my_website' 
     : '';
 
   return (

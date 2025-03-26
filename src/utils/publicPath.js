@@ -1,6 +1,7 @@
 // Utility to get the correct public path for assets
 export function getPublicPath(path) {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+  // Use the appropriate base path for GitHub Pages
+  const basePath = process.env.NODE_ENV === 'production' ? '/my_website' : '';
   return `${basePath}${path.startsWith('/') ? path : `/${path}`}`;
 }
 

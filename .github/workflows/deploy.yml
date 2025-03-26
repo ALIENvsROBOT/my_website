@@ -43,8 +43,8 @@ jobs:
       - name: Build with Next.js
         run: npm run build
         env:
-          # Ensure asset paths are correct
-          NEXT_PUBLIC_BASE_PATH: https://www.gowthamsridhar.com
+          # Ensure asset paths are correct for GitHub Pages repository
+          NEXT_PUBLIC_BASE_PATH: /my_website
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
