@@ -5,13 +5,25 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import publicPath from '../utils/publicPath';
+import { PlaceholderImage } from './common';
 
 // Tech decoration component to fill empty spaces
 function TechDecoration({ className }: { className?: string }) {
   return (
     <div className={`relative tech-decoration ${className}`}>
+      {/* Example of using placeholder for tech decoration background */}
+      <div className="absolute inset-0 overflow-hidden rounded-lg opacity-20">
+        <PlaceholderImage 
+          src="/tech-bg.png" 
+          alt="Tech Background"
+          width="100%"
+          height="100%"
+          fallbackType="abstract"
+          className="object-cover w-full h-full"
+        />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-highlight/10 opacity-30 rounded-lg"></div>
-      <div className="grid grid-cols-8 gap-1 p-2">
+      <div className="grid grid-cols-8 gap-1 p-2 relative z-10">
         {Array.from({ length: 24 }).map((_, i) => (
           <div key={i} className={`h-1 rounded-full ${i % 3 === 0 ? 'bg-secondary/40' : 'bg-gray-700/40'}`}></div>
         ))}
@@ -86,13 +98,13 @@ function StaticAvatar() {
           <span className="text-lightText font-bold text-2xl">GS</span>
         </div>
       ) : (
-        <Image
+        <PlaceholderImage
           src={publicPath("/gowtham_profile.png")}
           alt="Gowtham Sridhar"
-          width={400}
-          height={400}
+          width="400"
+          height="400"
           className="rounded-xl shadow-lg relative z-10 object-cover max-w-[300px]"
-          priority
+          fallbackType="abstract"
           onError={() => setImageError(true)}
         />
       )}

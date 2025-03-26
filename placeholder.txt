@@ -1,0 +1,88 @@
+# Image Placeholder System Guide
+
+## Quick Usage
+
+1. Import the component you need:
+```jsx
+import { Image, PlaceholderImage } from './components/common';
+```
+
+2. Use for Next.js optimized images:
+```jsx
+<Image 
+  src="/your-image.png"
+  alt="Description"
+  width={500}
+  height={300}
+  fallbackType="abstract" // Options: 'abstract', 'photo', 'basic'
+/>
+```
+
+3. Use for regular HTML images:
+```jsx
+<PlaceholderImage 
+  src="/your-image.png"
+  alt="Description"
+  width="100%"
+  height="auto"
+  fallbackType="photo"
+/>
+```
+
+## Adding New Images
+
+1. Place your image files in the `/public` folder
+2. Reference them with a path starting with `/`:
+   - Example: `/profile.png` for an image at `/public/profile.png`
+   - Example: `/images/avatar.png` for an image at `/public/images/avatar.png`
+
+## Fallback Types
+
+- `abstract`: Tech-themed abstract images from Unsplash
+- `photo`: Beautiful random photos from Picsum
+- `basic`: Simple gray placeholders with dimensions
+
+## Customizing Placeholder Services
+
+To change the placeholder services, edit `src/utils/imageUtils.js`:
+
+```javascript
+// Current placeholder services
+const PLACEHOLDER_SERVICES = {
+  basic: (width, height) => `https://via.placeholder.com/${width}x${height}`,
+  photo: (width, height) => `https://picsum.photos/${width}/${height}`,
+  abstract: (width, height) => `https://source.unsplash.com/random/${width}x${height}/?abstract,tech,digital`
+};
+
+// Add custom services here:
+// example: (width, height) => `https://your-placeholder-service.com/${width}/${height}`
+```
+
+## Best Practices
+
+1. Always provide meaningful alt text for accessibility
+2. Use appropriate dimensions that match your layout
+3. Choose fallback types that match your content:
+   - `abstract` for tech/digital content
+   - `photo` for actual photography replacements
+   - `basic` for simple UI elements
+
+4. For critical UI elements, consider using CSS fallbacks with `onError`:
+```jsx
+<PlaceholderImage
+  src="/logo.png"
+  alt="Company Logo"
+  width="200"
+  height="80"
+  fallbackType="basic"
+  onError={() => setUseTextLogo(true)}
+/>
+{useTextLogo && <h1 className="text-logo">Company Name</h1>}
+```
+
+## Troubleshooting
+
+- If images aren't loading, check file paths and case sensitivity
+- Ensure the `/public` directory is properly deployed
+- For local development, restart the server if new images aren't showing up
+- If placeholder images aren't loading, check your internet connection 
