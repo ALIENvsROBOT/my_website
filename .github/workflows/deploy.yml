@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install critters (required for optimizeCss)
+        run: npm install critters
+
       - name: Build with Next.js
         run: npm run build
 
