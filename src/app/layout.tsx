@@ -75,6 +75,43 @@ export default function RootLayout({
                 document.documentElement.classList.add('custom-cursor-supported');
               }
               
+              // Mobile optimization - detect mobile devices and optimize performance
+              const isMobile = window.innerWidth < 768 || 
+                navigator.userAgent.match(/Android/i) ||
+                navigator.userAgent.match(/iPhone/i) ||
+                navigator.userAgent.match(/iPad/i);
+              
+              if (isMobile) {
+                document.body.classList.add('mobile-optimized');
+                
+                // Disable some expensive animations for better performance
+                document.addEventListener('DOMContentLoaded', () => {
+                  // Remove unnecessary particles on mobile
+                  const particles = document.querySelectorAll('.bg-particle');
+                  if (particles.length > 5) {
+                    for (let i = 5; i < particles.length; i++) {
+                      if (particles[i]) particles[i].remove();
+                    }
+                  }
+                  
+                  // Simplify glass effects on mobile
+                  document.querySelectorAll('.premium-glass, .glass-effect-dark').forEach(el => {
+                    el.style.backdropFilter = 'none';
+                    el.style.webkitBackdropFilter = 'none';
+                    el.style.backgroundColor = 'rgba(5, 7, 22, 0.95)';
+                  });
+                });
+              }
+              
+              // Add resize listener to adjust performance settings when screen size changes
+              window.addEventListener('resize', () => {
+                if (window.innerWidth < 768) {
+                  document.body.classList.add('mobile-optimized');
+                } else {
+                  document.body.classList.remove('mobile-optimized');
+                }
+              });
+              
               // Force visibility after 1 second as a fallback
               setTimeout(() => {
                 document.documentElement.style.visibility = 'visible';
