@@ -35,8 +35,16 @@ jobs:
       - name: Install critters (required for optimizeCss)
         run: npm install critters
 
+      - name: Update next.js export handling
+        run: |
+          # Fix for Next.js static export in latest versions
+          sed -i 's/"export": "next export"/"export": ""/' package.json
+
       - name: Build with Next.js
         run: npm run build
+        env:
+          # Ensure asset paths are correct
+          NEXT_PUBLIC_BASE_PATH: https://www.gowthamsridhar.com
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

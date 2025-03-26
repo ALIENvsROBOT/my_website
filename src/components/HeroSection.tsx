@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
+import publicPath from '../utils/publicPath';
 
 // Tech decoration component to fill empty spaces
 function TechDecoration({ className }: { className?: string }) {
@@ -86,7 +87,7 @@ function StaticAvatar() {
         </div>
       ) : (
         <Image
-          src="/gowtham_profile.png"
+          src={publicPath("/gowtham_profile.png")}
           alt="Gowtham Sridhar"
           width={400}
           height={400}
