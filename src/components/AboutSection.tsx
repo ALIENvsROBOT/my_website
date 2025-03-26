@@ -4,19 +4,21 @@ import { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 
-// Define the skills data
+// Define the skills data based on CV
 const skills = [
   { name: 'Human-Computer Interaction', level: 90 },
   { name: 'Robotics', level: 85 },
   { name: 'XR Applications', level: 80 },
-  { name: 'Physical Prototyping', level: 75 },
-  { name: 'Computer Vision', level: 70 },
+  { name: 'Physical Prototyping', level: 85 },
+  { name: 'Computer Vision', level: 80 },
   { name: 'Python', level: 85 },
-  { name: 'Unity', level: 70 },
+  { name: 'Unity', level: 75 },
   { name: 'ROS', level: 80 },
+  { name: 'C++', level: 70 },
+  { name: 'Embedded Systems', level: 75 },
 ];
 
-// Experience data
+// Experience data from CV
 const experiences = [
   {
     title: 'Junior Scientist',
@@ -30,18 +32,18 @@ const experiences = [
     company: 'Salzburg Research',
     period: '2022 - 2023',
     location: 'Salzburg, Austria',
-    description: 'Improved navigation systems, developed collision avoidance for robotic arms, and created voice-controlled robot manipulation solutions.',
+    description: 'Improved navigation systems, navigating ARTI Chasi robot using overhead camera, developed AruCo marker detection, implemented collision avoidance for panda robotic arm, and created voice-controlled robot manipulation solutions.',
   },
   {
     title: 'Intern',
     company: 'E-Yantra (IIT Bombay)',
     period: '2021',
     location: 'Mumbai, India',
-    description: 'Worked on robot soccer project using webots and ROS to make robots play soccer game autonomously with advanced algorithms.',
+    description: 'Worked on robot soccer project using webots and ROS to make robots play soccer game autonomously with object tracking, image processing, navigation, multi-robot communication, path planning and localization algorithms.',
   },
 ];
 
-// Education data
+// Education data from CV
 const education = [
   {
     degree: 'M.Sc. Human-Computer Interaction (Joint Degree)',
@@ -57,15 +59,15 @@ const education = [
   },
 ];
 
-// Text content for paragraphs
+// Text content for paragraphs based on CV
 const ABOUT_PARAGRAPHS = [
-  "Hello! I'm Gowtham Sridhar, a passionate software developer with expertise in building modern web applications. I specialize in React, Next.js, and TypeScript, creating responsive and interactive user experiences.",
-  "With a strong foundation in JavaScript and modern frontend frameworks, I enjoy turning complex problems into simple, beautiful, and intuitive interfaces.",
-  "I also have experience with backend technologies including Node.js, Express, and database systems like MongoDB and PostgreSQL."
+  "Hello! I'm Gowtham Sridhar, a Junior Scientist at AIT - Center for Technology Experience in Vienna, Austria. I'm passionate about advancing my expertise at the forefront of Human-Computer Interaction, Robotics, and creating innovative interactions for the physical world.",
+  "I'm committed to embracing challenging projects in robotics and human-computer interaction, employing innovative and efficient coding solutions. Working hands-on with wires and processors, I believe that intricate problems demand intelligent and streamlined approaches.",
+  "Currently, I focus on prototyping XR applications, creating innovative real-world interactions with technology, researching interfaces beyond screens, and developing tangible user interfaces with hardware prototyping."
 ];
 
-// Skills list
-const SKILLS = ["React", "TypeScript", "Next.js", "Node.js", "CSS/SCSS", "Tailwind CSS", "UI/UX Design", "Responsive Design"];
+// Skills list based on CV
+const SKILLS = ["Human-Computer Interaction", "Robotics", "XR Applications", "Physical Prototyping", "Computer Vision", "Python", "C++", "Unity", "ROS", "Embedded Systems", "Tangible User Interface", "Neural Nets"];
 
 const AboutSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -178,11 +180,22 @@ const AboutSection = () => {
               animate={isVisible ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <h3 className="text-xl font-bold mb-4 text-purple-300">Education & Certifications</h3>
-              <ul className="space-y-2">
-                <li>🎓 B.Tech in Computer Science</li>
-                <li>📜 Advanced React & Redux - Certification</li>
-                <li>📜 Full Stack Web Development - Certification</li>
+              <h3 className="text-xl font-bold mb-4 text-purple-300">Education</h3>
+              <ul className="space-y-3">
+                {education.map((edu, index) => (
+                  <li key={index} className="text-sm">
+                    <div className="flex items-center">
+                      <span className="text-indigo-400 mr-2">🎓</span>
+                      <span className="font-semibold">{edu.degree}</span>
+                    </div>
+                    <div className="ml-6 text-lightText/70">
+                      {edu.institution}
+                    </div>
+                    <div className="ml-6 text-xs text-lightText/50">
+                      {edu.period} • {edu.location}
+                    </div>
+                  </li>
+                ))}
               </ul>
             </motion.div>
           </div>

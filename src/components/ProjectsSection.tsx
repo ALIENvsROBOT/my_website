@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
-// Projects data with placeholder images
+// Projects data from CV with placeholder images
 const projects = [
   {
     id: 1,
@@ -52,10 +52,36 @@ const projects = [
   {
     id: 6,
     title: 'Vision-based Sorting System',
-    description: 'An industrial sorting system using computer vision and a robotic manipulator for automated object recognition and sorting.',
+    description: 'An industrial sorting system using computer vision and a robotic manipulator for automated object recognition and sorting, designed for Industry 4.0 applications.',
     image: 'https://placehold.co/600x350/3d4463/ffffff?text=Sorting+System', // Placeholder
     technologies: ['Robotics', 'Computer Vision', 'Industry 4.0', 'ROS'],
     link: 'https://www.linkedin.com/posts/gowtham-sridher_robotics-robots-robot-activity-6782132472672067584-YAaX',
+  },
+  {
+    id: 7,
+    title: 'Navigation & Path Planning for Mobile Robot',
+    description: 'Developed advanced navigation, path planning, and motion planning capabilities for mobile robots including ARTI Chasi and Franka Panda.',
+    image: 'https://placehold.co/600x350/3d4463/ffffff?text=Robot+Navigation', // Placeholder
+    technologies: ['Robotics', 'Path Planning', 'ROS', 'Navigation'],
+    link: 'https://bit.ly/3fAGlY5',
+    featured: true,
+  },
+  {
+    id: 8,
+    title: 'robXtask',
+    description: 'A platform that allows non-programmers to control robots using block-based programming. Contributed to the back-end development.',
+    image: 'https://placehold.co/600x350/3d4463/ffffff?text=robXtask', // Placeholder
+    technologies: ['Robotics', 'Block Programming', 'User Interface', 'Accessibility'],
+    link: 'https://robxtask.salzburgresearch.at/de/',
+  },
+  {
+    id: 9,
+    title: 'EMG-Based Control of a 5 DOF Robotic Manipulator',
+    description: 'Designed a system to control a 5-degree-of-freedom robotic manipulator using electromyography (EMG) signals for intuitive human-robot interaction.',
+    image: 'https://placehold.co/600x350/3d4463/ffffff?text=EMG+Control', // Placeholder
+    technologies: ['EMG', 'Robotics', 'Signal Processing', 'Human-Robot Interaction'],
+    link: 'https://ieeexplore.ieee.org/document/9198439',
+    featured: true,
   },
 ];
 

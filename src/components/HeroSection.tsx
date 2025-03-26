@@ -75,8 +75,8 @@ function HolographicInfo({ title, info, delay }: { title: string; info: string; 
 // Tech quotes for empty space
 const techQuotes = [
   "The interface between humans and machines defines our future.",
-  "Innovation thrives at the intersection of technology and human experience.",
-  "XR isn't just about seeing differently, it's about thinking differently."
+  "Enthusiastic about advancing expertise at the forefront of Human-Computer Interaction and Robotics.",
+  "Creating innovative interactions for the physical world with intelligent and streamlined approaches."
 ];
 
 // Temporary static Avatar component (no 3D) - optimized
@@ -98,7 +98,7 @@ function StaticAvatar() {
         </div>
       ) : (
         <PlaceholderImage
-          src={publicPath("/gowtham_profile.png")}
+          src={publicPath("/images/profile.jpg")}
           alt="Gowtham Sridhar"
           width="400"
           height="400"
@@ -300,8 +300,8 @@ const HeroSection = () => {
               
               <p className="hero-subtitle text-lightText/70 text-lg max-w-xl mb-4">
                 Specializing in <span className="text-secondary">Human-Computer Interaction</span>, 
-                <span className="text-purple-400"> XR Applications</span>, and
-                <span className="text-teal-400"> UI/UX Design</span> to create seamless technological interfaces.
+                <span className="text-purple-400"> Robotics</span>, and
+                <span className="text-teal-400"> Physical Prototyping</span> to create seamless technological interfaces.
               </p>
               
               {/* Tech quote - simpler animation for mobile */}
@@ -466,12 +466,12 @@ const HeroSection = () => {
                   <div className="space-y-3 holographic-info-container max-h-[200px] overflow-y-auto pr-1 relative">
                     <HolographicInfo 
                       title="SPECIALTY" 
-                      info="Human-Computer Interaction | XR Applications | UI/UX Design"
+                      info="Human-Computer Interaction | Robotics | Physical Prototyping"
                       delay={0.1}
                     />
                     <HolographicInfo 
                       title="CURRENT MISSION" 
-                      info="Developing innovative interfaces for seamless human-technology integration"
+                      info="Creating innovative interactions in the physical world with XR technologies"
                       delay={0.2}
                     />
                     <HolographicInfo 
@@ -481,12 +481,12 @@ const HeroSection = () => {
                     />
                     <HolographicInfo 
                       title="SKILLS" 
-                      info="VR/AR Development, 3D Modeling, User Research, UI/UX Prototyping"
+                      info="XR Development, Computer Vision, Robotics, Python, C++, Unity, ROS"
                       delay={0.4}
                     />
                     <HolographicInfo 
-                      title="PUBLICATIONS" 
-                      info="5 Journal Articles, 12 Conference Papers on HCI and XR"
+                      title="LOCATION" 
+                      info="Vienna, Austria"
                       delay={0.5}
                     />
                     
