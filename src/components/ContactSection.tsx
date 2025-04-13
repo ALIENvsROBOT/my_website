@@ -9,6 +9,7 @@ const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'servic
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_sgqvlzs';
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '8pHCCEEYWjpwYS-UJ';
 
+
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
