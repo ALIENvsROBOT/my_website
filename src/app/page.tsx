@@ -47,7 +47,10 @@ export default function Home() {
     
     // Check if we're on a mobile device
     const checkMobile = () => {
-      setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768);
+      const isMobileDevice = typeof navigator !== 'undefined' 
+        ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+        : false;
+      setIsMobile(isMobileDevice || window.innerWidth < 768);
     };
     
     checkMobile();
