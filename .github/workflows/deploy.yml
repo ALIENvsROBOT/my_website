@@ -46,7 +46,10 @@ jobs:
           # For custom domain, we don't need a base path
           NEXT_PUBLIC_BASE_PATH: ""
           PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
-          
+          NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+          NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+
       - name: Create required GitHub Pages files
         run: |
           # Create .nojekyll file to prevent GitHub Pages from ignoring files that begin with an underscore
