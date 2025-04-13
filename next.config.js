@@ -8,7 +8,8 @@ const nextConfig = {
   basePath: '',
   // Don't use assetPrefix for custom domain
   assetPrefix: '',
-  trailingSlash: true, // Recommended for GitHub Pages compatibility
+  // Remove trailing slash to fix canonical issues
+  trailingSlash: false,
   reactStrictMode: true,
   swcMinify: true,
   experimental: {

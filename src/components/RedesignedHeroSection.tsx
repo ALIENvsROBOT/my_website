@@ -7,20 +7,33 @@ import ProfileImage from './ProfileImage';
 
 const RedesignedHeroSection = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isLowPerformanceDevice, setIsLowPerformanceDevice] = useState(false);
   
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const checkDeviceCapabilities = () => {
+      // Check screen size for mobile detection
+      const isMobileDevice = window.innerWidth < 768;
+      setIsMobile(isMobileDevice);
+      
+      // Check for low performance devices (conservative approach)
+      const isLowPerf = isMobileDevice || 
+        // Detect older browsers/devices through user agent or renderer info
+        (navigator.userAgent.includes('Android') && !navigator.userAgent.includes('Chrome/')) ||
+        // iOS devices with older versions
+        (navigator.userAgent.includes('iPad') || navigator.userAgent.includes('iPhone')) && 
+        !navigator.userAgent.includes('CriOS');
+      
+      setIsLowPerformanceDevice(isLowPerf);
     };
     
     // Initial check
-    checkMobile();
+    checkDeviceCapabilities();
     
     // Add event listener
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener('resize', checkDeviceCapabilities);
     
     // Cleanup
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkDeviceCapabilities);
   }, []);
   
   const scrollToProjects = (e: React.MouseEvent) => {
@@ -150,7 +163,7 @@ const RedesignedHeroSection = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <Scene3D isMobile={isMobile} />
+            <Scene3D isMobile={isMobile || isLowPerformanceDevice} />
           </motion.div>
         </div>
         

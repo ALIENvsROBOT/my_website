@@ -106,8 +106,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
   
   return (
     <motion.div 
-      className={`relative group overflow-hidden rounded-xl sci-fi-border glass-effect-dark
-        ${project.featured ? 'md:col-span-2 lg:col-span-1' : ''}`}
+      className={`relative group overflow-hidden rounded-xl sci-fi-border glass-effect-dark aspect-square`}
       variants={{
         hidden: { y: 50, opacity: 0 },
         visible: { 
@@ -123,12 +122,12 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      <div className="relative h-56 overflow-hidden">
+      <div className="relative h-full overflow-hidden">
         <Image
           src={imageError ? project.fallbackImage : project.image}
           alt={project.title}
           width={600}
-          height={350}
+          height={600}
           className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
           onError={() => setImageError(true)}
         />
@@ -163,69 +162,57 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </div>
           </div>
         </div>
-      </div>
       
-      <div className="p-6 relative">
-        {/* Animated border on hover */}
-        <AnimatePresence>
-          {isHovered && (
-            <motion.div 
-              className="absolute inset-0 border border-secondary/50 z-0 pointer-events-none"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-            />
-          )}
-        </AnimatePresence>
-        
-        <h3 className="text-xl font-bold mb-2 text-lightText group-hover:text-secondary transition-colors duration-300 cyan-glow z-10 relative">
-          {project.title}
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-darkBg/80 backdrop-blur-sm z-10">
+          <h3 className="text-lg font-bold mb-1 text-lightText group-hover:text-secondary transition-colors duration-300 cyan-glow relative truncate">
+            {project.title}
+            
+            {/* Decorative badge for featured projects */}
+            {project.featured && (
+              <div className="absolute -left-4 top-1/2 -translate-y-1/2 h-4 w-1 bg-cyan-400"></div>
+            )}
+          </h3>
           
-          {/* Decorative badge for featured projects */}
-          {project.featured && (
-            <div className="absolute -left-6 top-1/2 -translate-y-1/2 h-5 w-1 bg-cyan-400"></div>
-          )}
-        </h3>
-        <p className="text-sm text-lightText/70 mb-4 z-10 relative">
-          {project.description}
-        </p>
-        
-        <div className="flex justify-between items-center z-10 relative">
-          <motion.a 
-            href={project.link} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-cyan-300 hover:text-cyan-100 text-sm font-medium inline-flex items-center gap-1 transition-colors duration-300"
-            whileHover={{ x: 5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View Project
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </motion.a>
-          
-          {project.featured && (
-            <span className="text-xs px-2 py-1 rounded-full bg-highlight/20 text-highlight border border-highlight/30">
-              Featured
-            </span>
-          )}
+          <div className="flex justify-between items-center">
+            <motion.a 
+              href={project.link} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-cyan-300 hover:text-cyan-100 text-sm font-medium inline-flex items-center gap-1 transition-colors duration-300"
+              whileHover={{ x: 5 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              View Project
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </motion.a>
+            
+            {project.featured && (
+              <span className="text-xs px-2 py-1 rounded-full bg-highlight/20 text-highlight border border-highlight/30">
+                Featured
+              </span>
+            )}
+          </div>
         </div>
       </div>
       
       {/* Hover overlay */}
       <motion.div 
-        className="absolute inset-0 flex items-center justify-center bg-darkBg/90 pointer-events-none"
+        className="absolute inset-0 flex items-center justify-center bg-darkBg/90 pointer-events-none flex-col p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: isHovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
       >
+        <p className="text-sm text-lightText/80 mb-4 line-clamp-3 text-center">
+          {project.description}
+        </p>
+        
         <a
           href={project.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="px-6 py-3 rounded-full bg-secondary hover:bg-highlight text-white font-medium transition-colors duration-300 inline-flex items-center gap-2 pointer-events-auto sci-fi-border"
+          className="px-5 py-2 rounded-full bg-secondary hover:bg-highlight text-white font-medium transition-colors duration-300 inline-flex items-center gap-2 pointer-events-auto sci-fi-border"
           style={{ boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -283,7 +270,7 @@ const ProjectsSection = () => {
         <motion.div
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
           {organizedProjects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />

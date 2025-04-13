@@ -24,7 +24,10 @@ import {
   MeshBasicMaterial,
   ShaderMaterial,
   IcosahedronGeometry,
-  DoubleSide
+  DoubleSide,
+  Line,
+  LineBasicMaterial,
+  BufferAttribute
 } from 'three';
 
 // Helper function to convert array to Vector3
@@ -309,25 +312,30 @@ function MorphingText({
 }) {
   const ref = useRef<Group>(null);
   const [hover, setHover] = useState(false);
+  const { camera } = useThree();
   
   useFrame(({ clock }) => {
-    if (ref.current) {
-      const t = clock.getElapsedTime();
-      
-      // More dynamic and fluid animation
-      ref.current.position.y = position[1] + Math.sin(t * 0.5) * 0.1;
-      
-      // Scale pulse effect on hover
-      if (hover) {
-        ref.current.scale.x = scale * (1 + Math.sin(t * 2) * 0.05);
-        ref.current.scale.y = scale * (1 + Math.sin(t * 2 + 0.5) * 0.05);
-        ref.current.scale.z = scale * (1 + Math.sin(t * 2 + 1) * 0.05);
-      } else {
-        ref.current.scale.set(scale, scale, scale);
-      }
+    if (!ref.current) return;
+    
+    const t = clock.getElapsedTime();
+    
+    // More dynamic and fluid animation
+    ref.current.position.y = position[1] + Math.sin(t * 0.5) * 0.1;
+    
+    // Billboard effect - make text always face camera
+    // This ensures the text is readable from any angle
+    ref.current.lookAt(camera.position);
+    
+    // Scale pulse effect on hover
+    if (hover) {
+      ref.current.scale.x = scale * (1 + Math.sin(t * 2) * 0.05);
+      ref.current.scale.y = scale * (1 + Math.sin(t * 2 + 0.5) * 0.05);
+      ref.current.scale.z = scale * (1 + Math.sin(t * 2 + 1) * 0.05);
+    } else {
+      ref.current.scale.set(scale, scale, scale);
     }
   });
-
+  
   return (
     <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
       <group 
@@ -338,9 +346,9 @@ function MorphingText({
       >
       <Text
           fontSize={0.6}
-        color={color}
-        anchorX="center"
-        anchorY="middle"
+          color={color}
+          anchorX="center"
+          anchorY="middle"
           maxWidth={3}
           outlineWidth={0.01}
           outlineColor="#000000"
@@ -479,20 +487,22 @@ function SkillTag({
 }) {
   const ref = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
+  const { camera } = useThree();
   
   useFrame(({ clock }) => {
-    if (ref.current) {
-      const t = clock.getElapsedTime() + delay;
-      
-      // Floating animation
-      ref.current.position.y = position[1] + Math.sin(t * 0.8) * 0.1;
-      
-      // Rotation
-      ref.current.rotation.z = Math.sin(t * 0.4) * 0.05;
-      
-      // Scale on hover
-      ref.current.scale.setScalar(hovered ? 1.2 : 1);
-    }
+    if (!ref.current) return;
+    
+    const t = clock.getElapsedTime() + delay;
+    
+    // Floating animation
+    ref.current.position.y = position[1] + Math.sin(t * 0.8) * 0.1;
+    
+    // Billboard effect - make tag always face camera
+    // This uses lookAt which is more reliable for billboarding
+    ref.current.lookAt(camera.position);
+    
+    // Scale on hover
+    ref.current.scale.setScalar(hovered ? 1.2 : 1);
   });
 
   return (
@@ -514,7 +524,7 @@ function SkillTag({
       >
         <mesh>
           <planeGeometry args={[skill.length * 0.2 + 0.4, 0.4]} />
-      <meshStandardMaterial 
+          <meshStandardMaterial 
             color={hovered ? "#ffffff" : color} 
             emissive={hovered ? "#ffffff" : color}
             emissiveIntensity={1}
@@ -537,6 +547,59 @@ function SkillTag({
   );
 }
 
+// Connection lines between nodes
+function ConnectionLines({ 
+  from, 
+  to, 
+  colors, 
+  thickness = 0.5, 
+  opacity = 1 
+}: {
+  from: [number, number, number];
+  to: Array<[number, number, number]>;
+  colors: string[];
+  thickness?: number;
+  opacity?: number;
+}) {
+  const lineRef = useRef<Group>(null);
+  
+  useEffect(() => {
+    const currentRef = lineRef.current;
+    if (!currentRef) return;
+    
+    // Clear existing lines
+    while (currentRef.children.length > 0) {
+      currentRef.remove(currentRef.children[0]);
+    }
+    
+    // Create lines from the center point to each skill tag
+    to.forEach((target, index) => {
+      const lineGeometry = new BufferGeometry();
+      const positions: number[] = [];
+      
+      // Start point (from)
+      positions.push(from[0], from[1], from[2]);
+      // End point (to)
+      positions.push(target[0], target[1], target[2]);
+      
+      lineGeometry.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3));
+      
+      const lineMaterial = new LineBasicMaterial({
+        color: colors[index],
+        transparent: true,
+        opacity: opacity,
+        linewidth: thickness, // Note: linewidth is not supported in WebGLRenderer, but we include it anyway
+        depthTest: false
+      });
+      
+      const line = new Line(lineGeometry, lineMaterial);
+      currentRef.add(line);
+    });
+  }, [from, to, colors, thickness, opacity]);
+
+  return <group ref={lineRef} />;
+}
+
 // Performance wrapper for scene
 function PerformanceScene({ children }: { children: React.ReactNode }) {
   usePerformanceSettings();
@@ -545,9 +608,11 @@ function PerformanceScene({ children }: { children: React.ReactNode }) {
 
 // Main hero scene
 export function HeroScene() {
+  const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  
   return (
     <Canvas 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} 
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'none' }} 
       dpr={[1, 1.5]}
       gl={{ 
         alpha: true, 
@@ -555,8 +620,12 @@ export function HeroScene() {
         powerPreference: 'low-power',
         logarithmicDepthBuffer: true
       }}
-      camera={{ position: [0, 0, 6], fov: 60 }}
+      camera={{ position: [0, 0, 7], fov: 60 }}
       performance={{ min: 0.5 }}
+      onCreated={({ gl }) => {
+        // Set gl.domElement.style.touchAction to allow scrolling
+        gl.domElement.style.touchAction = 'pan-y';
+      }}
     >
       <Suspense fallback={null}>
         <PerformanceScene>
@@ -575,6 +644,19 @@ export function HeroScene() {
           
           {/* Animated title */}
           <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#7C3AED" scale={1.2} />
+          
+          {/* Connection lines from Technologist to skills */}
+          <ConnectionLines 
+            from={[0, 1.8, 0]} 
+            to={[
+              [-3, -1.8, 1],   // XR
+              [-1.5, -1.8, 1],  // HCI
+              [0, -1.8, 1],     // UI/UX
+              [1.5, -1.8, 1],   // Robotics
+              [3, -1.8, 1]      // AI
+            ]}
+            colors={["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]}
+          />
           
           {/* Skill tags with cool effects */}
           <group position={[0, -1.8, 1]}>
@@ -596,6 +678,8 @@ export function HeroScene() {
             maxPolarAngle={Math.PI / 1.5}
             enableDamping
             dampingFactor={0.05}
+            // Disable touch control to allow page scrolling
+            enableRotate={!isMobileDevice}
           />
         </PerformanceScene>
       </Suspense>
@@ -605,18 +689,54 @@ export function HeroScene() {
 
 // Scene optimized for mobile
 export function MobileHeroScene() {
+  const [useStaticMode, setUseStaticMode] = useState(false);
+
+  // Check for low-end mobile devices
+  useEffect(() => {
+    // Detect low-end devices more aggressively
+    const isLowEnd = 
+      // Check for older devices or browsers
+      navigator.hardwareConcurrency <= 4 || 
+      // iOS Safari often has scrolling issues with 3D
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      // Check for Android
+      /Android/.test(navigator.userAgent);
+    
+    setUseStaticMode(isLowEnd);
+  }, []);
+  
+  // Simplified static render for very low-end devices
+  if (useStaticMode) {
+    return (
+      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-indigo-400 mb-6">Technologist</h2>
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">XR</span>
+            <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">AI</span>
+          </div>
+          <div className="opacity-40 text-sm text-gray-400">Static mode for better scrolling</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Canvas 
       style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} 
-      dpr={[1, 1.2]}
+      dpr={[0.6, 0.8]} // Further reduce DPR for better mobile performance
       gl={{ 
         alpha: true, 
         antialias: false, 
         powerPreference: 'low-power',
         logarithmicDepthBuffer: false
       }}
-      camera={{ position: [0, 0, 6], fov: 60 }}
-      performance={{ min: 0.3 }}
+      camera={{ position: [0, 0, 8], fov: 70 }} // Wider FOV and further back to see more
+      performance={{ min: 0.1 }} // Lower minimum performance threshold
+      onCreated={({ gl }) => {
+        // Set gl.domElement.style.touchAction to allow scrolling
+        gl.domElement.style.touchAction = 'pan-y';
+      }}
     >
       <Suspense fallback={null}>
         <PerformanceScene>
@@ -626,27 +746,40 @@ export function MobileHeroScene() {
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
           
-          {/* Simplified neural network for mobile */}
-          <NeuralNetwork count={60} connections={30} />
+          {/* Highly simplified neural network for mobile */}
+          <NeuralNetwork count={20} connections={10} />
           
-          {/* Animated title - simplified */}
-          <MorphingText text="Technologist" position={[0, 1.5, 0]} color="#7C3AED" />
+          {/* Animated title - optimized for mobile */}
+          <MorphingText text="Technologist" position={[0, 1.2, 0]} color="#7C3AED" scale={0.9} />
           
-          {/* Fewer skill tags for mobile */}
-          <group position={[0, -1.5, 1]}>
-            <SkillTag position={[-2, 0, 0]} skill="XR" color="#EF4444" delay={0.3} />
-            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.6} />
-            <SkillTag position={[2, 0, 0]} skill="AI" color="#8B5CF6" delay={0.9} />
+          {/* Connection lines - simplified for mobile */}
+          <ConnectionLines 
+            from={[0, 1.2, 0]} 
+            to={[
+              [-1.2, -1.2, 1],  // XR
+              [1.2, -1.2, 1]    // AI
+            ]}
+            colors={["#EF4444", "#8B5CF6"]}
+            thickness={0.8}
+            opacity={0.6}
+          />
+          
+          {/* Fewer skill tags positioned for mobile view */}
+          <group position={[0, -1.2, 1]}>
+            <SkillTag position={[-1.2, 0, 0]} skill="XR" color="#EF4444" delay={0.3} />
+            <SkillTag position={[1.2, 0, 0]} skill="AI" color="#8B5CF6" delay={0.9} />
           </group>
           
-          {/* Simplified camera controls */}
+          {/* Simplified camera controls with less autorotation speed and no touch rotation */}
           <OrbitControls
             enableZoom={false}
             enablePan={false}
             rotateSpeed={0.3}
             autoRotate
-            autoRotateSpeed={0.3}
+            autoRotateSpeed={0.2}
             enableDamping
+            // Disable touch control to allow page scrolling
+            enableRotate={false}
           />
         </PerformanceScene>
       </Suspense>
@@ -656,9 +789,83 @@ export function MobileHeroScene() {
 
 // Main component that decides which scene to render based on device
 export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
+  const [shouldRender, setShouldRender] = useState(true);
+  const [lowPerformanceMode, setLowPerformanceMode] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Add performance monitoring
+  useEffect(() => {
+    // Set initial state based on device
+    setLowPerformanceMode(isMobile);
+    
+    // Handle touch events for better scrolling
+    const preventTouchMove = (e: TouchEvent) => {
+      // Don't prevent default - allow scrolling
+      e.stopPropagation();
+    };
+    
+    if (containerRef.current && isMobile) {
+      containerRef.current.addEventListener('touchmove', preventTouchMove, { passive: true });
+    }
+    
+    let frameCount = 0;
+    let lastTime = performance.now();
+    let fps = 60;
+    
+    // Simple FPS tracker
+    const checkFPS = () => {
+      frameCount++;
+      const currentTime = performance.now();
+      
+      if (currentTime - lastTime >= 1000) {
+        fps = frameCount;
+        frameCount = 0;
+        lastTime = currentTime;
+        
+        // If FPS drops below threshold on mobile
+        if (isMobile && fps < 40) { // More aggressive threshold
+          if (!lowPerformanceMode) {
+            setLowPerformanceMode(true);
+          }
+          
+          // If extremely low FPS, disable rendering entirely
+          if (fps < 20) {
+            setShouldRender(false);
+          }
+        }
+      }
+      
+      requestAnimationFrame(checkFPS);
+    };
+    
+    // Start monitoring FPS
+    const animationId = requestAnimationFrame(checkFPS);
+    
+    return () => {
+      cancelAnimationFrame(animationId);
+      if (containerRef.current && isMobile) {
+        containerRef.current.removeEventListener('touchmove', preventTouchMove);
+      }
+    };
+  }, [isMobile]);
+  
   return (
-    <div className="relative w-full h-[70vh] min-h-[400px]">
-      {isMobile ? <MobileHeroScene /> : <HeroScene />}
+    <div
+      ref={containerRef}
+      className="relative w-full h-[50vh] md:h-[70vh] min-h-[250px] md:min-h-[400px]"
+      style={{ 
+        touchAction: 'pan-y',  // Allow vertical scrolling
+        overscrollBehavior: 'none', // Prevent overscroll effects
+        userSelect: 'none'      // Prevent text selection during scroll
+      }}
+    >
+      {shouldRender ? (
+        isMobile || lowPerformanceMode ? <MobileHeroScene /> : <HeroScene />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center bg-black/80">
+          <p className="text-white/70">Interactive 3D elements simplified for better scrolling.</p>
+        </div>
+      )}
     </div>
   );
 } 
