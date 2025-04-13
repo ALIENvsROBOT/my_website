@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import SEOStructuredData from '@/components/SEOStructuredData';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.gowthamsridhar.com/images/og-image.jpg',
+        url: 'https://www.gowthamsridhar.com/images/gowtham-profile.jpg',
         width: 1200,
         height: 630,
         alt: 'Gowtham Sridhar Portfolio',
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     title: 'Gowtham Sridhar | HCI Researcher & XR Expert',
     description: 'Specializing in Human-Computer Interaction, XR Applications, and UI/UX Design to create seamless technological interfaces.',
     creator: '@gowtham_sridhar',
-    images: ['https://www.gowthamsridhar.com/images/og-image.jpg'],
+    images: ['https://www.gowthamsridhar.com/images/gowtham-profile.jpg'],
   },
   icons: {
     icon: '/favicon.ico',
@@ -80,6 +81,22 @@ export default function RootLayout({
           rel="stylesheet" 
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <SEOStructuredData 
+          name="Gowtham Sridhar"
+          jobTitle="HCI Researcher & XR Expert"
+          worksFor="AIT"
+          worksForUrl="https://www.ait.ac.at/"
+          educationalCredentials="Human-Computer Interaction"
+          description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, and UI/UX Design."
+          image="https://www.gowthamsridhar.com/images/gowtham-profile.jpg"
+          sameAs={[
+            "https://www.linkedin.com/in/gowtham-sridhar/",
+            "https://github.com/gowtham-sridhar",
+            "https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID"
+          ]}
+          mainEntityOfPage="https://www.gowthamsridhar.com"
+          url="https://www.gowthamsridhar.com"
+        />
         <script 
           dangerouslySetInnerHTML={{
             __html: `
