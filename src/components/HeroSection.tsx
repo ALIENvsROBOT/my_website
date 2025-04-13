@@ -96,16 +96,16 @@ function StaticAvatar() {
       
       {/* Use conditional rendering based on error state */}
       {imageError ? (
-        <div className="relative z-10 w-[300px] h-[300px] rounded-xl bg-gradient-to-br from-secondary/30 to-purple-500/30 flex items-center justify-center">
+        <div className="relative z-10 w-[350px] h-[350px] rounded-xl bg-gradient-to-br from-secondary/30 to-purple-500/30 flex items-center justify-center">
           <span className="text-lightText font-bold text-2xl">GS</span>
         </div>
       ) : (
         <PlaceholderImage
           src={publicPath("/images/profile.jpg")}
           alt="Gowtham Sridhar"
-          width="400"
-          height="400"
-          className="rounded-xl shadow-lg relative z-10 object-cover max-w-[300px]"
+          width="500"
+          height="500"
+          className="rounded-xl shadow-lg relative z-10 object-cover max-w-[350px]"
           fallbackType="abstract"
           onError={() => setImageError(true)}
         />

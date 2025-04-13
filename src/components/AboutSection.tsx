@@ -139,9 +139,19 @@ const AboutSection = () => {
   // Check URL hash to set active tab when section loads or hash changes
   useEffect(() => {
     const checkHash = () => {
-      // If the hash contains tab=experience, activate the experience tab
-      if (window.location.hash.includes('tab=experience')) {
-        setActiveTab('experience');
+      // Extract tab parameter from the hash if present
+      const hash = window.location.hash;
+      if (hash.includes('?tab=')) {
+        const tabParam = hash.split('?tab=')[1];
+        // Activate the tab based on the parameter
+        if (tabParam === 'experience' || tabParam === 'education' || tabParam === 'about') {
+          console.log('Setting active tab to:', tabParam);
+          setActiveTab(tabParam);
+        }
+      } else if (hash === '#about') {
+        // When the hash is exactly '#about' (Profile link), set to the 'about' tab
+        console.log('Setting active tab to: about (Profile)');
+        setActiveTab('about');
       }
     };
     
@@ -155,6 +165,17 @@ const AboutSection = () => {
       window.removeEventListener('hashchange', checkHash);
     };
   }, []);
+
+  // Update URL when tabs are clicked directly
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+    // Update URL without scrolling
+    if (tab === 'about') {
+      window.history.pushState(null, '', '#about');
+    } else {
+      window.history.pushState(null, '', `#about?tab=${tab}`);
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -200,19 +221,19 @@ const AboutSection = () => {
           <div className="glass-effect p-1 rounded-full inline-flex">
             <button 
               className={`px-4 py-2 rounded-full text-sm ${activeTab === 'about' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
-              onClick={() => setActiveTab('about')}
+              onClick={() => handleTabClick('about')}
             >
               About
             </button>
             <button 
               className={`px-4 py-2 rounded-full text-sm ${activeTab === 'experience' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
-              onClick={() => setActiveTab('experience')}
+              onClick={() => handleTabClick('experience')}
             >
               Experience
             </button>
             <button 
               className={`px-4 py-2 rounded-full text-sm ${activeTab === 'education' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
-              onClick={() => setActiveTab('education')}
+              onClick={() => handleTabClick('education')}
             >
               Education
             </button>

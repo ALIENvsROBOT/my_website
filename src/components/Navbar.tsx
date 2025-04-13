@@ -6,9 +6,16 @@ import { motion } from 'framer-motion';
 
 const navLinks = [
   { href: '#home', label: 'Home' },
-  { href: '#about', label: 'About' },
+  { 
+    href: '#about', 
+    label: 'About', 
+    subLinks: [
+      { href: '#about', label: 'Profile' },
+      { href: '#about?tab=experience', label: 'Experience' },
+      { href: '#about?tab=education', label: 'Education' }
+    ]
+  },
   { href: '#projects', label: 'Projects' },
-  { href: '#about', label: 'Experience' },
   { href: '#contact', label: 'Contact' },
 ];
 
@@ -17,6 +24,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [customCursorEnabled, setCustomCursorEnabled] = useState(true);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     // Check localStorage for cursor preference
@@ -27,14 +35,21 @@ const Navbar = () => {
       setIsScrolled(window.scrollY > 50);
       
       // Determine which section is currently in view
-      const sections = navLinks.map(link => link.href.substring(1));
+      // Extract all section ids (including main sections and tabs)
+      const sections = navLinks.flatMap(link => 
+        link.subLinks 
+          ? [link.href.substring(1), ...link.subLinks.map(sub => sub.href.substring(1))]
+          : [link.href.substring(1)]
+      );
       
       // Find the lowest position (closest to the top of the viewport) section that's visible
       let currentSection = 'home';
       let minDistance = Infinity;
       
       sections.forEach(section => {
-        const element = document.getElementById(section);
+        // For sections with query params (like #about?tab=experience), just get the base section
+        const baseSection = section.split('?')[0];
+        const element = document.getElementById(baseSection);
         if (element) {
           const rect = element.getBoundingClientRect();
           // Consider a section in view if its top is within 150px of the top of the viewport
@@ -47,7 +62,14 @@ const Navbar = () => {
         }
       });
       
+      // Check if we need to update the current tab/section
+      const urlHash = window.location.hash;
+      if (urlHash.includes('?tab=')) {
+        // If URL has a tab parameter, use that to set active section
+        setActiveSection(urlHash.slice(1)); // Remove the # character
+      } else {
       setActiveSection(currentSection);
+      }
     };
     
     window.addEventListener('scroll', handleScroll);
@@ -63,14 +85,24 @@ const Navbar = () => {
       e.preventDefault();
       let targetId = href.substring(1);
       
-      // Special case for Experience link
-      if (href === '#about' && e.currentTarget.textContent === 'Experience') {
-        // Set a custom hash that includes 'experience' to trigger the Experience tab
-        window.history.pushState(null, '', '#about?tab=experience');
-        targetId = 'about';
+      // Handle any tab parameter in the URL
+      if (href.includes('?tab=')) {
+        // Set the URL hash with the tab parameter to trigger the right tab
+        window.history.pushState(null, '', href);
+        // Extract the base section ID (part before the ?)
+        targetId = href.substring(1).split('?')[0];
+        
+        // Trigger a hashchange event to ensure components listening for hash changes respond
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
       } else {
         // Update URL hash without scrolling
         window.history.pushState(null, '', href);
+        
+        // Special handling for #about (Profile) to ensure it switches to the about tab
+        if (href === '#about') {
+          // Trigger a hashchange event to ensure the About component reacts
+          window.dispatchEvent(new HashChangeEvent('hashchange'));
+        }
       }
       
       const element = document.getElementById(targetId);
@@ -82,11 +114,12 @@ const Navbar = () => {
           behavior: 'smooth'
         });
         
-        // Set active section manually to avoid flicker
-        setActiveSection(targetId);
+        // Set active section to the full href (including any tab parameter)
+        setActiveSection(href.substring(1));
       }
-      // Close the mobile menu if it's open
+      // Close the mobile menu and dropdown if they're open
       setIsMenuOpen(false);
+      setOpenDropdown(null);
     }
   };
 
@@ -96,6 +129,14 @@ const Navbar = () => {
     localStorage.setItem('custom-cursor-disabled', (!newState).toString());
     // Force reload to apply changes
     window.location.reload();
+  };
+
+  const toggleDropdown = (href: string) => {
+    if (openDropdown === href) {
+      setOpenDropdown(null);
+    } else {
+      setOpenDropdown(href);
+    }
   };
 
   return (
@@ -123,11 +164,78 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
+            {navLinks.map((link) => {
+              return (
+                <div key={link.href} className="relative group">
+                  {link.subLinks ? (
+                    <>
+                      {openDropdown === link.href ? (
+                        <button
+                          className={`relative text-lightText/90 hover:text-lightText text-sm font-medium transition-colors duration-300 flex items-center gap-1 ${
+                            activeSection.startsWith(link.href.substring(1)) ? 'text-lightText' : 'text-lightText/70'
+                          }`}
+                          onClick={() => toggleDropdown(link.href)}
+                          aria-expanded="true"
+                          aria-haspopup="menu"
+                        >
+                          {link.label}
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                          <motion.span
+                            className={`absolute -bottom-1 left-0 h-0.5 bg-secondary transition-all duration-300 ${
+                              activeSection.startsWith(link.href.substring(1)) ? 'w-full' : 'w-0'
+                            }`}
+                            animate={{ width: activeSection.startsWith(link.href.substring(1)) ? '100%' : '0%' }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        </button>
+                      ) : (
+                        <button
+                          className={`relative text-lightText/90 hover:text-lightText text-sm font-medium transition-colors duration-300 flex items-center gap-1 ${
+                            activeSection.startsWith(link.href.substring(1)) ? 'text-lightText' : 'text-lightText/70'
+                          }`}
+                          onClick={() => toggleDropdown(link.href)}
+                          aria-expanded="false"
+                          aria-haspopup="menu"
+                        >
+                          {link.label}
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                          <motion.span
+                            className={`absolute -bottom-1 left-0 h-0.5 bg-secondary transition-all duration-300 ${
+                              activeSection.startsWith(link.href.substring(1)) ? 'w-full' : 'w-0'
+                            }`}
+                            animate={{ width: activeSection.startsWith(link.href.substring(1)) ? '100%' : '0%' }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        </button>
+                      )}
+                      
+                      {openDropdown === link.href && (
+                        <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg glass-effect overflow-hidden z-10">
+                          <div className="py-1">
+                            {link.subLinks.map((subLink) => (
+                              <a
+                                key={subLink.href}
+                                href={subLink.href}
+                                className={`block px-4 py-2 text-sm text-lightText/90 hover:bg-secondary/10 ${
+                                  activeSection === subLink.href.substring(1) ? 'bg-secondary/10' : ''
+                                }`}
+                                onClick={(e) => handleNavClick(e, subLink.href)}
+                              >
+                                {subLink.label}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <a
                 href={link.href}
-                className={`relative text-lightText/90 hover:text-lightText text-sm font-medium transition-colors duration-300 group ${
+                      className={`relative text-lightText/90 hover:text-lightText text-sm font-medium transition-colors duration-300 ${
                   activeSection === link.href.substring(1) ? 'text-lightText' : 'text-lightText/70'
                 }`}
                 onClick={(e) => handleNavClick(e, link.href)}
@@ -142,9 +250,12 @@ const Navbar = () => {
                   transition={{ duration: 0.3 }}
                 />
               </a>
-            ))}
+                  )}
+                </div>
+              );
+            })}
             <a
-              href="/Gowtham_Sridhar_CV.pdf"
+              href="https://drive.google.com/file/d/1ztgsTwIDreJ4ABvrDL8VsZEGR5EWF_4c/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-full bg-secondary hover:bg-highlight text-white text-sm font-medium transition-colors duration-300 flex items-center gap-1"
@@ -225,9 +336,58 @@ const Navbar = () => {
           transition={{ duration: 0.3 }}
         >
           <nav className="flex flex-col space-y-3 p-6">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
+            {navLinks.map((link) => {
+              return (
+                <div key={link.href} className="flex flex-col">
+                  {link.subLinks ? (
+                    <>
+                      {openDropdown === link.href ? (
+                        <button
+                          className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2 transition-colors duration-300 flex items-center justify-between ${
+                            activeSection.startsWith(link.href.substring(1)) ? 'text-lightText font-semibold' : 'text-lightText/70'
+                          }`}
+                          onClick={() => toggleDropdown(link.href)}
+                          aria-expanded="true"
+                        >
+                          <span>{link.label}</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-transform rotate-180`} viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                      ) : (
+                        <button
+                          className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2 transition-colors duration-300 flex items-center justify-between ${
+                            activeSection.startsWith(link.href.substring(1)) ? 'text-lightText font-semibold' : 'text-lightText/70'
+                          }`}
+                          onClick={() => toggleDropdown(link.href)}
+                          aria-expanded="false"
+                        >
+                          <span>{link.label}</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-transform`} viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                      )}
+                      
+                      {openDropdown === link.href && (
+                        <div className="ml-4 mt-1 border-l-2 border-secondary/30 pl-4 flex flex-col space-y-2">
+                          {link.subLinks.map((subLink) => (
+                            <a
+                              key={subLink.href}
+                              href={subLink.href}
+                              className={`text-lightText/90 hover:text-lightText text-base py-1 transition-colors duration-300 ${
+                                activeSection === subLink.href.substring(1) ? 'text-lightText font-medium' : 'text-lightText/70'
+                              }`}
+                              onClick={(e) => handleNavClick(e, subLink.href)}
+                            >
+                              {subLink.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <a
                 href={link.href}
                 className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2 transition-colors duration-300 ${
                   activeSection === link.href.substring(1) ? 'text-lightText font-semibold' : 'text-lightText/70'
@@ -240,9 +400,12 @@ const Navbar = () => {
                   <span className="ml-2 inline-block w-1 h-1 rounded-full bg-secondary"></span>
                 )}
               </a>
-            ))}
+                  )}
+                </div>
+              );
+            })}
             <a
-              href="/Gowtham_Sridhar_CV.pdf"
+              href="https://drive.google.com/file/d/1ztgsTwIDreJ4ABvrDL8VsZEGR5EWF_4c/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-2 px-4 py-2 rounded-full bg-secondary hover:bg-highlight text-white text-sm font-medium transition-colors duration-300 flex items-center gap-1 w-fit"

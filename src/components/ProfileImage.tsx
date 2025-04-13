@@ -43,8 +43,8 @@ const ProfileImage = () => {
             <Image
               src="/images/profile.jpg"
               alt="Gowtham Sridhar"
-              width={140}
-              height={140}
+              width={300}
+              height={300}
               className={`object-cover w-full h-full transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
               onLoad={() => setIsLoaded(true)}
               onError={() => setError(true)}
