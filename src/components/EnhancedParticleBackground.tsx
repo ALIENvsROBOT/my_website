@@ -3,10 +3,11 @@ import { useCallback } from 'react';
 import Particles from 'react-tsparticles';
 import { loadSlim } from 'tsparticles-slim';
 import { motion } from 'framer-motion';
+import { Engine, ISourceOptions } from 'tsparticles-engine';
 
 const EnhancedParticleBackground = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const particlesInit = useCallback(async (engine) => {
+  const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
   }, []);
 
@@ -26,9 +27,9 @@ const EnhancedParticleBackground = () => {
   }, []);
   
   // Dynamic options based on device capabilities
-  const getParticleOptions = () => {
+  const getParticleOptions = (): ISourceOptions => {
     // Base configuration
-    const baseConfig = {
+    const baseConfig: ISourceOptions = {
       particles: {
         number: {
           value: isMobile ? 15 : 50,
@@ -77,10 +78,10 @@ const EnhancedParticleBackground = () => {
         move: {
           enable: true,
           speed: isMobile ? 0.5 : 1,
-          direction: "none",
+          direction: "none" as const,
           random: true,
           straight: false,
-          out_mode: "out",
+          out_mode: "out" as const,
           bounce: false,
           attract: {
             enable: true,
@@ -90,15 +91,15 @@ const EnhancedParticleBackground = () => {
         }
       },
       interactivity: {
-        detect_on: "canvas",
+        detect_on: "canvas" as const,
         events: {
           onhover: {
             enable: !isMobile,
-            mode: "grab"
+            mode: "grab" as const
           },
           onclick: {
             enable: !isMobile,
-            mode: "push"
+            mode: "push" as const
           },
           resize: true
         },
