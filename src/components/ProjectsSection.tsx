@@ -33,7 +33,7 @@ const projects = [
     image: '/Project_images/EnthusiastiCan.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=EnthusiastiCan',
     technologies: ['Computer Vision', 'IoT', 'Gamification'],
-    link: 'https://www.linkedin.com/posts/gowtham-sridher_technology-computervision-hciactivity-7067467022225334272-4oqj',
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_technology-computervision-hci-activity-7067467022225334272-4oqj?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE',
   },
   {
     id: 4,
@@ -52,7 +52,7 @@ const projects = [
     image: '/Project_images/multi_robot.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Mobile+Robot',
     technologies: ['Robotics', 'Computer Vision', 'Machine Learning'],
-    link: 'https://www.linkedin.com/posts/gowtham-sridher_machinelearning-robotics-deeplearningactivity-6705461583381979137-3c-O',
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_tag-or-sign-navigation-robot-inspired-activity-6705461583381979137-AoLT?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE',
   },
   {
     id: 6,
