@@ -629,8 +629,6 @@ export function HeroScene() {
     >
       <Suspense fallback={null}>
         <PerformanceScene>
-          <color attach="background" args={["#000000"]} />
-          
           {/* Add ambient and directional lighting */}
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
@@ -706,7 +704,7 @@ export function MobileHeroScene() {
   // Static render only for extremely low-end devices
   if (useStaticMode) {
     return (
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black">
+      <div className="absolute inset-0 flex flex-col items-center justify-center bg-transparent">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-indigo-400 mb-6">Technologist</h2>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -742,8 +740,6 @@ export function MobileHeroScene() {
     >
       <Suspense fallback={null}>
         <PerformanceScene>
-          <color attach="background" args={["#000000"]} />
-          
           {/* Match desktop lighting setup */}
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
@@ -904,7 +900,7 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
       {shouldRender ? (
         (isMobile && lowPerformanceMode) ? <MobileHeroScene /> : <HeroScene />
       ) : (
-        <div className="w-full h-full flex items-center justify-center bg-black/80">
+        <div className="w-full h-full flex items-center justify-center bg-transparent">
           <p className="text-white/70">Interactive 3D elements simplified for better performance.</p>
         </div>
       )}
