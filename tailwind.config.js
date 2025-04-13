@@ -17,9 +17,9 @@ module.exports = {
         darkBg: '#030712',
         darkBgLight: '#111827',
         primary: '#6366F1',  // Indigo-500
-        secondary: '#8B5CF6', // Violet-500
+        secondary: '#6D28D9', // Changed from #8B5CF6 (Violet-500) to #6D28D9 (Violet-700) for better contrast
         tertiary: '#4F46E5',  // Indigo-600
-        highlight: '#7C3AED', // Violet-600
+        highlight: '#5B21B6', // Changed from #7C3AED (Violet-600) to #5B21B6 (Violet-800) for better contrast
         lightText: '#F3F4F6', // Gray-100
         darkText: '#1F2937',  // Gray-800
       },
