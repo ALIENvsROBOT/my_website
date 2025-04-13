@@ -687,25 +687,23 @@ export function HeroScene() {
   );
 }
 
-// Scene optimized for mobile
+// Scene optimized for mobile with better visual quality
 export function MobileHeroScene() {
   const [useStaticMode, setUseStaticMode] = useState(false);
 
-  // Check for low-end mobile devices
+  // Check for extremely low-end mobile devices only, not all mobile devices
   useEffect(() => {
-    // Detect low-end devices more aggressively
-    const isLowEnd = 
-      // Check for older devices or browsers
-      navigator.hardwareConcurrency <= 4 || 
-      // iOS Safari often has scrolling issues with 3D
-      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      // Check for Android
-      /Android/.test(navigator.userAgent);
+    // Only detect very low-end devices
+    const isExtremelyLowEnd = 
+      // Only target devices with very limited hardware
+      (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 2) || 
+      // Check for very old browsers
+      /MSIE|Trident/.test(navigator.userAgent);
     
-    setUseStaticMode(isLowEnd);
+    setUseStaticMode(isExtremelyLowEnd);
   }, []);
   
-  // Simplified static render for very low-end devices
+  // Static render only for extremely low-end devices
   if (useStaticMode) {
     return (
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black">
@@ -713,28 +711,31 @@ export function MobileHeroScene() {
           <h2 className="text-2xl font-bold text-indigo-400 mb-6">Technologist</h2>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">XR</span>
+            <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">HCI</span>
+            <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-500/30">UI/UX</span>
+            <span className="px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30">Robotics</span>
             <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">AI</span>
           </div>
-          <div className="opacity-40 text-sm text-gray-400">Static mode for better scrolling</div>
+          <div className="opacity-40 text-sm text-gray-400">Static mode for older devices</div>
         </div>
       </div>
     );
   }
 
+  // Higher quality mobile scene that more closely matches desktop
   return (
     <Canvas 
       style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} 
-      dpr={[0.6, 0.8]} // Further reduce DPR for better mobile performance
+      dpr={[0.8, 1.2]} // Better DPR for modern mobile devices
       gl={{ 
         alpha: true, 
-        antialias: false, 
-        powerPreference: 'low-power',
-        logarithmicDepthBuffer: false
+        antialias: true, // Enable antialiasing for better quality
+        powerPreference: 'default', // Use default instead of low-power for better quality
+        logarithmicDepthBuffer: true
       }}
-      camera={{ position: [0, 0, 8], fov: 70 }} // Wider FOV and further back to see more
-      performance={{ min: 0.1 }} // Lower minimum performance threshold
+      camera={{ position: [0, 0, 7], fov: 65 }} // Match desktop FOV more closely
+      performance={{ min: 0.3 }} // Higher minimum performance threshold for better quality
       onCreated={({ gl }) => {
-        // Set gl.domElement.style.touchAction to allow scrolling
         gl.domElement.style.touchAction = 'pan-y';
       }}
     >
@@ -742,44 +743,60 @@ export function MobileHeroScene() {
         <PerformanceScene>
           <color attach="background" args={["#000000"]} />
           
-          {/* Add ambient and directional lighting */}
+          {/* Match desktop lighting setup */}
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
+          <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#6366F1" />
           
-          {/* Highly simplified neural network for mobile */}
-          <NeuralNetwork count={20} connections={10} />
+          {/* Neural network - more nodes than before, less than desktop */}
+          <NeuralNetwork count={80} connections={40} />
           
-          {/* Animated title - optimized for mobile */}
-          <MorphingText text="Technologist" position={[0, 1.2, 0]} color="#7C3AED" scale={0.9} />
+          {/* Interactive particle swarm - like desktop */}
+          <ParticleSwarm />
           
-          {/* Connection lines - simplified for mobile */}
+          {/* Animated title - same as desktop */}
+          <MorphingText text="Technologist" position={[0, 1.5, 0]} color="#7C3AED" scale={1.1} />
+          
+          {/* Connection lines - more like desktop */}
           <ConnectionLines 
-            from={[0, 1.2, 0]} 
+            from={[0, 1.5, 0]} 
             to={[
-              [-1.2, -1.2, 1],  // XR
-              [1.2, -1.2, 1]    // AI
+              [-2.5, -1.5, 1],  // XR
+              [-1.25, -1.5, 1], // HCI
+              [0, -1.5, 1],     // UI/UX
+              [1.25, -1.5, 1],  // Robotics
+              [2.5, -1.5, 1]    // AI
             ]}
-            colors={["#EF4444", "#8B5CF6"]}
+            colors={["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]}
             thickness={0.8}
-            opacity={0.6}
+            opacity={0.8}
           />
           
-          {/* Fewer skill tags positioned for mobile view */}
-          <group position={[0, -1.2, 1]}>
-            <SkillTag position={[-1.2, 0, 0]} skill="XR" color="#EF4444" delay={0.3} />
-            <SkillTag position={[1.2, 0, 0]} skill="AI" color="#8B5CF6" delay={0.9} />
+          {/* More skill tags positioned for mobile view - same as desktop */}
+          <group position={[0, -1.5, 1]}>
+            <SkillTag position={[-2.5, 0, 0]} skill="XR" color="#EF4444" delay={0.3} />
+            <SkillTag position={[-1.25, 0, 0]} skill="HCI" color="#3B82F6" delay={0.5} />
+            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.7} />
+            <SkillTag position={[1.25, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
+            <SkillTag position={[2.5, 0, 0]} skill="AI" color="#8B5CF6" delay={0.6} />
           </group>
           
-          {/* Simplified camera controls with less autorotation speed and no touch rotation */}
+          {/* Improved camera controls for mobile */}
           <OrbitControls
             enableZoom={false}
             enablePan={false}
-            rotateSpeed={0.3}
+            rotateSpeed={0.4}
             autoRotate
-            autoRotateSpeed={0.2}
+            autoRotateSpeed={0.5}
+            minPolarAngle={Math.PI / 3}
+            maxPolarAngle={Math.PI / 1.5}
             enableDamping
-            // Disable touch control to allow page scrolling
-            enableRotate={false}
+            dampingFactor={0.05}
+            // Enable rotation on mobile for tablets in landscape mode
+            enableRotate={true} 
+            // But limit rotation sensitivity
+            minDistance={7}
+            maxDistance={7}
           />
         </PerformanceScene>
       </Suspense>
@@ -791,12 +808,29 @@ export function MobileHeroScene() {
 export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
   const [shouldRender, setShouldRender] = useState(true);
   const [lowPerformanceMode, setLowPerformanceMode] = useState(false);
+  const [isPortrait, setIsPortrait] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Add performance monitoring
+  // Add orientation and performance monitoring
   useEffect(() => {
-    // Set initial state based on device
-    setLowPerformanceMode(isMobile);
+    // Check orientation
+    const checkOrientation = () => {
+      setIsPortrait(window.innerHeight > window.innerWidth);
+    };
+    
+    // Initial orientation check
+    checkOrientation();
+    
+    // Listen for orientation changes
+    window.addEventListener('resize', checkOrientation);
+    
+    // Set initial performance mode, but don't assume all mobile is low performance
+    setLowPerformanceMode(isMobile && (
+      // Only set low performance for older devices
+      (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 3) ||
+      // Or very small screen devices
+      window.innerWidth < 375
+    ));
     
     // Handle touch events for better scrolling
     const preventTouchMove = (e: TouchEvent) => {
@@ -811,8 +845,9 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
     let frameCount = 0;
     let lastTime = performance.now();
     let fps = 60;
+    let fpsHistory: number[] = [];
     
-    // Simple FPS tracker
+    // More sophisticated FPS tracker
     const checkFPS = () => {
       frameCount++;
       const currentTime = performance.now();
@@ -822,20 +857,30 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
         frameCount = 0;
         lastTime = currentTime;
         
-        // If FPS drops below threshold on mobile
-        if (isMobile && fps < 40) { // More aggressive threshold
-          if (!lowPerformanceMode) {
-            setLowPerformanceMode(true);
-          }
-          
-          // If extremely low FPS, disable rendering entirely
-          if (fps < 20) {
-            setShouldRender(false);
-          }
+        // Keep a short history of FPS to avoid reacting to temporary drops
+        fpsHistory.push(fps);
+        if (fpsHistory.length > 5) fpsHistory.shift();
+        
+        // Calculate average FPS
+        const avgFps = fpsHistory.reduce((sum, val) => sum + val, 0) / fpsHistory.length;
+        
+        // Only switch modes if consistently under threshold
+        if (avgFps < 25 && !lowPerformanceMode) {
+          setLowPerformanceMode(true);
+        } else if (avgFps > 40 && lowPerformanceMode) {
+          // Switch back if performance improves
+          setLowPerformanceMode(false);
+        }
+        
+        // Only disable rendering entirely in extreme cases
+        if (avgFps < 15 && fpsHistory.length >= 3) {
+          setShouldRender(false);
         }
       }
       
-      requestAnimationFrame(checkFPS);
+      if (shouldRender) {
+        requestAnimationFrame(checkFPS);
+      }
     };
     
     // Start monitoring FPS
@@ -843,27 +888,28 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
     
     return () => {
       cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', checkOrientation);
       if (containerRef.current && isMobile) {
         containerRef.current.removeEventListener('touchmove', preventTouchMove);
       }
     };
-  }, [isMobile]);
+  }, [isMobile, shouldRender, lowPerformanceMode]);
   
   return (
     <div
       ref={containerRef}
       className="relative w-full h-[50vh] md:h-[70vh] min-h-[250px] md:min-h-[400px]"
       style={{ 
-        touchAction: 'pan-y',  // Allow vertical scrolling
-        overscrollBehavior: 'none', // Prevent overscroll effects
-        userSelect: 'none'      // Prevent text selection during scroll
+        touchAction: 'pan-y',
+        overscrollBehavior: 'none',
+        userSelect: 'none'
       }}
     >
       {shouldRender ? (
-        isMobile || lowPerformanceMode ? <MobileHeroScene /> : <HeroScene />
+        (isMobile && lowPerformanceMode) ? <MobileHeroScene /> : <HeroScene />
       ) : (
         <div className="w-full h-full flex items-center justify-center bg-black/80">
-          <p className="text-white/70">Interactive 3D elements simplified for better scrolling.</p>
+          <p className="text-white/70">Interactive 3D elements simplified for better performance.</p>
         </div>
       )}
     </div>
