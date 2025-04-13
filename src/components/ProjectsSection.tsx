@@ -122,6 +122,9 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           height={600}
           className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
           onError={() => setImageError(true)}
+          quality={95}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={index < 3}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-darkBg via-darkBg/50 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
         
