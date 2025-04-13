@@ -12,17 +12,13 @@ const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
   swcMinify: true,
+  // Add runtime config for browser detection
+  runtime: 'nodejs',
   experimental: {
     // Disable optimizeCss to avoid potential issues with asset loading
     optimizeCss: false,
-  },
-  // Disable server components for static export
-  compiler: {
-    styledComponents: true,
-  },
-  // Add environment variable to indicate we're building for static output
-  env: {
-    NEXT_PUBLIC_IS_STATIC_EXPORT: 'true',
+    // Skip server components entirely for static export
+    serverComponents: false
   },
 }
 

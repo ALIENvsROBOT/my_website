@@ -2,18 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { isBrowser } from '@/utils/clientUtils';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isPointerDevice, setIsPointerDevice] = useState(false);
+  const [isPointerDevice, setIsPointerDevice] = useState(true);
   const [isEnabled, setIsEnabled] = useState(true);
 
   useEffect(() => {
-    if (!isBrowser) return;
-    
     // Check if device supports fine pointer (mouse)
     const mediaQuery = window.matchMedia('(pointer: fine)');
     setIsPointerDevice(mediaQuery.matches);
@@ -22,15 +19,10 @@ const CustomCursor = () => {
     if (!mediaQuery.matches) return;
 
     // Check if the user has disabled custom cursor in localStorage
-    try {
-      const cursorPreference = localStorage.getItem('custom-cursor-disabled');
-      if (cursorPreference === 'true') {
-        setIsEnabled(false);
-        return;
-      }
-    } catch (e) {
-      // Handle localStorage not being available
-      console.error('Error accessing localStorage:', e);
+    const cursorPreference = localStorage.getItem('custom-cursor-disabled');
+    if (cursorPreference === 'true') {
+      setIsEnabled(false);
+      return;
     }
 
     const updateCursorPosition = (e: MouseEvent) => {
