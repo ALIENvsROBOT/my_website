@@ -130,7 +130,7 @@ export default function RootLayout({
                 navigator.userAgent.match(/iPhone/i) ||
                 navigator.userAgent.match(/iPad/i);
               
-              if (isMobile) {
+              if (isMobile && document.body) {
                 document.body.classList.add('mobile-optimized');
                 
                 // Disable some expensive animations for better performance
@@ -150,13 +150,20 @@ export default function RootLayout({
                     el.style.backgroundColor = 'rgba(5, 7, 22, 0.95)';
                   });
                 });
+              } else if (isMobile) {
+                // If body isn't ready yet, wait for DOMContentLoaded
+                document.addEventListener('DOMContentLoaded', () => {
+                  if (document.body) {
+                    document.body.classList.add('mobile-optimized');
+                  }
+                });
               }
               
               // Add resize listener to adjust performance settings when screen size changes
               window.addEventListener('resize', () => {
-                if (window.innerWidth < 768) {
+                if (window.innerWidth < 768 && document.body) {
                   document.body.classList.add('mobile-optimized');
-                } else {
+                } else if (document.body) {
                   document.body.classList.remove('mobile-optimized');
                 }
               });
