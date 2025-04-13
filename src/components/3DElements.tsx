@@ -678,6 +678,8 @@ export function HeroScene() {
             dampingFactor={0.05}
             // Disable touch control to allow page scrolling
             enableRotate={!isMobileDevice}
+            // Ensure touch events don't block scrolling
+            domElement={document.documentElement}
           />
         </PerformanceScene>
       </Suspense>
@@ -789,6 +791,8 @@ export function MobileHeroScene() {
             dampingFactor={0.05}
             // Disable touch rotation to allow scrolling
             enableRotate={false}
+            // Ensure touch events don't block scrolling
+            domElement={document.documentElement}
           />
         </PerformanceScene>
       </Suspense>
@@ -824,10 +828,11 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
       /MSIE|Trident/.test(navigator.userAgent)
     ));
     
-    // Disable all 3D touch interactions to improve scrolling
+    // Disable horizontal touch interactions but allow vertical scrolling
     const preventTouchMove = (e: TouchEvent) => {
-      // Allow default scrolling behavior
-      e.stopPropagation();
+      // Don't stop propagation - this prevents scrolling
+      // Instead, add a passive listener that doesn't interfere with scrolling
+      // No action needed here, the passive listener combined with touchAction: 'pan-y' will allow scrolling
     };
     
     if (containerRef.current && isMobile) {
