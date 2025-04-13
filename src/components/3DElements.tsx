@@ -170,7 +170,7 @@ function PerformanceScene({ children }: { children: React.ReactNode }) {
 export function HeroScene() {
   return (
     <Canvas 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} 
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', cursor: 'auto' }} 
       dpr={[1, 1.5]}
       gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}
       camera={{ position: [0, 0, 5], fov: 60 }}
@@ -214,7 +214,7 @@ export function HeroScene() {
 export function MobileHeroScene() {
   return (
     <Canvas 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} 
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', cursor: 'auto' }} 
       dpr={[1, 1.2]}
       gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}
       camera={{ position: [0, 0, 5], fov: 60 }}
