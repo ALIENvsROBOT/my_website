@@ -1,0 +1,70 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g opacity="0.1">
+    <path d="M20 20H60V60H20V20Z" stroke="#6366F1" stroke-width="0.5" />
+    <path d="M80 20H180V60H80V20Z" stroke="#6366F1" stroke-width="0.5" />
+    <path d="M20 80H60V180H20V80Z" stroke="#6366F1" stroke-width="0.5" />
+    <path d="M80 80H180V180H80V80Z" stroke="#6366F1" stroke-width="0.5" />
+    
+    <circle cx="20" cy="20" r="3" fill="#6366F1" />
+    <circle cx="60" cy="20" r="3" fill="#6366F1" />
+    <circle cx="80" cy="20" r="3" fill="#6366F1" />
+    <circle cx="180" cy="20" r="3" fill="#6366F1" />
+    <circle cx="20" cy="60" r="3" fill="#6366F1" />
+    <circle cx="60" cy="60" r="3" fill="#6366F1" />
+    <circle cx="80" cy="60" r="3" fill="#6366F1" />
+    <circle cx="180" cy="60" r="3" fill="#6366F1" />
+    <circle cx="20" cy="80" r="3" fill="#6366F1" />
+    <circle cx="60" cy="80" r="3" fill="#6366F1" />
+    <circle cx="80" cy="80" r="3" fill="#6366F1" />
+    <circle cx="180" cy="80" r="3" fill="#6366F1" />
+    <circle cx="20" cy="180" r="3" fill="#6366F1" />
+    <circle cx="60" cy="180" r="3" fill="#6366F1" />
+    <circle cx="80" cy="180" r="3" fill="#6366F1" />
+    <circle cx="180" cy="180" r="3" fill="#6366F1" />
+    
+    <path d="M20 20H15C15 17.2386 17.2386 15 20 15V20Z" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M180 20V15C182.761 15 185 17.2386 185 20H180Z" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M20 180V185C17.2386 185 15 182.761 15 180H20Z" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M180 180H185C185 182.761 182.761 185 180 185V180Z" stroke="#8B5CF6" stroke-width="0.5"/>
+    
+    <path d="M60 20V5" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M80 60H70" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M60 80V70" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M80 180H70" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M180 80H195" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M20 80H5" stroke="#8B5CF6" stroke-width="0.5"/>
+    
+    <path d="M40 20V5" stroke="#8B5CF6" stroke-width="0.5"/>
+    <circle cx="40" cy="5" r="2" fill="#8B5CF6"/>
+    <circle cx="40" cy="10" r="1" fill="#8B5CF6"/>
+    
+    <path d="M20 40H5" stroke="#8B5CF6" stroke-width="0.5"/>
+    <circle cx="5" cy="40" r="2" fill="#8B5CF6"/>
+    <circle cx="10" cy="40" r="1" fill="#8B5CF6"/>
+    
+    <path d="M20 120V140" stroke="#6366F1" stroke-width="0.5" stroke-dasharray="2 2"/>
+    <path d="M120 80V100" stroke="#6366F1" stroke-width="0.5" stroke-dasharray="2 2"/>
+    <path d="M120 180H140" stroke="#6366F1" stroke-width="0.5" stroke-dasharray="2 2"/>
+    <path d="M180 120H160" stroke="#6366F1" stroke-width="0.5" stroke-dasharray="2 2"/>
+    
+    <path d="M100 20L110 10" stroke="#6366F1" stroke-width="0.5"/>
+    <circle cx="110" cy="10" r="2" fill="#6366F1"/>
+    
+    <path d="M120 20V10" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M115 10H125" stroke="#8B5CF6" stroke-width="0.5"/>
+    <circle cx="120" cy="10" r="2" fill="#8B5CF6"/>
+    
+    <path d="M180 100H190" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M190 95V105" stroke="#8B5CF6" stroke-width="0.5"/>
+    <circle cx="190" cy="100" r="2" fill="#8B5CF6"/>
+    
+    <path d="M100 180L110 190" stroke="#6366F1" stroke-width="0.5"/>
+    <circle cx="110" cy="190" r="2" fill="#6366F1"/>
+    
+    <path d="M70 100H75V140H110" stroke="#6366F1" stroke-width="0.5" fill="none"/>
+    <rect x="110" y="138" width="4" height="4" fill="#6366F1"/>
+    
+    <path d="M120 110H150V140H160" stroke="#8B5CF6" stroke-width="0.5" fill="none"/>
+    <rect x="160" y="138" width="4" height="4" fill="#8B5CF6"/>
+  </g>
+</svg> 

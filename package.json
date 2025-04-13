@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",
-    "@react-three/drei": "^9.80.9",
-    "@react-three/fiber": "^8.13.6",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
     "autoprefixer": "^10.4.17",
     "framer-motion": "^11.0.0",
+    "framer-motion-3d": "^12.4.13",
     "gsap": "^3.12.5",
     "next": "^14.1.0",
     "postcss": "^8.4.35",
