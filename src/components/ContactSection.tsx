@@ -104,9 +104,10 @@ const ContactSection = () => {
     try {
       // Using EmailJS to send form data
       const templateParams = {
-        from_name: formData.name,
-        reply_to: formData.email,
-        message: formData.message
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        title: 'Contact Form Message'
       };
       
       const result = await emailjs.send(
