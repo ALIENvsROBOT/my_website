@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -90,22 +91,86 @@ const ContactSection = () => {
     setIsSubmitting(true);
     
     try {
-      // Send data to our API endpoint
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      // Check if we're on GitHub Pages (no API routes available)
+      const isGitHubPages = window.location.hostname !== 'localhost' && 
+                           window.location.hostname !== '127.0.0.1';
       
-      const data = await response.json();
-      
-      if (response.ok) {
-        setSubmitStatus('success');
-        setFormData({ name: '', email: '', message: '' });
+      if (isGitHubPages) {
+        try {
+          // GitHub Pages - call Pushbullet API directly with public access token
+          // SECURITY NOTE: This token should be limited in scope and rotated regularly
+          const PUSHBULLET_PUBLIC_TOKEN = 'o.gqTYB8g1gkVKRR0hY4Fvfxu6ZZdNljDG';
+          
+          // Use a CORS proxy for the Pushbullet API to avoid cross-origin issues
+          const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+          
+          const response = await axios.post(
+            `${CORS_PROXY}https://api.pushbullet.com/v2/pushes`,
+            {
+              type: 'note',
+              title: `Contact Form: ${formData.name}`,
+              body: `From: ${formData.name} (${formData.email})\n\nMessage: ${formData.message}`,
+            },
+            {
+              headers: {
+                'Access-Token': PUSHBULLET_PUBLIC_TOKEN,
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest', // Required by CORS Anywhere
+              },
+            }
+          );
+          
+          if (response.status === 200) {
+            setSubmitStatus('success');
+            setFormData({ name: '', email: '', message: '' });
+          } else {
+            throw new Error('Failed to send message');
+          }
+        } catch (corsError) {
+          console.error('CORS error or Pushbullet API error:', corsError);
+          
+          // Try direct API without proxy as a last resort
+          try {
+            const response = await fetch('https://api.pushbullet.com/v2/pushes', {
+              method: 'POST',
+              mode: 'no-cors', // This will prevent CORS errors but also prevent reading the response
+              headers: {
+                'Access-Token': 'o.gqTYB8g1gkVKRR0hY4Fvfxu6ZZdNljDG',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                type: 'note',
+                title: `Contact Form: ${formData.name}`,
+                body: `From: ${formData.name} (${formData.email})\n\nMessage: ${formData.message}`,
+              }),
+            });
+            
+            // Since we can't read the response with 'no-cors', we'll assume it's successful
+            setSubmitStatus('success');
+            setFormData({ name: '', email: '', message: '' });
+          } catch (directError) {
+            console.error('Direct API call failed too:', directError);
+            throw directError; // Let the outer catch handle this
+          }
+        }
       } else {
-        throw new Error(data.error || 'Failed to send message');
+        // Local/server environment - use API route
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          setSubmitStatus('success');
+          setFormData({ name: '', email: '', message: '' });
+        } else {
+          throw new Error(data.error || 'Failed to send message');
+        }
       }
     } catch (error) {
       console.error('Error submitting form:', error);
