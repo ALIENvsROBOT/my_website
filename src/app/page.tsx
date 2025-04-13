@@ -9,48 +9,26 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import RedesignedHeroSection from "@/components/RedesignedHeroSection";
+import { isBrowser, isMobile } from "@/utils/clientUtils";
+import ClientOnly from "@/components/ClientOnly";
 
-// Fix FOUC and ensure content always becomes visible
-if (typeof window !== 'undefined') {
-  // Only run this on the client side
-  const html = document.documentElement;
-  html.style.visibility = "hidden";
-  
-  // Always make content visible after a timeout
-  setTimeout(() => {
-    html.style.visibility = "visible";
-  }, 200);
-  
-  // Also still listen for DOMContentLoaded
-  document.addEventListener("DOMContentLoaded", function() {
-    html.style.visibility = "visible";
-  });
-  
-  // Final safety fallback - if still hidden after 1 second, make it visible
-  setTimeout(() => {
-    if (html.style.visibility === "hidden") {
-      html.style.visibility = "visible";
-    }
-  }, 1000);
-}
+// Remove any direct browser API calls from the top level
+// These should all be moved into effects or the ClientOnly component
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileState, setIsMobileState] = useState(false);
   
   // Check for mobile and set up observers
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!isBrowser) return;
     
     // Make sure the document is visible
     document.documentElement.style.visibility = "visible";
     
     // Check if we're on a mobile device
     const checkMobile = () => {
-      const isMobileDevice = typeof navigator !== 'undefined' 
-        ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-        : false;
-      setIsMobile(isMobileDevice || window.innerWidth < 768);
+      setIsMobileState(isMobile());
     };
     
     checkMobile();
@@ -69,13 +47,34 @@ export default function Home() {
     };
   }, []);
   
+  useEffect(() => {
+    if (!isBrowser) return;
+    
+    // Fix FOUC and ensure content always becomes visible
+    const html = document.documentElement;
+    html.style.visibility = "visible";
+      
+    // Final safety fallback - if still hidden after 1 second, make it visible
+    const timer = setTimeout(() => {
+      if (html.style.visibility === "hidden") {
+        html.style.visibility = "visible";
+      }
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   return (
     <main className="relative min-h-screen overflow-x-hidden">
       {/* Enhanced Background */}
-      <EnhancedParticleBackground />
+      <ClientOnly>
+        <EnhancedParticleBackground />
+      </ClientOnly>
       
       {/* Custom Cursor for Desktop - only show on non-mobile */}
-      {!isMobile && <CustomCursor />}
+      <ClientOnly>
+        {!isMobileState && <CustomCursor />}
+      </ClientOnly>
       
       {/* Content */}
       <div className="relative z-10">

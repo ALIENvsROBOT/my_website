@@ -16,6 +16,14 @@ const nextConfig = {
     // Disable optimizeCss to avoid potential issues with asset loading
     optimizeCss: false,
   },
+  // Disable server components for static export
+  compiler: {
+    styledComponents: true,
+  },
+  // Add environment variable to indicate we're building for static output
+  env: {
+    NEXT_PUBLIC_IS_STATIC_EXPORT: 'true',
+  },
 }
 
 module.exports = nextConfig 

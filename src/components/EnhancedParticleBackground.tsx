@@ -4,6 +4,7 @@ import Particles from 'react-tsparticles';
 import { loadSlim } from 'tsparticles-slim';
 import { motion } from 'framer-motion';
 import { Engine, ISourceOptions } from 'tsparticles-engine';
+import { isBrowser, isMobileViewport } from '@/utils/clientUtils';
 
 const EnhancedParticleBackground = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -12,8 +13,10 @@ const EnhancedParticleBackground = () => {
   }, []);
 
   useEffect(() => {
+    if (!isBrowser) return;
+    
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(isMobileViewport());
     };
     
     // Initial check
