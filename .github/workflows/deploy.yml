@@ -45,6 +45,7 @@ jobs:
         env:
           # For custom domain, we don't need a base path
           NEXT_PUBLIC_BASE_PATH: ""
+          PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
           
       - name: Create required GitHub Pages files
         run: |
