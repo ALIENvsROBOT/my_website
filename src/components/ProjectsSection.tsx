@@ -10,7 +10,7 @@ const projects = [
     id: 1,
     title: 'Gaze, Gesture and Home Automation',
     description: 'An innovative system that combines eye-tracking, gesture recognition, and home automation to create a seamless smart home experience.',
-    image: '/images/project-gaze-gesture.jpg',
+    image: '/Project_images/Gaze_gesture.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Gaze+and+Gesture',
     technologies: ['Computer Vision', 'IoT', 'XR', 'Machine Learning'],
     link: 'https://bit.ly/3Yk5Ssw',
@@ -20,7 +20,7 @@ const projects = [
     id: 2,
     title: 'TABLE UI - TAngiBLE User Interface',
     description: 'A tangible user interface that transforms ordinary tables into interactive surfaces, enabling new forms of physical-digital interaction.',
-    image: '/images/project-table-ui.jpg',
+    image: '/Project_images/Table_ui.jpg',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=TABLE+UI',
     technologies: ['Tangible UI', 'Computer Vision', 'Interactive Design'],
     link: 'https://www.linkedin.com/posts/gowtham-sridher_salz21-tech-technology-activity-7171597243039268865-Cqpp',
@@ -30,7 +30,7 @@ const projects = [
     id: 3,
     title: 'EnthusiastiCan - Enthusiastic Trash Can',
     description: 'An interactive trash can that uses computer vision and gamification to encourage proper waste disposal and recycling.',
-    image: '/images/project-enthusiastican.jpg',
+    image: '/Project_images/EnthusiastiCan.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=EnthusiastiCan',
     technologies: ['Computer Vision', 'IoT', 'Gamification'],
     link: 'https://www.linkedin.com/posts/gowtham-sridher_technology-computervision-hciactivity-7067467022225334272-4oqj',
@@ -39,7 +39,7 @@ const projects = [
     id: 4,
     title: 'Voice Controlled Robotic Arm',
     description: 'A robotic arm that can be controlled through natural voice commands, making robot manipulation more intuitive and accessible.',
-    image: '/images/project-voice-robot.jpg',
+    image: '/Project_images/voice_contriolled_robot.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Voice+Controlled+Arm',
     technologies: ['Speech Recognition', 'Robotics', 'Natural Language Processing'],
     link: 'https://bit.ly/423kStS',
@@ -49,7 +49,7 @@ const projects = [
     id: 5,
     title: 'Multi-functional Mobile Robot',
     description: 'A versatile mobile robot platform featuring object tracking, leader-follower behavior, and tag-based navigation capabilities.',
-    image: '/images/project-mobile-robot.jpg',
+    image: '/Project_images/multi_robot.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Mobile+Robot',
     technologies: ['Robotics', 'Computer Vision', 'Machine Learning'],
     link: 'https://www.linkedin.com/posts/gowtham-sridher_machinelearning-robotics-deeplearningactivity-6705461583381979137-3c-O',
@@ -58,7 +58,7 @@ const projects = [
     id: 6,
     title: 'Vision-based Sorting System',
     description: 'An industrial sorting system using computer vision and a robotic manipulator for automated object recognition and sorting, designed for Industry 4.0 applications.',
-    image: '/images/project-sorting.jpg',
+    image: '/Project_images/sorting_system.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Sorting+System',
     technologies: ['Robotics', 'Computer Vision', 'Industry 4.0', 'ROS'],
     link: 'https://www.linkedin.com/posts/gowtham-sridher_robotics-robots-robot-activity-6782132472672067584-YAaX',
@@ -67,26 +67,18 @@ const projects = [
     id: 7,
     title: 'Navigation & Path Planning for Mobile Robot',
     description: 'Developed advanced navigation, path planning, and motion planning capabilities for mobile robots including ARTI Chasi and Franka Panda.',
-    image: '/images/project-navigation.jpg',
+    image: '/Project_images/robot_naviagtion.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Robot+Navigation',
     technologies: ['Robotics', 'Path Planning', 'ROS', 'Navigation'],
     link: 'https://bit.ly/3fAGlY5',
     featured: true,
   },
-  {
-    id: 8,
-    title: 'robXtask',
-    description: 'A platform that allows non-programmers to control robots using block-based programming. Contributed to the back-end development.',
-    image: '/images/project-robxtask.jpg',
-    fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=robXtask',
-    technologies: ['Robotics', 'Block Programming', 'User Interface', 'Accessibility'],
-    link: 'https://robxtask.salzburgresearch.at/de/',
-  },
+
   {
     id: 9,
     title: 'EMG-Based Control of a 5 DOF Robotic Manipulator',
     description: 'Designed a system to control a 5-degree-of-freedom robotic manipulator using electromyography (EMG) signals for intuitive human-robot interaction.',
-    image: '/images/project-emg.jpg',
+    image: '/Project_images/EMG_controil.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=EMG+Control',
     technologies: ['EMG', 'Robotics', 'Signal Processing', 'Human-Robot Interaction'],
     link: 'https://ieeexplore.ieee.org/document/9198439',
@@ -229,11 +221,16 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
 const ProjectsSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
+  const [showAll, setShowAll] = useState(false);
+  const expandedSectionRef = useRef<HTMLDivElement>(null);
   
   // Featured projects (display them first)
   const featuredProjects = projects.filter(project => project.featured);
   const otherProjects = projects.filter(project => !project.featured);
-  const organizedProjects = [...featuredProjects, ...otherProjects];
+  
+  // Show first 6 projects initially, then all when expanded
+  const displayedProjects = showAll ? projects : projects.slice(0, 6);
+  const expandedProjects = projects.slice(6);
 
   return (
     <section id="projects" className="py-20 relative" ref={sectionRef}>
@@ -267,28 +264,57 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
+        {/* Main projects grid */}
         <motion.div
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
-          {organizedProjects.map((project, index) => (
+          {displayedProjects.slice(0, 6).map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </motion.div>
         
+        {/* Expanded projects section */}
+        <div className="w-full" ref={expandedSectionRef}>
+          <AnimatePresence>
+            {showAll && (
+              <motion.div
+                initial={{ opacity: 0, y: 20, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: "auto" }}
+                exit={{ opacity: 0, y: 20, height: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full mt-6"
+              >
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  {expandedProjects.map((project, index) => (
+                    <ProjectCard key={project.id} project={project} index={index + 6} />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        
+        {/* Toggle button */}
         <div className="text-center mt-12">
-          <motion.a
-            href="/projects"
+          <motion.button
+            onClick={() => setShowAll(!showAll)}
             className="px-6 py-3 rounded-full glass-effect-dark hover:bg-secondary/20 text-lightText font-medium transition-all duration-300 inline-flex items-center gap-2 sci-fi-border"
-            whileHover={{ scale: 1.05, x: 5, boxShadow: '0 0 15px rgba(139, 92, 246, 0.5)' }}
+            whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(139, 92, 246, 0.5)' }}
             whileTap={{ scale: 0.95 }}
           >
-            See All Projects
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            {showAll ? 'Show Less' : 'Show More Projects'} 
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
-          </motion.a>
+          </motion.button>
         </div>
       </div>
     </section>
