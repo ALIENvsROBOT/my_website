@@ -8,6 +8,7 @@ const CustomCursor = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isPointerDevice, setIsPointerDevice] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(true);
 
   useEffect(() => {
     // Check if device supports fine pointer (mouse)
@@ -16,6 +17,13 @@ const CustomCursor = () => {
     
     // Only proceed if this is a pointer device
     if (!mediaQuery.matches) return;
+
+    // Check if the user has disabled custom cursor in localStorage
+    const cursorPreference = localStorage.getItem('custom-cursor-disabled');
+    if (cursorPreference === 'true') {
+      setIsEnabled(false);
+      return;
+    }
 
     const updateCursorPosition = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
@@ -32,8 +40,8 @@ const CustomCursor = () => {
       const isInteractive = 
         target.tagName === 'BUTTON' || 
         target.tagName === 'A' || 
-        target.closest('button') || 
-        target.closest('a') ||
+        target.closest('button') !== null || 
+        target.closest('a') !== null ||
         target.getAttribute('role') === 'button' ||
         target.classList.contains('interactive');
       
@@ -71,8 +79,8 @@ const CustomCursor = () => {
     };
   }, [isVisible]);
 
-  // Don't render on non-pointer devices or if still invisible
-  if (!isPointerDevice || !isVisible) {
+  // Don't render if custom cursor is disabled, on non-pointer devices, or if still invisible
+  if (!isEnabled || !isPointerDevice || !isVisible) {
     return null;
   }
 
@@ -82,7 +90,7 @@ const CustomCursor = () => {
       animate={{
         x: position.x,
         y: position.y,
-        opacity: isVisible ? 1 : 0,
+        opacity: isVisible ? 0.7 : 0,
         scale: isHovering ? 1.2 : 1,
       }}
       transition={{
@@ -112,7 +120,7 @@ const CustomCursor = () => {
         <motion.div
           className="absolute inset-0 rounded-full bg-indigo-500"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
+          animate={{ opacity: 0.15 }}
           exit={{ opacity: 0 }}
           style={{ filter: 'blur(8px)' }}
         />

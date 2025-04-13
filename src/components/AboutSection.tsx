@@ -184,7 +184,7 @@ const AboutSection = () => {
       className="section-container light-up-section py-20"
       ref={sectionRef}
     >
-      <div className="content-container">
+      <div className="content-container mx-auto">
         <motion.h2 
           ref={headingRef}
           className={`text-3xl font-bold mb-8 text-center gradient-text ${isVisible ? 'visible' : ''}`}
@@ -221,7 +221,7 @@ const AboutSection = () => {
         
         {/* About Tab Content */}
         {activeTab === 'about' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4 md:px-6">
             <div className="space-y-4">
               {ABOUT_PARAGRAPHS.map((text, index) => (
                 <motion.p 
@@ -291,7 +291,7 @@ const AboutSection = () => {
         {/* Experience Tab Content */}
         {activeTab === 'experience' && (
           <motion.div 
-            className="max-w-3xl mx-auto"
+            className="max-w-3xl mx-auto px-4 md:px-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -306,7 +306,7 @@ const AboutSection = () => {
         {/* Education Tab Content */}
         {activeTab === 'education' && (
           <motion.div 
-            className="max-w-3xl mx-auto"
+            className="max-w-3xl mx-auto px-4 md:px-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -319,8 +319,9 @@ const AboutSection = () => {
                   key={index}
                   className="mb-8 last:mb-0"
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
+                  viewport={{ once: true }}
                 >
                   <div className="flex items-center gap-4 mb-3">
                     <div className="h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center text-2xl">

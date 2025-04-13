@@ -16,8 +16,13 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [customCursorEnabled, setCustomCursorEnabled] = useState(true);
 
   useEffect(() => {
+    // Check localStorage for cursor preference
+    const cursorDisabled = localStorage.getItem('custom-cursor-disabled') === 'true';
+    setCustomCursorEnabled(!cursorDisabled);
+    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
       
@@ -85,6 +90,14 @@ const Navbar = () => {
     }
   };
 
+  const toggleCustomCursor = () => {
+    const newState = !customCursorEnabled;
+    setCustomCursorEnabled(newState);
+    localStorage.setItem('custom-cursor-disabled', (!newState).toString());
+    // Force reload to apply changes
+    window.location.reload();
+  };
+
   return (
     <motion.header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -142,6 +155,29 @@ const Navbar = () => {
               </svg>
               CV
             </a>
+            
+            {/* Cursor Toggle */}
+            <button
+              type="button"
+              onClick={toggleCustomCursor}
+              className="p-2 rounded-full hover:bg-primary/20 transition-colors duration-300"
+              aria-label={customCursorEnabled ? "Disable custom cursor" : "Enable custom cursor"}
+              title={customCursorEnabled ? "Disable custom cursor" : "Enable custom cursor"}
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-5 w-5 text-lightText" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                {customCursorEnabled ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.5 10.75L15.5 12.75L18.5 9.75M15 15l-2 5L9 9l11 4-5 2zm0 0" />
+                )}
+              </svg>
+            </button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -217,6 +253,28 @@ const Navbar = () => {
               </svg>
               CV
             </a>
+            
+            {/* Mobile cursor toggle */}
+            <button
+              type="button"
+              onClick={toggleCustomCursor}
+              className="mt-2 px-4 py-2 rounded-full bg-primary/20 text-lightText text-sm font-medium transition-colors duration-300 flex items-center gap-2 w-fit"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-4 w-4" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                {customCursorEnabled ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.5 10.75L15.5 12.75L18.5 9.75M15 15l-2 5L9 9l11 4-5 2zm0 0" />
+                )}
+              </svg>
+              {customCursorEnabled ? "Default Cursor" : "Custom Cursor"}
+            </button>
           </nav>
         </motion.div>
       )}
