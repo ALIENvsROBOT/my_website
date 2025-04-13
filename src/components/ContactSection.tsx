@@ -9,23 +9,110 @@ const ContactSection = () => {
     email: '',
     message: ''
   });
+  const [formErrors, setFormErrors] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
   const [isVisible, setIsVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Validate email format
+  const validateEmail = (email: string): boolean => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  // Validate form
+  const validateForm = (): boolean => {
+    let valid = true;
+    const newErrors = {
+      name: '',
+      email: '',
+      message: ''
+    };
+
+    // Validate name
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+      valid = false;
+    }
+
+    // Validate email
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+      valid = false;
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+      valid = false;
+    }
+
+    // Validate message
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+      valid = false;
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+      valid = false;
+    }
+
+    setFormErrors(newErrors);
+    return valid;
+  };
 
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error for this field when typing
+    if (formErrors[name as keyof typeof formErrors]) {
+      setFormErrors(prev => ({ ...prev, [name]: '' }));
+    }
+    
+    // Reset submit status when user starts typing again
+    if (submitStatus !== 'idle') {
+      setSubmitStatus('idle');
+    }
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement form submission logic here
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! I will get back to you as soon as possible.');
-    // Reset form
-    setFormData({ name: '', email: '', message: '' });
+    
+    // Validate form before submission
+    if (!validateForm()) {
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Send data to our API endpoint
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        throw new Error(data.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Effect to check if section is in viewport
@@ -90,9 +177,12 @@ const ContactSection = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full p-3 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent"
+                  className={`w-full p-3 bg-black/30 border ${formErrors.name ? 'border-red-500' : 'border-white/10'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent`}
                   placeholder="Your Name"
                 />
+                {formErrors.name && (
+                  <p className="mt-1 text-sm text-red-400">{formErrors.name}</p>
+                )}
               </div>
               
               <div>
@@ -104,9 +194,12 @@ const ContactSection = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full p-3 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent"
+                  className={`w-full p-3 bg-black/30 border ${formErrors.email ? 'border-red-500' : 'border-white/10'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent`}
                   placeholder="your.email@example.com"
                 />
+                {formErrors.email && (
+                  <p className="mt-1 text-sm text-red-400">{formErrors.email}</p>
+                )}
               </div>
               
               <div>
@@ -118,30 +211,77 @@ const ContactSection = () => {
                   onChange={handleChange}
                   required
                   rows={5}
-                  className="w-full p-3 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none"
+                  className={`w-full p-3 bg-black/30 border ${formErrors.message ? 'border-red-500' : 'border-white/10'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none`}
                   placeholder="Your message here..."
                 />
+                {formErrors.message && (
+                  <p className="mt-1 text-sm text-red-400">{formErrors.message}</p>
+                )}
               </div>
               
               <motion.button
                 type="submit"
-                className="premium-button mt-4 w-full"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                className={`premium-button mt-4 w-full ${isSubmitting ? 'opacity-70' : ''}`}
+                whileHover={{ scale: isSubmitting ? 1 : 1.03 }}
+                whileTap={{ scale: isSubmitting ? 1 : 0.97 }}
+                disabled={isSubmitting}
               >
-                <span>Send Message</span>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
-                  viewBox="0 0 20 20" 
-                  fill="currentColor"
-                >
-                  <path 
-                    d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" 
-                  />
-                </svg>
+                <span>
+                  {isSubmitting ? 'Sending...' : 
+                   submitStatus === 'success' ? 'Message Sent!' : 
+                   submitStatus === 'error' ? 'Try Again' : 
+                   'Send Message'}
+                </span>
+                {!isSubmitting && submitStatus !== 'success' && submitStatus !== 'error' && (
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-5 w-5" 
+                    viewBox="0 0 20 20" 
+                    fill="currentColor"
+                  >
+                    <path 
+                      d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" 
+                    />
+                  </svg>
+                )}
+                {isSubmitting && (
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                )}
+                {submitStatus === 'success' && (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                )}
+                {submitStatus === 'error' && (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                )}
               </motion.button>
             </form>
+            
+            {submitStatus === 'success' && (
+              <motion.p 
+                initial={{ opacity: 0, y: -10 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                className="text-sm text-green-400 text-center mt-2"
+              >
+                Thank you for your message! I'll get back to you as soon as possible.
+              </motion.p>
+            )}
+            
+            {submitStatus === 'error' && (
+              <motion.p 
+                initial={{ opacity: 0, y: -10 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                className="text-sm text-red-400 text-center mt-2"
+              >
+                Couldn't send your message. Please try again or contact me directly.
+              </motion.p>
+            )}
           </motion.div>
           
           {/* Contact Information */}
@@ -165,8 +305,8 @@ const ContactSection = () => {
                   </svg>
                   <div>
                     <h4 className="font-medium">Email</h4>
-                    <a href="mailto:gowtham.sridhar@example.com" className="text-blue-400 hover:text-blue-300 transition-colors">
-                      gowtham.sridhar@example.com
+                    <a href="mailto:gowtham.sridher5@gmail.com" className="text-blue-400 hover:text-blue-300 transition-colors">
+                      gowtham.sridher5@gmail.com
                     </a>
                   </div>
                 </motion.li>
@@ -197,19 +337,14 @@ const ContactSection = () => {
             >
               <h3 className="text-xl font-bold mb-4 text-cyan-300">Social Media</h3>
               <div className="flex space-x-4">
-                <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="p-3 bg-black/30 rounded-full hover:bg-black/50 transition-colors">
-                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                  </svg>
-                </a>
-                <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="p-3 bg-black/30 rounded-full hover:bg-black/50 transition-colors">
+              <a href="https://www.linkedin.com/in/gowtham-sridher/" target="_blank" rel="noopener noreferrer" className="p-3 bg-black/30 rounded-full hover:bg-black/50 transition-colors">
                   <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
                   </svg>
                 </a>
-                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="p-3 bg-black/30 rounded-full hover:bg-black/50 transition-colors">
+                <a href="https://github.com/ALIENvsROBOT" target="_blank" rel="noopener noreferrer" className="p-3 bg-black/30 rounded-full hover:bg-black/50 transition-colors">
                   <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                   </svg>
                 </a>
               </div>
