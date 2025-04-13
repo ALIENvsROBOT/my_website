@@ -386,7 +386,7 @@ const HeroSection = () => {
                   </a>
                   
                   <a 
-                    href="https://github.com/gowtham-sridhar" 
+                    href="https://github.com/ALIENvsROBOT" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full glass-effect flex items-center justify-center transition-colors duration-300"

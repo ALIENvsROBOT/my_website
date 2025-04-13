@@ -11,6 +11,16 @@ interface SEOStructuredDataProps {
   sameAs: string[];
   mainEntityOfPage: string;
   url: string;
+  affiliation?: string;
+  hIndex?: number;
+  researchInterests?: string[];
+  alumniOf?: string | string[];
+  address?: {
+    streetAddress?: string;
+    addressLocality?: string;
+    postalCode?: string;
+    addressCountry?: string;
+  };
 }
 
 export default function SEOStructuredData({
@@ -24,6 +34,11 @@ export default function SEOStructuredData({
   sameAs,
   mainEntityOfPage,
   url,
+  affiliation,
+  hIndex,
+  researchInterests,
+  alumniOf,
+  address,
 }: SEOStructuredDataProps) {
   const personSchema = {
     '@context': 'https://schema.org',
@@ -49,6 +64,31 @@ export default function SEOStructuredData({
       '@id': mainEntityOfPage,
     },
     url,
+    ...(affiliation && { affiliation: {
+      '@type': 'Organization',
+      name: affiliation
+    }}),
+    ...(hIndex !== undefined && { 
+      identifier: {
+        '@type': 'PropertyValue',
+        propertyID: 'h-index',
+        value: hIndex.toString()
+      }
+    }),
+    ...(researchInterests && { 
+      knowsAbout: researchInterests 
+    }),
+    ...(alumniOf && {
+      alumniOf: Array.isArray(alumniOf) 
+        ? alumniOf.map(org => ({ '@type': 'Organization', name: org }))
+        : { '@type': 'Organization', name: alumniOf }
+    }),
+    ...(address && {
+      address: {
+        '@type': 'PostalAddress',
+        ...address
+      }
+    }),
   };
 
   return (

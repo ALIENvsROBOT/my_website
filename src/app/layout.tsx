@@ -90,12 +90,27 @@ export default function RootLayout({
           description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, and UI/UX Design."
           image="https://www.gowthamsridhar.com/images/gowtham-profile.jpg"
           sameAs={[
-            "https://www.linkedin.com/in/gowtham-sridhar/",
-            "https://github.com/gowtham-sridhar",
-            "https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID"
+            "https://www.linkedin.com/in/gowtham-sridher/",
+            "https://github.com/ALIENvsROBOT",
+            "https://scholar.google.com/citations?user=ipXbKeQAAAAJ"
           ]}
           mainEntityOfPage="https://www.gowthamsridhar.com"
           url="https://www.gowthamsridhar.com"
+          affiliation="Austrian Institute of Technology"
+          hIndex={15} 
+          researchInterests={[
+            "Human-Computer Interaction", 
+            "XR Applications", 
+            "UI/UX Design",
+            "Mixed Reality"
+          ]}
+          alumniOf="Your University"
+          address={{
+            streetAddress: "Your Street Address",
+            addressLocality: "Your City",
+            postalCode: "Your Postal Code",
+            addressCountry: "Your Country"
+          }}
         />
         <script 
           dangerouslySetInnerHTML={{

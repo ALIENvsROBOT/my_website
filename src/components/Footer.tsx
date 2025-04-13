@@ -15,7 +15,7 @@ const Footer = () => {
   
   const socialLinks = [
     { name: 'LinkedIn', href: 'https://www.linkedin.com/in/gowtham-sridher/', icon: 'linkedin' },
-    { name: 'GitHub', href: 'https://github.com/gowtham-sridhar', icon: 'github' },
+    { name: 'GitHub', href: 'https://github.com/ALIENvsROBOT', icon: 'github' },
     { name: 'Twitter', href: 'https://twitter.com/gowtham_sridhar', icon: 'twitter' },
   ];
 
