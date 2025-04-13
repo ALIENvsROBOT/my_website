@@ -612,7 +612,7 @@ export function HeroScene() {
   
   return (
     <Canvas 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'none' }} 
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'pan-y' }} 
       dpr={[1, 1.5]}
       gl={{ 
         alpha: true, 
@@ -725,17 +725,18 @@ export function MobileHeroScene() {
   // Higher quality mobile scene that more closely matches desktop
   return (
     <Canvas 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} 
-      dpr={[0.8, 1.2]} // Better DPR for modern mobile devices
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'pan-y' }} 
+      dpr={[1, 1.5]} // Match desktop DPR for higher resolution
       gl={{ 
         alpha: true, 
-        antialias: true, // Enable antialiasing for better quality
-        powerPreference: 'default', // Use default instead of low-power for better quality
+        antialias: true,
+        powerPreference: 'default',
         logarithmicDepthBuffer: true
       }}
-      camera={{ position: [0, 0, 7], fov: 65 }} // Match desktop FOV more closely
-      performance={{ min: 0.3 }} // Higher minimum performance threshold for better quality
+      camera={{ position: [0, 0, 7], fov: 60 }} // Match desktop FOV exactly
+      performance={{ min: 0.5 }} // Match desktop performance threshold
       onCreated={({ gl }) => {
+        // Ensure vertical scrolling works
         gl.domElement.style.touchAction = 'pan-y';
       }}
     >
@@ -748,55 +749,50 @@ export function MobileHeroScene() {
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
           <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#6366F1" />
           
-          {/* Neural network - more nodes than before, less than desktop */}
-          <NeuralNetwork count={80} connections={40} />
+          {/* Full neural network like desktop */}
+          <NeuralNetwork count={120} connections={60} />
           
-          {/* Interactive particle swarm - like desktop */}
+          {/* Interactive particle swarm - same as desktop */}
           <ParticleSwarm />
           
           {/* Animated title - same as desktop */}
-          <MorphingText text="Technologist" position={[0, 1.5, 0]} color="#7C3AED" scale={1.1} />
+          <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#7C3AED" scale={1.2} />
           
-          {/* Connection lines - more like desktop */}
+          {/* Connection lines - same as desktop */}
           <ConnectionLines 
-            from={[0, 1.5, 0]} 
+            from={[0, 1.8, 0]} 
             to={[
-              [-2.5, -1.5, 1],  // XR
-              [-1.25, -1.5, 1], // HCI
-              [0, -1.5, 1],     // UI/UX
-              [1.25, -1.5, 1],  // Robotics
-              [2.5, -1.5, 1]    // AI
+              [-3, -1.8, 1],   // XR
+              [-1.5, -1.8, 1],  // HCI
+              [0, -1.8, 1],     // UI/UX
+              [1.5, -1.8, 1],   // Robotics
+              [3, -1.8, 1]      // AI
             ]}
             colors={["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]}
-            thickness={0.8}
-            opacity={0.8}
           />
           
-          {/* More skill tags positioned for mobile view - same as desktop */}
-          <group position={[0, -1.5, 1]}>
-            <SkillTag position={[-2.5, 0, 0]} skill="XR" color="#EF4444" delay={0.3} />
-            <SkillTag position={[-1.25, 0, 0]} skill="HCI" color="#3B82F6" delay={0.5} />
-            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.7} />
-            <SkillTag position={[1.25, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
-            <SkillTag position={[2.5, 0, 0]} skill="AI" color="#8B5CF6" delay={0.6} />
+          {/* Skill tags - same positions as desktop */}
+          <group position={[0, -1.8, 1]}>
+            <SkillTag position={[-3, 0, 0]} skill="XR" color="#EF4444" delay={0.5} />
+            <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#3B82F6" delay={0.2} />
+            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.8} />
+            <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
+            <SkillTag position={[3, 0, 0]} skill="AI" color="#8B5CF6" delay={0.1} />
           </group>
           
-          {/* Improved camera controls for mobile */}
+          {/* Improved camera controls for mobile - disable rotation to allow scrolling */}
           <OrbitControls
             enableZoom={false}
             enablePan={false}
-            rotateSpeed={0.4}
+            rotateSpeed={0.5}
             autoRotate
             autoRotateSpeed={0.5}
             minPolarAngle={Math.PI / 3}
             maxPolarAngle={Math.PI / 1.5}
             enableDamping
             dampingFactor={0.05}
-            // Enable rotation on mobile for tablets in landscape mode
-            enableRotate={true} 
-            // But limit rotation sensitivity
-            minDistance={7}
-            maxDistance={7}
+            // Disable touch rotation to allow scrolling
+            enableRotate={false}
           />
         </PerformanceScene>
       </Suspense>
@@ -824,17 +820,17 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
     // Listen for orientation changes
     window.addEventListener('resize', checkOrientation);
     
-    // Set initial performance mode, but don't assume all mobile is low performance
+    // Set initial performance mode, but be more conservative
     setLowPerformanceMode(isMobile && (
-      // Only set low performance for older devices
-      (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 3) ||
-      // Or very small screen devices
-      window.innerWidth < 375
+      // Only set low performance for extremely limited devices
+      (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 2) ||
+      // Or very old browsers
+      /MSIE|Trident/.test(navigator.userAgent)
     ));
     
-    // Handle touch events for better scrolling
+    // Disable all 3D touch interactions to improve scrolling
     const preventTouchMove = (e: TouchEvent) => {
-      // Don't prevent default - allow scrolling
+      // Allow default scrolling behavior
       e.stopPropagation();
     };
     
@@ -857,23 +853,23 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
         frameCount = 0;
         lastTime = currentTime;
         
-        // Keep a short history of FPS to avoid reacting to temporary drops
+        // Keep a short history of FPS 
         fpsHistory.push(fps);
         if (fpsHistory.length > 5) fpsHistory.shift();
         
         // Calculate average FPS
         const avgFps = fpsHistory.reduce((sum, val) => sum + val, 0) / fpsHistory.length;
         
-        // Only switch modes if consistently under threshold
-        if (avgFps < 25 && !lowPerformanceMode) {
+        // Only switch to low performance mode in extreme cases
+        if (avgFps < 20 && !lowPerformanceMode && fpsHistory.length >= 3) {
           setLowPerformanceMode(true);
-        } else if (avgFps > 40 && lowPerformanceMode) {
-          // Switch back if performance improves
+        } else if (avgFps > 40 && lowPerformanceMode && fpsHistory.length >= 3) {
+          // Switch back if performance improves significantly
           setLowPerformanceMode(false);
         }
         
         // Only disable rendering entirely in extreme cases
-        if (avgFps < 15 && fpsHistory.length >= 3) {
+        if (avgFps < 12 && fpsHistory.length >= 3) {
           setShouldRender(false);
         }
       }
@@ -900,7 +896,7 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
       ref={containerRef}
       className="relative w-full h-[50vh] md:h-[70vh] min-h-[250px] md:min-h-[400px]"
       style={{ 
-        touchAction: 'pan-y',
+        touchAction: 'pan-y', // Allow vertical scrolling
         overscrollBehavior: 'none',
         userSelect: 'none'
       }}

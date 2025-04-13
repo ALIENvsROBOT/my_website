@@ -136,7 +136,7 @@ const RedesignedHeroSection = () => {
             
             {/* Tech skills badges */}
             <motion.div 
-              className="flex flex-wrap gap-2"
+              className="flex flex-wrap gap-2 mb-16 md:mb-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 0.8 }}
@@ -167,8 +167,8 @@ const RedesignedHeroSection = () => {
           </motion.div>
         </div>
         
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
+        {/* Scroll indicator - adjusted for mobile */}
+        <div className="absolute bottom-4 md:bottom-10 left-1/2 -translate-x-1/2 z-20">
           <ScrollIndicator />
         </div>
       </div>
