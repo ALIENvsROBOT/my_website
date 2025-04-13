@@ -48,37 +48,51 @@ const RedesignedHeroSection = () => {
       {/* Grid background */}
       <div className="grid-bg"></div>
       
-      <div className="container mx-auto px-4 relative z-10 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          {/* Left content - Text and buttons */}
+      <div className="container mx-auto px-4 relative z-10 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Left content - Text and Profile */}
           <motion.div 
-            className="lg:col-span-5 text-center lg:text-left order-2 lg:order-1"
+            className="order-2 lg:order-1"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            {/* Name and title with futuristic styling */}
-            <motion.h1 
-              className="text-4xl sm:text-5xl font-bold leading-tight mb-4 neon-text"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-            >
-              Gowtham Sridhar
-            </motion.h1>
-            
-            <motion.div
-              className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 text-xl sm:text-2xl font-medium mb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-            >
-              <p>HCI Researcher & XR Expert | Junior Scientist at AIT</p>
-            </motion.div>
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              {/* Profile image - smaller and integrated */}
+              <motion.div 
+                className="flex-shrink-0 w-[120px] h-[120px] md:w-[140px] md:h-[140px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                <ProfileImage />
+              </motion.div>
+              
+              {/* Name and title with futuristic styling */}
+              <div className="flex-grow">
+                <motion.h1 
+                  className="text-3xl font-bold leading-tight mb-1 neon-text text-center md:text-left"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.8 }}
+                >
+                  Gowtham Sridhar
+                </motion.h1>
+                
+                <motion.div
+                  className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 text-lg font-medium mb-2 text-center md:text-left"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                >
+                  <p>HCI Researcher & XR Expert | Junior Scientist at AIT</p>
+                </motion.div>
+              </div>
+            </div>
             
             {/* Animated description text */}
             <motion.p 
-              className="text-gray-300 mb-10 max-w-lg mx-auto lg:mx-0"
+              className="text-gray-300 my-5 max-w-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
@@ -90,7 +104,7 @@ const RedesignedHeroSection = () => {
             
             {/* CTA Buttons */}
             <motion.div 
-              className="flex flex-wrap gap-4 justify-center lg:justify-start"
+              className="flex flex-wrap gap-4 mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
@@ -109,7 +123,7 @@ const RedesignedHeroSection = () => {
             
             {/* Tech skills badges */}
             <motion.div 
-              className="mt-12 flex flex-wrap gap-2 justify-center lg:justify-start"
+              className="flex flex-wrap gap-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 0.8 }}
@@ -128,20 +142,10 @@ const RedesignedHeroSection = () => {
               ))}
             </motion.div>
           </motion.div>
-
-          {/* Middle content - Profile image */}
-          <motion.div 
-            className="lg:col-span-3 flex justify-center order-1 lg:order-2 mb-8 lg:mb-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <ProfileImage />
-          </motion.div>
           
-          {/* Right content - 3D Scene */}
+          {/* Right content - 3D Scene (expanded to 1:1 ratio) */}
           <motion.div 
-            className="lg:col-span-4 order-3"
+            className="order-1 lg:order-2 h-[50vh] lg:h-[80vh] w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}

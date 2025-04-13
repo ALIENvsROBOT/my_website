@@ -14,6 +14,29 @@ if %ERRORLEVEL% NEQ 0 (
     goto :eof
 )
 
+:: Check if this is a Next.js project
+if exist "next.config.js" (
+    echo Next.js project detected. 
+    echo This will trigger the GitHub Actions workflow for deployment.
+    echo.
+    echo NOTE: Your website will be built from the 'out' directory by GitHub Actions.
+    echo The actual website files are built on GitHub's servers, not from your local files.
+    echo.
+)
+
+:: Check for index.html in root directory or public directory
+if not exist "index.html" (
+    if not exist "public\index.html" (
+        echo Warning: No index.html found in root or public directory.
+        echo GitHub Pages might display README instead of your website.
+        echo Make sure your build process generates the proper files.
+    )
+)
+
+:: Create .nojekyll file to prevent GitHub Pages from ignoring files starting with underscore
+echo Creating .nojekyll file for proper GitHub Pages rendering...
+echo. > .nojekyll
+
 :: Get the current branch name
 for /f "tokens=*" %%a in ('git rev-parse --abbrev-ref HEAD') do set BRANCH=%%a
 
@@ -61,9 +84,17 @@ echo.
 echo ===========================================
 echo ✅ Successfully pushed to GitHub!
 echo.
-echo GitHub Pages deployment has been triggered.
-echo Your website should be updated in a few minutes.
-echo Visit: https://www.gowthamsridhar.com
+echo Your changes have been pushed and GitHub Actions workflow is now running.
+echo The deployment process may take a few minutes to complete.
+echo.
+echo IMPORTANT GITHUB PAGES NOTES:
+echo 1. GitHub Actions builds your Next.js site in the cloud
+echo 2. The .nojekyll file should be automatically created in your output directory
+echo 3. Your CNAME file will be copied to the deployment automatically
+echo 4. If your site still doesn't appear, check the Actions tab in your GitHub repository
+echo.
+echo Your website should be updated soon at: 
+echo https://www.gowthamsridhar.com
 echo ===========================================
 
 echo.

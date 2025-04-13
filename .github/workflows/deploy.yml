@@ -45,6 +45,15 @@ jobs:
         env:
           # For custom domain, we don't need a base path
           NEXT_PUBLIC_BASE_PATH: ""
+          
+      - name: Create required GitHub Pages files
+        run: |
+          # Create .nojekyll file to prevent GitHub Pages from ignoring files that begin with an underscore
+          touch ./out/.nojekyll
+          # Copy CNAME file to output directory if it exists
+          if [ -f CNAME ]; then
+            cp CNAME ./out/
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
