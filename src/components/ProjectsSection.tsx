@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 
 // Projects data from CV with placeholder images
@@ -96,36 +96,38 @@ const projects = [
   },
 ];
 
-// Project card component with hover detail view
-interface ProjectCardProps {
-  project: typeof projects[0];
-  index: number;
-}
-
-const ProjectCard = ({ project, index }: ProjectCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [imageError, setImageError] = useState(false);
+const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
   
-  // Check if device is mobile on mount and window resize
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Initial check
-    checkMobile();
-    
-    // Add event listener for window resize
-    window.addEventListener('resize', checkMobile);
-    
-    // Cleanup
-    return () => window.removeEventListener('resize', checkMobile);
+    // Check if window is available (client-side)
+    if (typeof window !== "undefined") {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      
+      // Initial check
+      checkMobile();
+      
+      // Add event listener for window resize
+      window.addEventListener('resize', checkMobile);
+      
+      // Cleanup
+      return () => window.removeEventListener('resize', checkMobile);
+    }
   }, []);
+  
+  return isMobile;
+};
+
+// Desktop Project Card with hover effect
+const DesktopProjectCard = ({ project, index }: { project: typeof projects[0], index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
   
   return (
     <motion.div 
-      className={`relative group overflow-hidden rounded-xl sci-fi-border glass-effect-dark aspect-square`}
+      className="relative overflow-hidden rounded-xl sci-fi-border glass-effect-dark aspect-square"
       variants={{
         hidden: { y: 50, opacity: 0 },
         visible: { 
@@ -138,9 +140,8 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           } 
         }
       }}
-      onHoverStart={() => !isMobile && setIsHovered(true)}
-      onHoverEnd={() => !isMobile && setIsHovered(false)}
-      onTap={() => isMobile && setIsHovered(!isHovered)}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
     >
       <div className="relative h-full overflow-hidden">
         <Image
@@ -148,13 +149,13 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           alt={project.title}
           width={600}
           height={600}
-          className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+          className="object-cover w-full h-full transition-transform duration-700 hover:scale-110"
           onError={() => setImageError(true)}
           quality={95}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={index < 3}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-darkBg via-darkBg/50 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-darkBg via-darkBg/50 to-transparent opacity-70 hover:opacity-90 transition-opacity duration-300"></div>
         
         {/* Cyber grid overlay */}
         <div className="absolute inset-0 opacity-30 bg-scan-lines pointer-events-none"></div>
@@ -187,7 +188,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         </div>
       
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-darkBg/80 backdrop-blur-sm z-10">
-          <h3 className="text-lg font-bold mb-1 text-lightText group-hover:text-secondary transition-colors duration-300 cyan-glow relative truncate">
+          <h3 className="text-lg font-bold mb-1 text-lightText hover:text-secondary transition-colors duration-300 cyan-glow relative truncate">
             {project.title}
             
             {/* Decorative badge for featured projects */}
@@ -220,7 +221,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         </div>
       </div>
       
-      {/* Hover overlay for desktop, touchable overlay for mobile */}
+      {/* Hover overlay */}
       <motion.div 
         className="absolute inset-0 flex items-center justify-center bg-darkBg/90 pointer-events-none flex-col p-4"
         initial={{ opacity: 0 }}
@@ -245,31 +246,133 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           Explore Project
         </a>
       </motion.div>
-      
-      {/* Mobile info toggle button */}
-      {isMobile && (
-        <button 
-          className="absolute bottom-20 right-4 w-10 h-10 rounded-full bg-secondary/80 flex items-center justify-center z-20"
-          onClick={() => setIsHovered(!isHovered)}
-          aria-label={isHovered ? "Close project details" : "Show project details"}
-        >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            className="h-6 w-6 text-white" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d={isHovered ? "M6 18L18 6M6 6l12 12" : "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"} 
-            />
-          </svg>
-        </button>
-      )}
     </motion.div>
+  );
+};
+
+// Mobile Project Card with expandable details
+const MobileProjectCard = ({ project, index }: { project: typeof projects[0], index: number }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  
+  return (
+    <div className="rounded-xl sci-fi-border glass-effect-dark overflow-hidden mb-4">
+      {/* Image Section */}
+      <div className="relative aspect-video">
+        <Image
+          src={imageError ? project.fallbackImage : project.image}
+          alt={project.title}
+          width={600}
+          height={300}
+          className="object-cover w-full h-full"
+          onError={() => setImageError(true)}
+          quality={90}
+          sizes="100vw"
+          priority={index < 3}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-darkBg via-darkBg/50 to-transparent opacity-70"></div>
+        
+        {/* Tech tags */}
+        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 z-10">
+          {project.technologies.slice(0, 2).map((tech, idx) => (
+            <span 
+              key={idx}
+              className="text-xs px-2 py-0.5 rounded-full glass-effect-dark text-cyan-300 border border-cyan-500/30"
+            >
+              {tech}
+            </span>
+          ))}
+          {project.technologies.length > 2 && (
+            <span className="text-xs px-2 py-0.5 rounded-full glass-effect-dark text-cyan-300 border border-cyan-500/30">
+              +{project.technologies.length - 2}
+            </span>
+          )}
+        </div>
+        
+        {/* Project ID badge */}
+        <div className="absolute bottom-2 right-2 z-10">
+          <div className="glass-effect-dark p-0.5 rounded text-xs tracking-wider border border-secondary/20">
+            <div className="flex items-center space-x-1 px-1">
+              <div className="w-1 h-1 rounded-full bg-green-400 animate-pulse"></div>
+              <span className="text-green-400">PROJ-{String(project.id).padStart(3, '0')}</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Featured badge */}
+        {project.featured && (
+          <div className="absolute bottom-2 left-2 z-10">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-highlight/20 text-highlight border border-highlight/30">
+              Featured
+            </span>
+          </div>
+        )}
+      </div>
+      
+      {/* Title Section */}
+      <div className="p-3 bg-darkBg/90">
+        <h3 className="text-base font-bold text-lightText relative truncate">
+          {project.title}
+          {project.featured && (
+            <div className="absolute -left-3 top-1/2 -translate-y-1/2 h-3 w-1 bg-cyan-400"></div>
+          )}
+        </h3>
+      </div>
+      
+      {/* Expandable Section Toggle */}
+      <button 
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full p-2 flex items-center justify-between bg-darkBg/80 border-t border-secondary/20"
+        aria-expanded={isExpanded ? "true" : "false"}
+        aria-label={isExpanded ? "Hide project details" : "Show project details"}
+      >
+        <span className="text-sm text-cyan-300">
+          {isExpanded ? "Hide Details" : "View Details"}
+        </span>
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          className={`h-4 w-4 text-cyan-300 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      
+      {/* Expandable Content */}
+      {isExpanded && (
+        <div className="p-3 bg-darkBg/95 border-t border-secondary/20">
+          <p className="text-sm text-lightText/80 mb-4">
+            {project.description}
+          </p>
+          
+          <div className="flex flex-wrap gap-2 mb-4">
+            {project.technologies.map((tech, idx) => (
+              <span 
+                key={idx}
+                className="text-xs px-2 py-1 rounded-full glass-effect-dark text-cyan-300 border border-cyan-500/30"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+          
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-2 rounded bg-secondary hover:bg-highlight text-white font-medium transition-colors duration-300 flex items-center justify-center gap-2 sci-fi-border"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            Explore Project
+          </a>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -277,14 +380,10 @@ const ProjectsSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
   const [showAll, setShowAll] = useState(false);
-  const expandedSectionRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
-  // Featured projects (display them first)
-  const featuredProjects = projects.filter(project => project.featured);
-  const otherProjects = projects.filter(project => !project.featured);
-  
-  // Show first 6 projects initially, then all when expanded
-  const displayedProjects = showAll ? projects : projects.slice(0, 6);
+  // Show the first 6 projects initially, then all when expanded
+  const initialProjects = projects.slice(0, 6);
   const expandedProjects = projects.slice(6);
 
   return (
@@ -319,46 +418,82 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Projects grid - all in a single container */}
-        <motion.div
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-        >
-          {/* First 6 projects */}
-          {projects.slice(0, 6).map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-          
-          {/* Remaining projects that show/hide based on showAll state */}
-          {showAll && projects.slice(6).map((project, index) => (
-            <ProjectCard 
-              key={project.id} 
-              project={project} 
-              index={index + 6} 
-            />
-          ))}
-        </motion.div>
-        
-        {/* Toggle button */}
-        <div className="text-center mt-12">
-          <motion.button
-            onClick={() => setShowAll(!showAll)}
-            className="px-6 py-3 rounded-full glass-effect-dark hover:bg-secondary/20 text-lightText font-medium transition-all duration-300 inline-flex items-center gap-2 sci-fi-border"
-            whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(139, 92, 246, 0.5)' }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {showAll ? 'Show Less' : 'Show More Projects'} 
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
+        {/* Desktop Projects Display */}
+        {!isMobile && (
+          <div className="hidden md:block">
+            <motion.div
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </motion.button>
+              {/* Initial projects */}
+              {initialProjects.map((project, index) => (
+                <DesktopProjectCard key={project.id} project={project} index={index} />
+              ))}
+              
+              {/* Expanded projects */}
+              {showAll && expandedProjects.map((project, index) => (
+                <DesktopProjectCard key={project.id} project={project} index={index + 6} />
+              ))}
+            </motion.div>
+          </div>
+        )}
+        
+        {/* Mobile Projects Display */}
+        {isMobile && (
+          <div className="md:hidden">
+            {/* Initial projects */}
+            {initialProjects.map((project, index) => (
+              <MobileProjectCard key={project.id} project={project} index={index} />
+            ))}
+            
+            {/* Expanded projects */}
+            {showAll && expandedProjects.map((project, index) => (
+              <MobileProjectCard key={project.id} project={project} index={index + 6} />
+            ))}
+          </div>
+        )}
+        
+        {/* Toggle button - different styling for mobile/desktop */}
+        <div className="text-center mt-8">
+          {isMobile ? (
+            // Mobile Show More Button
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="w-full py-3 bg-secondary/20 hover:bg-secondary/30 text-cyan-300 font-medium rounded-lg border border-secondary/30 transition-colors duration-300 flex items-center justify-center gap-2"
+              aria-expanded={showAll ? "true" : "false"}
+            >
+              {showAll ? 'Show Less' : 'Show More Projects'} 
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          ) : (
+            // Desktop Show More Button
+            <motion.button
+              onClick={() => setShowAll(!showAll)}
+              className="px-6 py-3 rounded-full glass-effect-dark hover:bg-secondary/20 text-lightText font-medium transition-all duration-300 inline-flex items-center gap-2 sci-fi-border"
+              whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(139, 92, 246, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {showAll ? 'Show Less' : 'Show More Projects'} 
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </motion.button>
+          )}
         </div>
       </div>
     </section>
