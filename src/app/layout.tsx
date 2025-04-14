@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.gowthamsridhar.com/images/gowtham-profile.jpg',
+        url: 'https://www.gowthamsridhar.com/images/shareLinkprofile.png',
         width: 1200,
         height: 630,
         alt: 'Gowtham Sridhar Portfolio',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     title: 'Gowtham Sridhar | HCI Researcher & XR Expert',
     description: 'Specializing in Human-Computer Interaction, XR Applications, and UI/UX Design to create seamless technological interfaces.',
     creator: '@gowtham_sridhar',
-    images: ['https://www.gowthamsridhar.com/images/gowtham-profile.jpg'],
+    images: ['https://www.gowthamsridhar.com/images/shareLinkprofile.png'],
   },
   icons: {
     icon: '/favicon.ico',
@@ -88,7 +88,7 @@ export default function RootLayout({
           worksForUrl="https://www.ait.ac.at/"
           educationalCredentials="Human-Computer Interaction"
           description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, and UI/UX Design."
-          image="https://www.gowthamsridhar.com/images/gowtham-profile.jpg"
+          image="https://www.gowthamsridhar.com/images/shareLinkprofile.png"
           sameAs={[
             "https://www.linkedin.com/in/gowtham-sridher/",
             "https://github.com/ALIENvsROBOT",
