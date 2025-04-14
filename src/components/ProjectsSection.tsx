@@ -298,25 +298,23 @@ const ProjectsSection = () => {
           ))}
         </motion.div>
         
-        {/* Toggle button - following AboutSection pattern that works on mobile */}
+        {/* Toggle button - traditional mobile-friendly approach */}
         <div className="text-center mt-12">
-          <div className="glass-effect p-1 rounded-full inline-flex">
-            <button 
-              className={`px-6 py-3 rounded-full text-sm font-medium ${showAll ? 'bg-secondary text-white' : 'text-lightText hover:text-white'}`}
-              onClick={handleToggleProjects}
+          <button 
+            onClick={handleToggleProjects}
+            className="w-full max-w-xs mx-auto py-4 px-6 flex items-center justify-center gap-2 bg-secondary/80 hover:bg-secondary text-white rounded-lg text-base font-medium shadow-lg"
+          >
+            <span>{showAll ? 'Show Less' : 'Show More Projects'}</span>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
             >
-              {showAll ? 'Show Less' : 'Show More Projects'} 
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className={`h-5 w-5 inline ml-1 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          </div>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
         </div>
       </div>
     </section>
