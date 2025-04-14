@@ -42,22 +42,40 @@ const Navbar = () => {
           : [link.href.substring(1)]
       );
       
-      // Find the lowest position (closest to the top of the viewport) section that's visible
+      // Improved algorithm for detecting the active section during scrolling
       let currentSection = 'home';
-      let minDistance = Infinity;
+      
+      // First, check if any section is fully in the viewport (with offset for navbar)
+      const navbarHeight = 100;
       
       sections.forEach(section => {
         // For sections with query params (like #about?tab=experience), just get the base section
         const baseSection = section.split('?')[0];
         const element = document.getElementById(baseSection);
+        
         if (element) {
           const rect = element.getBoundingClientRect();
-          // Consider a section in view if its top is within 150px of the top of the viewport
-          // or if its bottom is visible and it's closer than the previous candidate
-          const distance = Math.abs(rect.top);
-          if ((rect.top <= 150 && rect.bottom > 0) && distance < minDistance) {
-            minDistance = distance;
+          const viewportHeight = window.innerHeight;
+          
+          // Check if the section is in the viewport
+          // A section is considered active if:
+          // 1. Its top is at or just past the navbar
+          // 2. OR it fills most of the viewport
+          // 3. OR we're near the bottom of the page and it's the last fully visible section
+          
+          if (
+            // Top of section is just past navbar but still visible
+            (rect.top >= navbarHeight && rect.top < viewportHeight * 0.5) ||
+            // Section covers most of the viewport 
+            (rect.top <= navbarHeight && rect.bottom > viewportHeight * 0.5) ||
+            // We're at the bottom of the page
+            (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100
+          ) {
             currentSection = section;
+            // Return early if we found a perfect match
+            if (rect.top >= navbarHeight && rect.top < viewportHeight * 0.3) {
+              return;
+            }
           }
         }
       });
@@ -68,7 +86,7 @@ const Navbar = () => {
         // If URL has a tab parameter, use that to set active section
         setActiveSection(urlHash.slice(1)); // Remove the # character
       } else {
-      setActiveSection(currentSection);
+        setActiveSection(currentSection);
       }
     };
     

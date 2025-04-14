@@ -7,6 +7,16 @@ import Image from 'next/image';
 // Projects data from CV with placeholder images
 const projects = [
   {
+    id: 8,
+    title: 'BuildsaVeR: A Virtual Reality Experience for Construction Workers safety training',
+    description: 'buildsaVeR is designed to supplement safety training in the future and raise awareness of safe working practices. The biggest advantage: mistakes are completely harmless here - we promise!',
+    image: '/Project_images/buildsaVer.jpg',
+    fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Robot+Navigation',
+    technologies: ['XR', 'Unreal Engine', 'Game Development','Virtual Reality'],
+    link: 'https://www.linkedin.com/posts/strabag_strabag-workonprogress-virtualreality-activity-7309816291601612800-nlZw?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE',
+    featured: true,
+  },
+  {
     id: 1,
     title: 'Gaze, Gesture and Home Automation',
     description: 'An innovative system that combines eye-tracking, gesture recognition, and home automation to create a seamless smart home experience.',
