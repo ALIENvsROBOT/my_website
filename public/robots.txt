@@ -2,5 +2,19 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Allow all bots to access the site
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: Slurp
+Allow: /
+User-agent: DuckDuckBot
+Allow: /
+User-agent: Baiduspider
+Allow: /
+User-agent: YandexBot
+Allow: /
+
+# Sitemaps
 Sitemap: https://www.gowthamsridhar.com/sitemap.xml 

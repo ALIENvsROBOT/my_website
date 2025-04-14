@@ -6,10 +6,10 @@ import SEOStructuredData from '@/components/SEOStructuredData';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Gowtham Sridhar | HCI Researcher & XR Expert',
-  description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, and UI/UX Design.',
-  keywords: 'Gowtham Sridhar, HCI, XR Applications, UI/UX Design, Human-Computer Interaction, AIT, Junior Scientist',
-  authors: [{ name: 'Gowtham Sridhar' }],
+  title: 'Gowtham Sridhar | HCI Researcher & XR Expert | Portfolio',
+  description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, Mixed Reality, and UI/UX Design for innovative technological interfaces.',
+  keywords: 'Gowtham Sridhar, HCI Researcher, XR Expert, Human-Computer Interaction, XR Applications, UI/UX Design, Mixed Reality, AIT, Junior Scientist, Portfolio, Interactive Technology, Research Publications, Technology Innovation, Extended Reality, User Experience',
+  authors: [{ name: 'Gowtham Sridhar', url: 'https://www.gowthamsridhar.com' }],
   creator: 'Gowtham Sridhar',
   publisher: 'Gowtham Sridhar',
   formatDetection: {
@@ -26,11 +26,14 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+      'max-snippet': -1,
     }
   },
   openGraph: {
     title: 'Gowtham Sridhar | HCI Researcher & XR Expert',
-    description: 'Specializing in Human-Computer Interaction, XR Applications, and UI/UX Design to create seamless technological interfaces.',
+    description: 'Specializing in Human-Computer Interaction, XR Applications, and UI/UX Design to create seamless technological interfaces and innovative mixed reality experiences.',
     url: 'https://www.gowthamsridhar.com',
     siteName: 'Gowtham Sridhar Portfolio',
     locale: 'en_US',
@@ -40,14 +43,14 @@ export const metadata: Metadata = {
         url: 'https://www.gowthamsridhar.com/images/shareLinkprofile.png',
         width: 1200,
         height: 630,
-        alt: 'Gowtham Sridhar Portfolio',
+        alt: 'Gowtham Sridhar - HCI Researcher and XR Expert',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Gowtham Sridhar | HCI Researcher & XR Expert',
-    description: 'Specializing in Human-Computer Interaction, XR Applications, and UI/UX Design to create seamless technological interfaces.',
+    description: 'Specializing in Human-Computer Interaction, XR Applications, and UI/UX Design to create seamless technological interfaces and innovative mixed reality experiences.',
     creator: '@gowtham_sridhar',
     images: ['https://www.gowthamsridhar.com/images/shareLinkprofile.png'],
   },

@@ -277,37 +277,26 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Main projects grid */}
+        {/* Projects grid - all in a single container */}
         <motion.div
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
-          {displayedProjects.slice(0, 6).map((project, index) => (
+          {/* First 6 projects */}
+          {projects.slice(0, 6).map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
+          
+          {/* Remaining projects that show/hide based on showAll state */}
+          {showAll && projects.slice(6).map((project, index) => (
+            <ProjectCard 
+              key={project.id} 
+              project={project} 
+              index={index + 6} 
+            />
+          ))}
         </motion.div>
-        
-        {/* Expanded projects section */}
-        <div className="w-full" ref={expandedSectionRef}>
-          <AnimatePresence>
-            {showAll && (
-              <motion.div
-                initial={{ opacity: 0, y: 20, height: 0 }}
-                animate={{ opacity: 1, y: 0, height: "auto" }}
-                exit={{ opacity: 0, y: 20, height: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full mt-6"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {expandedProjects.map((project, index) => (
-                    <ProjectCard key={project.id} project={project} index={index + 6} />
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
         
         {/* Toggle button */}
         <div className="text-center mt-12">

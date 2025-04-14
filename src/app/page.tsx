@@ -4,6 +4,13 @@ import { useState, useEffect, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Head from 'next/head';
+
+// Import EnhancedSEO component
+const EnhancedSEO = dynamic(
+  () => import("@/components/EnhancedSEO"),
+  { ssr: false }
+);
 
 // Dynamically import components that use browser APIs with SSR disabled
 const EnhancedParticleBackground = dynamic(
@@ -112,6 +119,18 @@ export default function Home() {
   
   return (
     <main className="relative min-h-screen overflow-x-hidden">
+      {/* SEO Enhancements */}
+      <Head>
+        <link rel="canonical" href="https://www.gowthamsridhar.com" />
+      </Head>
+      
+      <EnhancedSEO 
+        pageTitle="Gowtham Sridhar | HCI Researcher & XR Expert" 
+        pageDescription="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, Mixed Reality, and UI/UX Design."
+        pageUrl="https://www.gowthamsridhar.com"
+        pagePath=""
+      />
+      
       {/* Enhanced Background */}
       <Suspense fallback={<div />}>
         <EnhancedParticleBackground />
