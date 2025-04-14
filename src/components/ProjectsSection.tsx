@@ -250,6 +250,11 @@ const ProjectsSection = () => {
   // All projects or just first 6
   const displayedProjects = showAll ? projects : projects.slice(0, 6);
 
+  // Handler for toggling project visibility - similar to AboutSection's handleTabClick
+  const handleToggleProjects = () => {
+    setShowAll(!showAll);
+  };
+
   return (
     <section id="projects" className="py-20 relative" ref={sectionRef}>
       {/* Decorative elements */}
@@ -293,23 +298,25 @@ const ProjectsSection = () => {
           ))}
         </motion.div>
         
-        {/* Toggle button */}
+        {/* Toggle button - following AboutSection pattern that works on mobile */}
         <div className="text-center mt-12">
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className="px-6 py-3 rounded-full glass-effect-dark hover:bg-secondary/20 text-lightText font-medium transition-all duration-300 inline-flex items-center gap-2 sci-fi-border"
-          >
-            {showAll ? 'Show Less' : 'Show More Projects'} 
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
+          <div className="glass-effect p-1 rounded-full inline-flex">
+            <button 
+              className={`px-6 py-3 rounded-full text-sm font-medium ${showAll ? 'bg-secondary text-white' : 'text-lightText hover:text-white'}`}
+              onClick={handleToggleProjects}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+              {showAll ? 'Show Less' : 'Show More Projects'} 
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className={`h-5 w-5 inline ml-1 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>
