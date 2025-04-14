@@ -168,7 +168,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 md:px-6 py-2">
         <div className="flex items-center justify-between">
-          <a href="#home" className="flex items-center gap-2" onClick={(e) => handleNavClick(e, '#home')}>
+          <a href="#home" className="flex items-center gap-2 pl-2 md:pl-4" onClick={(e) => handleNavClick(e, '#home')}>
             <motion.div
               className="relative w-10 h-10 rounded-full bg-gradient-to-r from-secondary to-highlight flex items-center justify-center"
               whileHover={{ scale: 1.1, rotate: 5 }}
@@ -177,7 +177,7 @@ const Navbar = () => {
               <span className="text-lightText font-bold text-xl">GS</span>
               <div className="absolute -inset-1 rounded-full opacity-30 animate-glow"></div>
             </motion.div>
-            <span className="font-bold text-xl hidden sm:block gradient-text">Gowtham Sridhar</span>
+            <span className="font-bold text-xl hidden sm:block gradient-text ml-2">Gowtham Sridhar</span>
           </a>
 
           {/* Desktop Navigation */}

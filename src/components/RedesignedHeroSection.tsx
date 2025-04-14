@@ -61,11 +61,11 @@ const RedesignedHeroSection = () => {
       {/* Grid background */}
       <div className="grid-bg"></div>
       
-      <div className="container mx-auto px-4 relative z-10 py-10">
+      <div className="container mx-auto px-6 sm:px-8 md:px-12 relative z-10 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left content - Text and Profile */}
           <motion.div 
-            className="order-2 lg:order-1"
+            className="order-2 lg:order-1 pl-0 md:pl-4 lg:pl-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}

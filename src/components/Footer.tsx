@@ -43,7 +43,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Logo and About */}
           <div className="md:col-span-2">
-            <a href="#home" className="flex items-center gap-2 mb-6" onClick={(e) => handleNavClick(e, '#home')}>
+            <a href="#home" className="flex items-center gap-2 pl-2 md:pl-4 mb-6" onClick={(e) => handleNavClick(e, '#home')}>
               <motion.div
                 className="relative w-10 h-10 rounded-full bg-gradient-to-r from-secondary to-highlight flex items-center justify-center"
                 whileHover={{ scale: 1.1, rotate: 5 }}
@@ -52,7 +52,7 @@ const Footer = () => {
                 <span className="text-lightText font-bold text-xl">GS</span>
                 <div className="absolute -inset-1 rounded-full opacity-30 animate-glow"></div>
               </motion.div>
-              <span className="font-bold text-xl gradient-text">Gowtham Sridhar</span>
+              <span className="font-bold text-xl gradient-text ml-2">Gowtham Sridhar</span>
             </a>
             
             <p className="text-lightText/70 mb-6 max-w-md">
