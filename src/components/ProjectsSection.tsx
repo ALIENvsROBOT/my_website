@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
@@ -105,6 +105,23 @@ interface ProjectCardProps {
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Check if device is mobile on mount and window resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   return (
     <motion.div 
@@ -121,8 +138,9 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           } 
         }
       }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+      onHoverStart={() => !isMobile && setIsHovered(true)}
+      onHoverEnd={() => !isMobile && setIsHovered(false)}
+      onTap={() => isMobile && setIsHovered(!isHovered)}
     >
       <div className="relative h-full overflow-hidden">
         <Image
@@ -202,7 +220,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         </div>
       </div>
       
-      {/* Hover overlay */}
+      {/* Hover overlay for desktop, touchable overlay for mobile */}
       <motion.div 
         className="absolute inset-0 flex items-center justify-center bg-darkBg/90 pointer-events-none flex-col p-4"
         initial={{ opacity: 0 }}
@@ -227,6 +245,30 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           Explore Project
         </a>
       </motion.div>
+      
+      {/* Mobile info toggle button */}
+      {isMobile && (
+        <button 
+          className="absolute bottom-20 right-4 w-10 h-10 rounded-full bg-secondary/80 flex items-center justify-center z-20"
+          onClick={() => setIsHovered(!isHovered)}
+          aria-label={isHovered ? "Close project details" : "Show project details"}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-6 w-6 text-white" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d={isHovered ? "M6 18L18 6M6 6l12 12" : "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"} 
+            />
+          </svg>
+        </button>
+      )}
     </motion.div>
   );
 };
