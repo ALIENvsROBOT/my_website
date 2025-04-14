@@ -241,9 +241,11 @@ const ProjectsSection = () => {
   const featuredProjects = projects.filter(project => project.featured);
   const otherProjects = projects.filter(project => !project.featured);
   
-  // Show first 6 projects initially, then all when expanded
-  const displayedProjects = showAll ? projects : projects.slice(0, 6);
-  const expandedProjects = projects.slice(6);
+  // Define the initial visible projects count based on screen size
+  const initialVisibleCount = 6;
+  
+  // Show first set of projects initially, then all when expanded
+  const visibleProjects = showAll ? projects : projects.slice(0, initialVisibleCount);
 
   return (
     <section id="projects" className="py-20 relative" ref={sectionRef}>
@@ -277,58 +279,39 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Main projects grid */}
+        {/* Projects grid - all visible projects */}
         <motion.div
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
-          {displayedProjects.slice(0, 6).map((project, index) => (
+          {visibleProjects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </motion.div>
         
-        {/* Expanded projects section */}
-        <div className="w-full" ref={expandedSectionRef}>
-          <AnimatePresence>
-            {showAll && (
-              <motion.div
-                initial={{ opacity: 0, y: 20, height: 0 }}
-                animate={{ opacity: 1, y: 0, height: "auto" }}
-                exit={{ opacity: 0, y: 20, height: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full mt-6"
-              >
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {expandedProjects.map((project, index) => (
-                    <ProjectCard key={project.id} project={project} index={index + 6} />
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-        
-        {/* Toggle button */}
-        <div className="text-center mt-12">
-          <motion.button
-            onClick={() => setShowAll(!showAll)}
-            className="px-6 py-3 rounded-full glass-effect-dark hover:bg-secondary/20 text-lightText font-medium transition-all duration-300 inline-flex items-center gap-2 sci-fi-border"
-            whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(139, 92, 246, 0.5)' }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {showAll ? 'Show Less' : 'Show More Projects'} 
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
+        {/* Toggle button - Only show if there are more projects to display */}
+        {projects.length > initialVisibleCount && (
+          <div className="text-center mt-12">
+            <motion.button
+              onClick={() => setShowAll(!showAll)}
+              className="px-6 py-3 rounded-full glass-effect-dark hover:bg-secondary/20 text-lightText font-medium transition-all duration-300 inline-flex items-center gap-2 sci-fi-border"
+              whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(139, 92, 246, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </motion.button>
-        </div>
+              {showAll ? 'Show Less' : 'Show More Projects'} 
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </motion.button>
+          </div>
+        )}
       </div>
     </section>
   );
