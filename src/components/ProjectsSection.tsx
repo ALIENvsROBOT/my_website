@@ -250,8 +250,9 @@ const ProjectsSection = () => {
   // All projects or just first 6
   const displayedProjects = showAll ? projects : projects.slice(0, 6);
 
-  // Handler for toggling project visibility - similar to AboutSection's handleTabClick
+  // Handler for toggling project visibility with explicit touch handling
   const handleToggleProjects = () => {
+    console.log("Toggle button clicked");
     setShowAll(!showAll);
   };
 
@@ -298,16 +299,21 @@ const ProjectsSection = () => {
           ))}
         </motion.div>
         
-        {/* Toggle button - traditional mobile-friendly approach */}
-        <div className="text-center mt-12">
+        {/* Toggle button - extremely simplified for mobile touch */}
+        <div className="text-center mt-12 relative z-10">
           <button 
             onClick={handleToggleProjects}
-            className="w-full max-w-xs mx-auto py-4 px-6 flex items-center justify-center gap-2 bg-secondary/80 hover:bg-secondary text-white rounded-lg text-base font-medium shadow-lg"
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              handleToggleProjects();
+            }}
+            className="w-full max-w-xs mx-auto py-5 px-6 bg-secondary text-white rounded-md text-lg font-medium shadow-lg active:bg-highlight"
+            style={{ touchAction: 'manipulation' }}
           >
-            <span>{showAll ? 'Show Less' : 'Show More Projects'}</span>
+            {showAll ? 'Show Less' : 'Show More Projects'}
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              className={`h-5 w-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
+              className={`h-5 w-5 inline-block ml-2 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
               fill="none" 
               viewBox="0 0 24 24" 
               stroke="currentColor"
