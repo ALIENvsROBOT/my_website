@@ -243,13 +243,16 @@ const ProjectsSection = () => {
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
   const [showAll, setShowAll] = useState(false);
   
-  // Featured projects (display them first)
-  const featuredProjects = projects.filter(project => project.featured);
-  const otherProjects = projects.filter(project => !project.featured);
+  // Calculate how many projects to show initially
+  const initialProjectCount = 6; // 3 columns x 2 rows or 2 columns x 3 rows
+  const expandedProjectCount = {
+    desktop: 9, // 3 columns x 3 rows
+    mobile: 8,  // 2 columns x 4 rows
+  };
   
-  // All projects or just first 6
-  const displayedProjects = showAll ? projects : projects.slice(0, 6);
-
+  // All projects sorted by featured first
+  const sortedProjects = [...projects.filter(p => p.featured), ...projects.filter(p => !p.featured)];
+  
   // Handler for toggling project visibility with explicit touch handling
   const handleToggleProjects = () => {
     console.log("Toggle button clicked");
@@ -288,16 +291,40 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Main projects grid */}
-        <motion.div
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-        >
-          {displayedProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </motion.div>
+        {/* Projects grid container with conditional height and scroll */}
+        <div className={`relative overflow-hidden ${showAll ? 'lg:h-[calc(3*100%/2)] h-[calc(4*100%/3)]' : ''}`}>
+          <motion.div
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className={`grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 ${showAll ? 'overflow-y-auto max-h-[800px] pr-2' : ''}`}
+            style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366F1 #1F2937' }}
+          >
+            {/* Show either all projects or just initial count */}
+            {(showAll ? sortedProjects : sortedProjects.slice(0, initialProjectCount)).map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </motion.div>
+          
+          {/* Custom scrollbar styling for webkit browsers */}
+          {showAll && (
+            <style jsx global>{`
+              .grid::-webkit-scrollbar {
+                width: 6px;
+              }
+              .grid::-webkit-scrollbar-track {
+                background: rgba(31, 41, 55, 0.5);
+                border-radius: 3px;
+              }
+              .grid::-webkit-scrollbar-thumb {
+                background: rgba(99, 102, 241, 0.5);
+                border-radius: 3px;
+              }
+              .grid::-webkit-scrollbar-thumb:hover {
+                background: rgba(99, 102, 241, 0.8);
+              }
+            `}</style>
+          )}
+        </div>
         
         {/* Toggle button - extremely simplified for mobile touch */}
         <div className="text-center mt-12 relative z-10">
