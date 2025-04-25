@@ -8,58 +8,13 @@
         http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd">
   <url>
     <loc>https://www.gowthamsridhar.com/</loc>
-    <lastmod>2024-07-15</lastmod>
+    <lastmod>2024-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://www.gowthamsridhar.com/images/shareLinkprofile.png</image:loc>
       <image:title>Gowtham Sridhar - HCI Researcher and XR Expert</image:title>
       <image:caption>Portfolio of Gowtham Sridhar, specializing in Human-Computer Interaction</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.gowthamsridhar.com/about</loc>
-    <lastmod>2024-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://www.gowthamsridhar.com/images/profile.jpg</image:loc>
-      <image:title>About Gowtham Sridhar</image:title>
-      <image:caption>Professional background and expertise in HCI and XR</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.gowthamsridhar.com/projects</loc>
-    <lastmod>2024-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://www.gowthamsridhar.com/images/projects-preview.jpg</image:loc>
-      <image:title>HCI and XR Projects by Gowtham Sridhar</image:title>
-      <image:caption>Portfolio of research and application projects in XR and HCI</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.gowthamsridhar.com/experience</loc>
-    <lastmod>2024-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.gowthamsridhar.com/contact</loc>
-    <lastmod>2024-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.gowthamsridhar.com/publications</loc>
-    <lastmod>2024-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://www.gowthamsridhar.com/images/publications-preview.jpg</image:loc>
-      <image:title>Research Publications by Gowtham Sridhar</image:title>
-      <image:caption>Academic publications in Human-Computer Interaction and XR fields</image:caption>
     </image:image>
   </url>
 </urlset> 
