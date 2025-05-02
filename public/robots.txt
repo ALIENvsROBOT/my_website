@@ -17,4 +17,10 @@ User-agent: YandexBot
 Allow: /
 
 # Sitemaps
-Sitemap: https://www.gowthamsridhar.com/sitemap.xml 
+Sitemap: https://www.gowthamsridhar.com/sitemap.xml
+
+# Disallow specific pages
+Disallow: /skills
+Disallow: /projects
+Disallow: /experience
+Disallow: /contact 
