@@ -647,22 +647,22 @@ export function HeroScene() {
           <ConnectionLines
             from={[0, 1.8, 0]}
             to={[
-              [-3, -1.8, 1],   // XR
+              [3, -1.8, 1],     // AI
               [-1.5, -1.8, 1],  // HCI
               [0, -1.8, 1],     // UI/UX
               [1.5, -1.8, 1],   // Robotics
-              [3, -1.8, 1]      // AI
+              [-3, -1.8, 1]     // XR
             ]}
-            colors={["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]}
+            colors={["#8B5CF6", "#3B82F6", "#10B981", "#F59E0B", "#EF4444"]}
           />
 
           {/* Skill tags with cool effects */}
           <group position={[0, -1.8, 1]}>
-            <SkillTag position={[-3, 0, 0]} skill="XR" color="#EF4444" delay={0.5} />
+            <SkillTag position={[3, 0, 0]} skill="AI" color="#8B5CF6" delay={0.1} />
             <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#3B82F6" delay={0.2} />
             <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.8} />
             <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
-            <SkillTag position={[3, 0, 0]} skill="AI" color="#8B5CF6" delay={0.1} />
+            <SkillTag position={[-3, 0, 0]} skill="XR" color="#EF4444" delay={0.5} />
           </group>
 
           {/* Camera controls with smooth damping */}
@@ -760,22 +760,22 @@ export function MobileHeroScene() {
           <ConnectionLines
             from={[0, 1.8, 0]}
             to={[
-              [-3, -1.8, 1],   // XR
+              [3, -1.8, 1],     // AI
               [-1.5, -1.8, 1],  // HCI
               [0, -1.8, 1],     // UI/UX
               [1.5, -1.8, 1],   // Robotics
-              [3, -1.8, 1]      // AI
+              [-3, -1.8, 1]     // XR
             ]}
-            colors={["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]}
+            colors={["#8B5CF6", "#3B82F6", "#10B981", "#F59E0B", "#EF4444"]}
           />
 
           {/* Skill tags - same positions as desktop */}
           <group position={[0, -1.8, 1]}>
-            <SkillTag position={[-3, 0, 0]} skill="AI" color="#EF4444" delay={0.5} />
+            <SkillTag position={[3, 0, 0]} skill="AI" color="#8B5CF6" delay={0.1} />
             <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#3B82F6" delay={0.2} />
             <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.8} />
             <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
-            <SkillTag position={[3, 0, 0]} skill="XR" color="#8B5CF6" delay={0.1} />
+            <SkillTag position={[-3, 0, 0]} skill="XR" color="#EF4444" delay={0.5} />
           </group>
 
           {/* Improved camera controls for mobile - disable rotation to allow scrolling */}
