@@ -20,7 +20,7 @@ export default function EnhancedSEO({
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Gowtham Sridhar - HCI Researcher & XR Expert',
+    name: 'Gowtham Sridhar - HCI Researcher & AI Expert',
     url: 'https://www.gowthamsridhar.com',
     description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, and UI/UX Design.',
     potentialAction: {
@@ -32,7 +32,7 @@ export default function EnhancedSEO({
       '@type': 'Person',
       name: 'Gowtham Sridhar',
       url: 'https://www.gowthamsridhar.com',
-      jobTitle: 'HCI Researcher & XR Expert',
+      jobTitle: 'HCI Researcher & AI Expert',
       worksFor: {
         '@type': 'Organization',
         name: 'AIT',

@@ -6,10 +6,15 @@ import Image from 'next/image';
 
 // Define the skills data based on CV
 const skills = [
-  { name: 'Human-Computer Interaction', level: 90 },
+  { name: 'Human-Computer Interaction', level: 95 },
+  { name: 'AI & Machine Learning', level: 95 },
+  { name: 'LLM', level: 90 },
+  { name: 'UI/UX Design', level: 85 },
+  { name: 'Tangible User Interface', level: 75 },
+  { name: 'Neural Nets', level: 70 },
   { name: 'Robotics', level: 85 },
   { name: 'XR Applications', level: 80 },
-  { name: 'Physical Prototyping', level: 85 },
+  { name: 'Physical Prototyping', level: 90 },
   { name: 'Computer Vision', level: 80 },
   { name: 'Python', level: 85 },
   { name: 'Unity', level: 75 },
@@ -154,13 +159,13 @@ const AboutSection = () => {
         setActiveTab('about');
       }
     };
-    
+
     // Check hash when component mounts
     checkHash();
-    
+
     // Add event listener for hash changes
     window.addEventListener('hashchange', checkHash);
-    
+
     return () => {
       window.removeEventListener('hashchange', checkHash);
     };
@@ -186,7 +191,7 @@ const AboutSection = () => {
       },
     },
   };
-  
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -200,13 +205,13 @@ const AboutSection = () => {
   };
 
   return (
-    <section 
-      id="about" 
+    <section
+      id="about"
       className="section-container light-up-section py-20"
       ref={sectionRef}
     >
       <div className="content-container mx-auto">
-        <motion.h2 
+        <motion.h2
           ref={headingRef}
           className={`text-3xl font-bold mb-8 text-center gradient-text ${isVisible ? 'visible' : ''}`}
           initial={{ opacity: 0, y: 20 }}
@@ -215,23 +220,23 @@ const AboutSection = () => {
         >
           About Me
         </motion.h2>
-        
+
         {/* Navigation Tabs */}
         <div className="flex justify-center mb-10">
           <div className="glass-effect p-1 rounded-full inline-flex">
-            <button 
+            <button
               className={`px-4 py-2 rounded-full text-sm ${activeTab === 'about' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
               onClick={() => handleTabClick('about')}
             >
               About
             </button>
-            <button 
+            <button
               className={`px-4 py-2 rounded-full text-sm ${activeTab === 'experience' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
               onClick={() => handleTabClick('experience')}
             >
               Experience
             </button>
-            <button 
+            <button
               className={`px-4 py-2 rounded-full text-sm ${activeTab === 'education' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
               onClick={() => handleTabClick('education')}
             >
@@ -239,13 +244,13 @@ const AboutSection = () => {
             </button>
           </div>
         </div>
-        
+
         {/* About Tab Content */}
         {activeTab === 'about' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4 md:px-6">
             <div className="space-y-4">
               {ABOUT_PARAGRAPHS.map((text, index) => (
-                <motion.p 
+                <motion.p
                   key={index}
                   className="text-white/80"
                   initial={{ opacity: 0, y: 20 }}
@@ -256,9 +261,9 @@ const AboutSection = () => {
                 </motion.p>
               ))}
             </div>
-            
+
             <div className="space-y-4">
-              <motion.div 
+              <motion.div
                 className="glass-effect p-6 rounded-lg sci-fi-border"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={isVisible ? { opacity: 1, scale: 1 } : {}}
@@ -267,7 +272,7 @@ const AboutSection = () => {
                 <h3 className="text-xl font-bold mb-4 text-cyan-300 cyan-glow">Skills & Expertise</h3>
                 <ul className="grid grid-cols-2 gap-2">
                   {SKILLS.map((skill, index) => (
-                    <motion.li 
+                    <motion.li
                       key={index}
                       className="flex items-center space-x-2"
                       initial={{ opacity: 0, x: -10 }}
@@ -280,8 +285,8 @@ const AboutSection = () => {
                   ))}
                 </ul>
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 className="glass-effect-dark p-6 rounded-lg"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={isVisible ? { opacity: 1, scale: 1 } : {}}
@@ -308,10 +313,10 @@ const AboutSection = () => {
             </div>
           </div>
         )}
-        
+
         {/* Experience Tab Content */}
         {activeTab === 'experience' && (
-          <motion.div 
+          <motion.div
             className="max-w-3xl mx-auto px-4 md:px-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -323,10 +328,10 @@ const AboutSection = () => {
             </div>
           </motion.div>
         )}
-        
+
         {/* Education Tab Content */}
         {activeTab === 'education' && (
-          <motion.div 
+          <motion.div
             className="max-w-3xl mx-auto px-4 md:px-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -334,7 +339,7 @@ const AboutSection = () => {
           >
             <div className="glass-effect-dark p-6 rounded-lg sci-fi-border">
               <h3 className="text-xl font-bold mb-6 text-purple-300 text-center">Educational Background</h3>
-              
+
               {education.map((edu, index) => (
                 <motion.div
                   key={index}
@@ -353,7 +358,7 @@ const AboutSection = () => {
                       <p className="text-lightText/80">{edu.institution}</p>
                     </div>
                   </div>
-                  
+
                   <div className="ml-16">
                     <div className="flex items-center gap-4 mb-2">
                       <div className="glass-effect text-xs px-3 py-1 rounded-full">
@@ -363,7 +368,7 @@ const AboutSection = () => {
                         {edu.location}
                       </div>
                     </div>
-                    
+
                     <div className="h-px w-full bg-gradient-to-r from-purple-500/30 to-transparent my-4"></div>
                   </div>
                 </motion.div>

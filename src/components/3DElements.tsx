@@ -1,25 +1,25 @@
 import React, { useRef, useState, Suspense, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
-import { 
-  Text, 
-  OrbitControls, 
-  useTexture, 
-  Instances, 
-  Instance, 
+import {
+  Text,
+  OrbitControls,
+  useTexture,
+  Instances,
+  Instance,
   useGLTF,
   MeshTransmissionMaterial,
   Environment,
   Trail,
   Float
 } from '@react-three/drei';
-import { 
-  Vector3, 
-  Mesh, 
-  Group, 
-  Color, 
-  MathUtils, 
-  InstancedMesh, 
-  Matrix4, 
+import {
+  Vector3,
+  Mesh,
+  Group,
+  Color,
+  MathUtils,
+  InstancedMesh,
+  Matrix4,
   BufferGeometry,
   MeshBasicMaterial,
   ShaderMaterial,
@@ -36,19 +36,19 @@ const toVector3 = (arr: [number, number, number]): Vector3 => new Vector3(arr[0]
 // Performance optimization hook
 function usePerformanceSettings() {
   const { gl } = useThree();
-  
+
   useEffect(() => {
     // Optimize performance
     gl.shadowMap.enabled = false;
-    
+
     // Use type-safe renderer properties
     if (gl.outputColorSpace !== undefined) {
       gl.outputColorSpace = 'srgb';
     }
-    
+
     // Disable tone mapping to improve performance
     gl.toneMapping = 0; // NoToneMapping
-    
+
     return () => {
       // Cleanup
       gl.dispose();
@@ -96,20 +96,20 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
   const pointsRef = useRef<any>();
   const linesRef = useRef<any>();
   const nodesRef = useRef<InstancedMesh>(null);
-  
+
   // Create node positions
   const { positions, sizes, colors, indices } = useMemo(() => {
     const positions = new Float32Array(count * 3);
     const sizes = new Float32Array(count);
     const colors = new Float32Array(count * 3);
     const indices = new Uint16Array(connections * 2);
-    
+
     // Create a helical pattern for nodes
     for (let i = 0; i < count; i++) {
       // First helix
       const theta = i * 0.2;
       const radius = 2.5 + Math.sin(i * 0.05) * 0.5;
-      
+
       if (i < count / 2) {
         // First DNA strand
         positions[i * 3] = Math.cos(theta) * radius;
@@ -122,10 +122,10 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
         positions[i * 3 + 1] = (j / count) * 5 - 2.5;
         positions[i * 3 + 2] = Math.sin(theta + Math.PI) * radius;
       }
-      
+
       // Randomize sizes slightly
       sizes[i] = 0.05 + Math.random() * 0.05;
-      
+
       // Gradient colors from purple to blue to cyan
       const t = i / count;
       if (t < 0.33) {
@@ -148,24 +148,24 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
         colors[i * 3 + 2] = 0.8;          // B: high
       }
     }
-    
+
     // Create the connecting bars (DNA "rungs")
     for (let i = 0; i < connections; i++) {
       const idx1 = i % (count / 2);
       const idx2 = idx1 + count / 2;
-      
+
       indices[i * 2] = idx1;
       indices[i * 2 + 1] = idx2;
     }
-    
+
     return { positions, sizes, colors, indices };
   }, [count, connections]);
-  
+
   // Matrix for each instance
   const matrices = useMemo(() => {
     const matrices = [];
     const matrix = new Matrix4();
-    
+
     for (let i = 0; i < count; i++) {
       matrix.setPosition(
         positions[i * 3],
@@ -174,29 +174,29 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
       );
       matrices.push(matrix.clone());
     }
-    
+
     return matrices;
   }, [positions, count]);
-  
+
   // Update animations
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
-    
+
     if (pointsRef.current) {
       pointsRef.current.material.uniforms.time.value = time;
     }
-    
+
     if (linesRef.current) {
       linesRef.current.rotation.y = time * 0.1;
     }
-    
+
     if (nodesRef.current) {
       for (let i = 0; i < count; i++) {
         const theta = i * 0.2 + time * 0.3;
         const radius = 2.5 + Math.sin(i * 0.05 + time * 0.2) * 0.5;
-        
+
         const matrix = new Matrix4();
-        
+
         if (i < count / 2) {
           // First DNA strand
           matrix.setPosition(
@@ -213,10 +213,10 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
             Math.sin(theta + Math.PI) * radius
           );
         }
-        
+
         nodesRef.current.setMatrixAt(i, matrix);
       }
-      
+
       nodesRef.current.instanceMatrix.needsUpdate = true;
     }
   });
@@ -254,7 +254,7 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
           blending={2} // AdditiveBlending
         />
       </points>
-      
+
       {/* The connecting lines between DNA strands */}
       <lineSegments ref={linesRef}>
         <bufferGeometry>
@@ -283,15 +283,15 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
           opacity={0.4}
         />
       </lineSegments>
-      
+
       {/* Glowing nodes at each connection point */}
       <instancedMesh ref={nodesRef} args={[undefined, undefined, count]}>
         <sphereGeometry args={[0.05, 10, 10]} />
-      <meshStandardMaterial 
-          emissive="#ffffff" 
+        <meshStandardMaterial
+          emissive="#ffffff"
           emissiveIntensity={2}
-          transparent 
-          opacity={0.9} 
+          transparent
+          opacity={0.9}
         />
       </instancedMesh>
     </group>
@@ -299,11 +299,11 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
 }
 
 // Animated text that morphs
-function MorphingText({ 
+function MorphingText({
   text = "Technologist",
-  position = [0, 0, 0] as [number, number, number], 
+  position = [0, 0, 0] as [number, number, number],
   color = "#7C3AED",
-  scale = 1 
+  scale = 1
 }: {
   text: string;
   position?: [number, number, number];
@@ -313,19 +313,19 @@ function MorphingText({
   const ref = useRef<Group>(null);
   const [hover, setHover] = useState(false);
   const { camera } = useThree();
-  
+
   useFrame(({ clock }) => {
     if (!ref.current) return;
-    
+
     const t = clock.getElapsedTime();
-    
+
     // More dynamic and fluid animation
     ref.current.position.y = position[1] + Math.sin(t * 0.5) * 0.1;
-    
+
     // Billboard effect - make text always face camera
     // This ensures the text is readable from any angle
     ref.current.lookAt(camera.position);
-    
+
     // Scale pulse effect on hover
     if (hover) {
       ref.current.scale.x = scale * (1 + Math.sin(t * 2) * 0.05);
@@ -335,16 +335,16 @@ function MorphingText({
       ref.current.scale.set(scale, scale, scale);
     }
   });
-  
+
   return (
     <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-      <group 
-        ref={ref} 
+      <group
+        ref={ref}
         position={toVector3(position)}
         onPointerOver={() => setHover(true)}
         onPointerOut={() => setHover(false)}
       >
-      <Text
+        <Text
           fontSize={0.6}
           color={color}
           anchorX="center"
@@ -353,11 +353,11 @@ function MorphingText({
           outlineWidth={0.01}
           outlineColor="#000000"
           outlineOpacity={0.3}
-      >
-        {text}
+        >
+          {text}
           <meshBasicMaterial color={color} transparent opacity={0.9} />
-      </Text>
-    </group>
+        </Text>
+      </group>
     </Float>
   );
 }
@@ -367,7 +367,7 @@ function ParticleSwarm() {
   const count = 100;
   const mesh = useRef<InstancedMesh>(null);
   const mouse = useRef<[number, number]>([0, 0]);
-  
+
   const dummy = useMemo(() => new Matrix4(), []);
   const particles = useMemo(() => {
     return Array.from({ length: count }, () => ({
@@ -385,7 +385,7 @@ function ParticleSwarm() {
       attraction: MathUtils.randFloat(0.001, 0.005)
     }));
   }, [count]);
-  
+
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
       mouse.current = [
@@ -393,56 +393,56 @@ function ParticleSwarm() {
         -(e.clientY / window.innerHeight) * 2 + 1
       ];
     };
-    
+
     window.addEventListener('mousemove', onMouseMove);
     return () => window.removeEventListener('mousemove', onMouseMove);
   }, []);
-  
+
   useFrame(({ clock, camera }) => {
     if (!mesh.current) return;
-    
+
     const time = clock.getElapsedTime();
-    
+
     // Update each particle
     particles.forEach((particle, i) => {
       // Convert mouse position to 3D space
       const mouseX = mouse.current[0] * 5;
       const mouseY = mouse.current[1] * 5;
       const mouseZ = 0;
-      
+
       // Calculate direction to mouse
       const dx = mouseX - particle.position[0];
       const dy = mouseY - particle.position[1];
       const dz = mouseZ - particle.position[2];
-      
+
       // Apply attraction/repulsion
       particle.velocity[0] += dx * particle.attraction;
       particle.velocity[1] += dy * particle.attraction;
       particle.velocity[2] += dz * particle.attraction;
-      
+
       // Add some natural movement
       particle.velocity[0] += Math.sin(time * 0.1 + i) * 0.001;
       particle.velocity[1] += Math.cos(time * 0.1 + i) * 0.001;
-      
+
       // Apply damping
       particle.velocity[0] *= 0.98;
       particle.velocity[1] *= 0.98;
       particle.velocity[2] *= 0.98;
-      
+
       // Update position
       particle.position[0] += particle.velocity[0];
       particle.position[1] += particle.velocity[1];
       particle.position[2] += particle.velocity[2];
-      
+
       // Keep particles in bounds
       if (Math.abs(particle.position[0]) > 8) particle.velocity[0] *= -1;
       if (Math.abs(particle.position[1]) > 8) particle.velocity[1] *= -1;
       if (Math.abs(particle.position[2]) > 8) particle.velocity[2] *= -1;
-      
+
       // Set matrix for instanced mesh
       dummy.makeScale(
-        particle.scale, 
-        particle.scale, 
+        particle.scale,
+        particle.scale,
         particle.scale
       );
       dummy.setPosition(
@@ -450,35 +450,35 @@ function ParticleSwarm() {
         particle.position[1],
         particle.position[2]
       );
-      
+
       // Use non-null assertion since we checked above
       mesh.current!.setMatrixAt(i, dummy);
     });
-    
+
     // Use non-null assertion since we checked above
     mesh.current!.instanceMatrix.needsUpdate = true;
   });
-  
+
   return (
     <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
       <icosahedronGeometry args={[1, 0]} />
-      <meshStandardMaterial 
-        color="#ffffff" 
+      <meshStandardMaterial
+        color="#ffffff"
         emissive="#ffffff"
         emissiveIntensity={1.5}
-        transparent 
-        opacity={0.6} 
+        transparent
+        opacity={0.6}
       />
     </instancedMesh>
   );
 }
 
 // Skill tag that reacts to hover
-function SkillTag({ 
-  skill = "", 
-  position = [0, 0, 0] as [number, number, number], 
-  color = "#7C3AED", 
-  delay = 0 
+function SkillTag({
+  skill = "",
+  position = [0, 0, 0] as [number, number, number],
+  color = "#7C3AED",
+  delay = 0
 }: {
   skill: string;
   position?: [number, number, number];
@@ -488,19 +488,19 @@ function SkillTag({
   const ref = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
   const { camera } = useThree();
-  
+
   useFrame(({ clock }) => {
     if (!ref.current) return;
-    
+
     const t = clock.getElapsedTime() + delay;
-    
+
     // Floating animation
     ref.current.position.y = position[1] + Math.sin(t * 0.8) * 0.1;
-    
+
     // Billboard effect - make tag always face camera
     // This uses lookAt which is more reliable for billboarding
     ref.current.lookAt(camera.position);
-    
+
     // Scale on hover
     ref.current.scale.setScalar(hovered ? 1.2 : 1);
   });
@@ -512,11 +512,11 @@ function SkillTag({
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      <Trail 
-        width={1} 
-        color={new Color(color)} 
-        length={5} 
-        decay={1} 
+      <Trail
+        width={1}
+        color={new Color(color)}
+        length={5}
+        decay={1}
         local={false}
         stride={0}
         interval={1}
@@ -524,16 +524,16 @@ function SkillTag({
       >
         <mesh>
           <planeGeometry args={[skill.length * 0.2 + 0.4, 0.4]} />
-          <meshStandardMaterial 
-            color={hovered ? "#ffffff" : color} 
+          <meshStandardMaterial
+            color={hovered ? "#ffffff" : color}
             emissive={hovered ? "#ffffff" : color}
             emissiveIntensity={1}
-            transparent 
-            opacity={0.9} 
+            transparent
+            opacity={0.9}
           />
         </mesh>
       </Trail>
-      
+
       <Text
         position={[0, 0, 0.01]}
         fontSize={0.15}
@@ -548,12 +548,12 @@ function SkillTag({
 }
 
 // Connection lines between nodes
-function ConnectionLines({ 
-  from, 
-  to, 
-  colors, 
-  thickness = 0.5, 
-  opacity = 1 
+function ConnectionLines({
+  from,
+  to,
+  colors,
+  thickness = 0.5,
+  opacity = 1
 }: {
   from: [number, number, number];
   to: Array<[number, number, number]>;
@@ -562,28 +562,28 @@ function ConnectionLines({
   opacity?: number;
 }) {
   const lineRef = useRef<Group>(null);
-  
+
   useEffect(() => {
     const currentRef = lineRef.current;
     if (!currentRef) return;
-    
+
     // Clear existing lines
     while (currentRef.children.length > 0) {
       currentRef.remove(currentRef.children[0]);
     }
-    
+
     // Create lines from the center point to each skill tag
     to.forEach((target, index) => {
       const lineGeometry = new BufferGeometry();
       const positions: number[] = [];
-      
+
       // Start point (from)
       positions.push(from[0], from[1], from[2]);
       // End point (to)
       positions.push(target[0], target[1], target[2]);
-      
+
       lineGeometry.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3));
-      
+
       const lineMaterial = new LineBasicMaterial({
         color: colors[index],
         transparent: true,
@@ -591,7 +591,7 @@ function ConnectionLines({
         linewidth: thickness, // Note: linewidth is not supported in WebGLRenderer, but we include it anyway
         depthTest: false
       });
-      
+
       const line = new Line(lineGeometry, lineMaterial);
       currentRef.add(line);
     });
@@ -609,14 +609,14 @@ function PerformanceScene({ children }: { children: React.ReactNode }) {
 // Main hero scene
 export function HeroScene() {
   const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
+
   return (
-    <Canvas 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'pan-y' }} 
+    <Canvas
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'pan-y' }}
       dpr={[1, 1.5]}
-      gl={{ 
-        alpha: true, 
-        antialias: true, 
+      gl={{
+        alpha: true,
+        antialias: true,
         powerPreference: 'low-power',
         logarithmicDepthBuffer: true
       }}
@@ -633,19 +633,19 @@ export function HeroScene() {
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
           <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#6366F1" />
-          
+
           {/* Main neural network structure */}
           <NeuralNetwork count={120} connections={60} />
-          
+
           {/* Interactive particle swarm */}
           <ParticleSwarm />
-          
+
           {/* Animated title */}
           <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#7C3AED" scale={1.2} />
-          
+
           {/* Connection lines from Technologist to skills */}
-          <ConnectionLines 
-            from={[0, 1.8, 0]} 
+          <ConnectionLines
+            from={[0, 1.8, 0]}
             to={[
               [-3, -1.8, 1],   // XR
               [-1.5, -1.8, 1],  // HCI
@@ -655,7 +655,7 @@ export function HeroScene() {
             ]}
             colors={["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]}
           />
-          
+
           {/* Skill tags with cool effects */}
           <group position={[0, -1.8, 1]}>
             <SkillTag position={[-3, 0, 0]} skill="XR" color="#EF4444" delay={0.5} />
@@ -664,7 +664,7 @@ export function HeroScene() {
             <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
             <SkillTag position={[3, 0, 0]} skill="AI" color="#8B5CF6" delay={0.1} />
           </group>
-          
+
           {/* Camera controls with smooth damping */}
           <OrbitControls
             enableZoom={false}
@@ -694,15 +694,15 @@ export function MobileHeroScene() {
   // Check for extremely low-end mobile devices only, not all mobile devices
   useEffect(() => {
     // Only detect very low-end devices
-    const isExtremelyLowEnd = 
+    const isExtremelyLowEnd =
       // Only target devices with very limited hardware
-      (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 2) || 
+      (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 2) ||
       // Check for very old browsers
       /MSIE|Trident/.test(navigator.userAgent);
-    
+
     setUseStaticMode(isExtremelyLowEnd);
   }, []);
-  
+
   // Static render only for extremely low-end devices
   if (useStaticMode) {
     return (
@@ -710,11 +710,11 @@ export function MobileHeroScene() {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-indigo-400 mb-6">Technologist</h2>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">XR</span>
+            <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">AI</span>
             <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">HCI</span>
             <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-500/30">UI/UX</span>
             <span className="px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30">Robotics</span>
-            <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">AI</span>
+            <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">XR</span>
           </div>
           <div className="opacity-40 text-sm text-gray-400">Static mode for older devices</div>
         </div>
@@ -724,11 +724,11 @@ export function MobileHeroScene() {
 
   // Higher quality mobile scene that more closely matches desktop
   return (
-    <Canvas 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'pan-y' }} 
+    <Canvas
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'pan-y' }}
       dpr={[1, 1.5]} // Match desktop DPR for higher resolution
-      gl={{ 
-        alpha: true, 
+      gl={{
+        alpha: true,
         antialias: true,
         powerPreference: 'default',
         logarithmicDepthBuffer: true
@@ -746,19 +746,19 @@ export function MobileHeroScene() {
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
           <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#6366F1" />
-          
+
           {/* Full neural network like desktop */}
           <NeuralNetwork count={120} connections={60} />
-          
+
           {/* Interactive particle swarm - same as desktop */}
           <ParticleSwarm />
-          
+
           {/* Animated title - same as desktop */}
           <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#7C3AED" scale={1.2} />
-          
+
           {/* Connection lines - same as desktop */}
-          <ConnectionLines 
-            from={[0, 1.8, 0]} 
+          <ConnectionLines
+            from={[0, 1.8, 0]}
             to={[
               [-3, -1.8, 1],   // XR
               [-1.5, -1.8, 1],  // HCI
@@ -768,16 +768,16 @@ export function MobileHeroScene() {
             ]}
             colors={["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]}
           />
-          
+
           {/* Skill tags - same positions as desktop */}
           <group position={[0, -1.8, 1]}>
-            <SkillTag position={[-3, 0, 0]} skill="XR" color="#EF4444" delay={0.5} />
+            <SkillTag position={[-3, 0, 0]} skill="AI" color="#EF4444" delay={0.5} />
             <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#3B82F6" delay={0.2} />
             <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.8} />
             <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
-            <SkillTag position={[3, 0, 0]} skill="AI" color="#8B5CF6" delay={0.1} />
+            <SkillTag position={[3, 0, 0]} skill="XR" color="#8B5CF6" delay={0.1} />
           </group>
-          
+
           {/* Improved camera controls for mobile - disable rotation to allow scrolling */}
           <OrbitControls
             enableZoom={false}
@@ -806,20 +806,20 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
   const [lowPerformanceMode, setLowPerformanceMode] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Add orientation and performance monitoring
   useEffect(() => {
     // Check orientation
     const checkOrientation = () => {
       setIsPortrait(window.innerHeight > window.innerWidth);
     };
-    
+
     // Initial orientation check
     checkOrientation();
-    
+
     // Listen for orientation changes
     window.addEventListener('resize', checkOrientation);
-    
+
     // Set initial performance mode, but be more conservative
     setLowPerformanceMode(isMobile && (
       // Only set low performance for extremely limited devices
@@ -827,40 +827,40 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
       // Or very old browsers
       /MSIE|Trident/.test(navigator.userAgent)
     ));
-    
+
     // Disable horizontal touch interactions but allow vertical scrolling
     const preventTouchMove = (e: TouchEvent) => {
       // Don't stop propagation - this prevents scrolling
       // Instead, add a passive listener that doesn't interfere with scrolling
       // No action needed here, the passive listener combined with touchAction: 'pan-y' will allow scrolling
     };
-    
+
     if (containerRef.current && isMobile) {
       containerRef.current.addEventListener('touchmove', preventTouchMove, { passive: true });
     }
-    
+
     let frameCount = 0;
     let lastTime = performance.now();
     let fps = 60;
     let fpsHistory: number[] = [];
-    
+
     // More sophisticated FPS tracker
     const checkFPS = () => {
       frameCount++;
       const currentTime = performance.now();
-      
+
       if (currentTime - lastTime >= 1000) {
         fps = frameCount;
         frameCount = 0;
         lastTime = currentTime;
-        
+
         // Keep a short history of FPS 
         fpsHistory.push(fps);
         if (fpsHistory.length > 5) fpsHistory.shift();
-        
+
         // Calculate average FPS
         const avgFps = fpsHistory.reduce((sum, val) => sum + val, 0) / fpsHistory.length;
-        
+
         // Only switch to low performance mode in extreme cases
         if (avgFps < 20 && !lowPerformanceMode && fpsHistory.length >= 3) {
           setLowPerformanceMode(true);
@@ -868,21 +868,21 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
           // Switch back if performance improves significantly
           setLowPerformanceMode(false);
         }
-        
+
         // Only disable rendering entirely in extreme cases
         if (avgFps < 12 && fpsHistory.length >= 3) {
           setShouldRender(false);
         }
       }
-      
+
       if (shouldRender) {
         requestAnimationFrame(checkFPS);
       }
     };
-    
+
     // Start monitoring FPS
     const animationId = requestAnimationFrame(checkFPS);
-    
+
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', checkOrientation);
@@ -891,12 +891,12 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
       }
     };
   }, [isMobile, shouldRender, lowPerformanceMode]);
-  
+
   return (
     <div
       ref={containerRef}
       className="relative w-full h-[50vh] md:h-[70vh] min-h-[250px] md:min-h-[400px]"
-      style={{ 
+      style={{
         touchAction: 'pan-y', // Allow vertical scrolling
         overscrollBehavior: 'none',
         userSelect: 'none'

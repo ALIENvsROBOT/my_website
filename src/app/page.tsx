@@ -125,8 +125,8 @@ export default function Home() {
       </Head>
       
       <EnhancedSEO 
-        pageTitle="Gowtham Sridhar | HCI Researcher & XR Expert" 
-        pageDescription="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, Mixed Reality, and UI/UX Design."
+        pageTitle="Gowtham Sridhar | HCI Researcher & AI Expert" 
+        pageDescription="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, AI Applications, Mixed Reality, and UI/UX Design."
         pageUrl="https://www.gowthamsridhar.com"
         pagePath=""
       />
