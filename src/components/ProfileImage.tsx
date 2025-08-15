@@ -63,7 +63,7 @@ const ProfileImage = () => {
       >
         <span className="text-indigo-400">HCI</span>
         <span className="text-gray-400">|</span>
-        <span className="text-purple-400">XR</span>
+        <span className="text-purple-400">AI</span>
       </motion.div>
       
       {/* Glowing dot */}
