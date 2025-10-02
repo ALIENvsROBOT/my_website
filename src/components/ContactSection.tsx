@@ -168,8 +168,8 @@ const ContactSection = () => {
         >
           <h2 className="text-3xl font-bold mb-4 gradient-text">Get In Touch</h2>
           <p className="text-white/80 max-w-2xl mx-auto">
-            I'm always open to new opportunities and collaborations. Whether you have a question
-            or just want to say hello, feel free to drop me a message and I'll get back to you!
+            I&apos;m always open to new opportunities and collaborations. Whether you have a question
+            or just want to say hello, feel free to drop me a message and I&apos;ll get back to you!
           </p>
         </motion.div>
 
@@ -285,7 +285,7 @@ const ContactSection = () => {
                 animate={{ opacity: 1, y: 0 }} 
                 className="text-sm text-green-400 text-center mt-2"
               >
-                Thank you for your message! I'll get back to you as soon as possible.
+                Thank you for your message! I&apos;ll get back to you as soon as possible.
               </motion.p>
             )}
             
@@ -295,7 +295,7 @@ const ContactSection = () => {
                 animate={{ opacity: 1, y: 0 }} 
                 className="text-sm text-red-400 text-center mt-2"
               >
-                Couldn't send your message. Please try again or contact me directly.
+                Couldn&apos;t send your message. Please try again or contact me directly.
               </motion.p>
             )}
           </motion.div>
@@ -364,7 +364,7 @@ const ContactSection = () => {
 
               <div className="mt-6 pt-4 border-t border-white/10">
                 <p className="text-gray-300 text-sm italic">
-                  "Looking forward to connecting and exploring potential collaborations in HCI, robotics, and innovative tech solutions."
+                  &quot;Looking forward to connecting and exploring potential collaborations in HCI, robotics, and innovative tech solutions.&quot;
                 </p>
               </div>
             </div>
@@ -376,7 +376,7 @@ const ContactSection = () => {
               transition={{ duration: 0.5, delay: 0.6 }}
             >
               <h3 className="text-xl font-bold mb-4 text-cyan-300">Connect With Me</h3>
-              <p className="text-gray-300 text-sm mb-4">Let's connect on social platforms or check out my projects:</p>
+              <p className="text-gray-300 text-sm mb-4">Let&apos;s connect on social platforms or check out my projects:</p>
               <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
                 <a 
                   href="https://www.linkedin.com/in/gowtham-sridher/" 
@@ -421,4 +421,4 @@ const ContactSection = () => {
   );
 };
 
-export default ContactSection; 
+export default ContactSection;

@@ -29,7 +29,7 @@ export default function NotFound() {
       
       <EnhancedSEO 
         pageTitle="Page Not Found | Gowtham Sridhar" 
-        pageDescription="Sorry, the page you are looking for could not be found. Return to Gowtham Sridhar's portfolio homepage."
+        pageDescription="Sorry, the page you are looking for could not be found. Return to Gowtham Sridhar&apos;s portfolio homepage."
         pageUrl="https://www.gowthamsridhar.com/404"
         pagePath="404"
       />
@@ -37,7 +37,7 @@ export default function NotFound() {
       <div className="text-center">
         <h1 className="text-6xl font-bold mb-4">404</h1>
         <h2 className="text-2xl font-semibold mb-6">Page Not Found</h2>
-        <p className="max-w-md mb-8">Sorry, the page you're looking for doesn't exist or has been moved.</p>
+        <p className="max-w-md mb-8">Sorry, the page you&apos;re looking for does not exist or has been moved.</p>
         
         <div className="mb-8">
           <h3 className="text-xl font-medium mb-4">You might be interested in:</h3>
@@ -55,4 +55,4 @@ export default function NotFound() {
       </div>
     </div>
   );
-} 
+}

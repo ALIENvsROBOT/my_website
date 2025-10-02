@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { contactSummary, researchFocusAreas } from '@/data/profile';
 
@@ -113,7 +113,7 @@ export default function ContactPage() {
         </section>
 
         <section aria-labelledby="availability-heading" className="rounded-xl border border-secondary/30 bg-secondary/5 p-6">
-          <h2 id="availability-heading" className="text-2xl font-semibold text-secondary">Let's Collaborate</h2>
+          <h2 id="availability-heading" className="text-2xl font-semibold text-secondary">Let&apos;s Collaborate</h2>
           <p className="mt-3 text-lightText/80">
             {contactSummary.availability}
           </p>

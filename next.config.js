@@ -1,4 +1,4 @@
-﻿/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
   output: 'export',
   images: {
@@ -12,10 +12,10 @@ const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
   swcMinify: true,
-  // Add runtime config for browser detection  experimental: {
+  experimental: {
     // Disable optimizeCss to avoid potential issues with asset loading
     optimizeCss: false,
-    // Skip server components entirely for static export  },
-}
+  },
+};
 
-module.exports = nextConfig 
+module.exports = nextConfig;
