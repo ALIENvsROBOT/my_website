@@ -1,78 +1,16 @@
 "use client";
 
 import { useRef, useEffect, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-// Define the skills data based on CV
-const skills = [
-  { name: 'Human-Computer Interaction', level: 95 },
-  { name: 'AI & Machine Learning', level: 95 },
-  { name: 'LLM', level: 90 },
-  { name: 'UI/UX Design', level: 85 },
-  { name: 'Tangible User Interface', level: 75 },
-  { name: 'Neural Nets', level: 70 },
-  { name: 'Robotics', level: 85 },
-  { name: 'XR Applications', level: 80 },
-  { name: 'Physical Prototyping', level: 90 },
-  { name: 'Computer Vision', level: 80 },
-  { name: 'Python', level: 85 },
-  { name: 'Unity', level: 75 },
-  { name: 'ROS', level: 80 },
-  { name: 'C++', level: 70 },
-  { name: 'Embedded Systems', level: 75 },
-];
-
-// Experience data from CV
-const experiences = [
-  {
-    title: 'Junior Scientist',
-    company: 'AIT - Center for Technology Experience',
-    period: '2023 - Present',
-    location: 'Vienna, Austria',
-    description: 'Working on prototyping XR applications, creating innovative real-world interaction with technology, researching on User Interface for beyond screens, Tangible User Interface and hardware prototyping.',
-  },
-  {
-    title: 'Junior Researcher',
-    company: 'Salzburg Research',
-    period: '2022 - 2023',
-    location: 'Salzburg, Austria',
-    description: 'Improved navigation systems, navigating ARTI Chasi robot using overhead camera, developed AruCo marker detection, implemented collision avoidance for panda robotic arm, and created voice-controlled robot manipulation solutions.',
-  },
-  {
-    title: 'Intern',
-    company: 'E-Yantra (IIT Bombay)',
-    period: '2021',
-    location: 'Mumbai, India',
-    description: 'Worked on robot soccer project using webots and ROS to make robots play soccer game autonomously with object tracking, image processing, navigation, multi-robot communication, path planning and localization algorithms.',
-  },
-];
-
-// Education data from CV
-const education = [
-  {
-    degree: 'M.Sc. Human-Computer Interaction (Joint Degree)',
-    institution: 'Paris Lodron Universität Salzburg & Fachhochschule Salzburg',
-    period: '2022 - 2025',
-    location: 'Salzburg, Austria',
-  },
-  {
-    degree: 'B.Tech. Mechatronics Engineering',
-    institution: 'Hindustan Institute of Technology and Science',
-    period: '2017 - 2021',
-    location: 'Chennai, India',
-  },
-];
-
-// Text content for paragraphs based on CV
-const ABOUT_PARAGRAPHS = [
-  "Hello! I'm Gowtham Sridhar, a Junior Scientist at AIT - Center for Technology Experience in Vienna, Austria. I'm passionate about advancing my expertise at the forefront of Human-Computer Interaction, Robotics, and creating innovative interactions for the physical world.",
-  "I'm committed to embracing challenging projects in robotics and human-computer interaction, employing innovative and efficient coding solutions. Working hands-on with wires and processors, I believe that intricate problems demand intelligent and streamlined approaches.",
-  "Currently, I focus on prototyping XR applications, creating innovative real-world interactions with technology, researching interfaces beyond screens, and developing tangible user interfaces with hardware prototyping."
-];
-
-// Skills list based on CV
-const SKILLS = ["Human-Computer Interaction", "Robotics", "XR Applications", "Physical Prototyping", "Computer Vision", "Python", "C++", "Unity", "ROS", "Embedded Systems", "Tangible User Interface", "Neural Nets"];
+import {
+  biographyParagraphs as ABOUT_PARAGRAPHS,
+  coreSkillLevels as skills,
+  experienceEntries as experiences,
+  educationEntries as education,
+  spotlightSkills as SKILLS,
+} from '@/data/profile';
 
 // Define Experience type based on the experience data structure
 type Experience = {
@@ -279,7 +217,7 @@ const AboutSection = () => {
                       animate={isVisible ? { opacity: 1, x: 0 } : {}}
                       transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
                     >
-                      <span className="text-indigo-400">▹</span>
+                      <span className="text-indigo-400" aria-hidden="true">{String.fromCharCode(0x25B9)}</span>
                       <span>{skill}</span>
                     </motion.li>
                   ))}
@@ -297,14 +235,14 @@ const AboutSection = () => {
                   {education.map((edu, index) => (
                     <li key={index} className="text-sm">
                       <div className="flex items-center">
-                        <span className="text-indigo-400 mr-2">🎓</span>
+                        <span className="text-indigo-400 mr-2" aria-hidden="true">{String.fromCodePoint(0x1F393)}</span>
                         <span className="font-semibold">{edu.degree}</span>
                       </div>
                       <div className="ml-6 text-lightText/70">
                         {edu.institution}
                       </div>
                       <div className="ml-6 text-xs text-lightText/50">
-                        {edu.period} • {edu.location}
+                        {edu.period} {String.fromCharCode(0x2022)} {edu.location}
                       </div>
                     </li>
                   ))}
@@ -350,9 +288,7 @@ const AboutSection = () => {
                   viewport={{ once: true }}
                 >
                   <div className="flex items-center gap-4 mb-3">
-                    <div className="h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center text-2xl">
-                      🎓
-                    </div>
+                    <div className="h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center text-2xl" aria-hidden="true">{String.fromCodePoint(0x1F393)}</div>
                     <div>
                       <h4 className="text-lg font-semibold gradient-text">{edu.degree}</h4>
                       <p className="text-lightText/80">{edu.institution}</p>
@@ -381,4 +317,4 @@ const AboutSection = () => {
   );
 };
 
-export default AboutSection; 
+export default AboutSection;

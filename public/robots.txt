@@ -2,25 +2,19 @@
 User-agent: *
 Allow: /
 
-# Allow all bots to access the site
 User-agent: Googlebot
 Allow: /
+
 User-agent: Bingbot
 Allow: /
-User-agent: Slurp
-Allow: /
-User-agent: DuckDuckBot
-Allow: /
-User-agent: Baiduspider
-Allow: /
-User-agent: YandexBot
+
+User-agent: GPTBot
 Allow: /
 
-# Sitemaps
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://www.gowthamsridhar.com/sitemap.xml
-
-# Disallow specific pages
-Disallow: /skills
-Disallow: /projects
-Disallow: /experience
-Disallow: /contact 

@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL('https://www.gowthamsridhar.com'),
+  alternates: {
+    canonical: '/',
+  },
   robots: {
     index: true,
     follow: true,
@@ -84,9 +87,9 @@ export default function RootLayout({
         <SEOStructuredData 
           name="Gowtham Sridhar"
           jobTitle="HCI Researcher & XR Expert"
-          worksFor="AIT"
+          worksFor="Austrian Institute of Technology (AIT)"
           worksForUrl="https://www.ait.ac.at/"
-          educationalCredentials="Human-Computer Interaction"
+          educationalCredentials="M.Sc. Human-Computer Interaction (Joint Degree)"
           description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, and UI/UX Design."
           image="https://www.gowthamsridhar.com/images/shareLinkprofile.png"
           sameAs={[
@@ -104,12 +107,14 @@ export default function RootLayout({
             "UI/UX Design",
             "Mixed Reality"
           ]}
-          alumniOf="Your University"
+          alumniOf={[
+            "Paris Lodron Universitaet Salzburg",
+            "Fachhochschule Salzburg",
+            "Hindustan Institute of Technology and Science"
+          ]}
           address={{
-            streetAddress: "Your Street Address",
-            addressLocality: "Your City",
-            postalCode: "Your Postal Code",
-            addressCountry: "Your Country"
+            addressLocality: "Vienna",
+            addressCountry: "Austria"
           }}
         />
         <script 
@@ -181,4 +186,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-} 
+}
