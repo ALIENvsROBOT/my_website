@@ -172,15 +172,6 @@ export const awardsAndRecognitions: AwardEntry[] = [
     link: 'https://pressreader.com/article/281844354017503'
   },
   {
-    title: 'Best paper award',
-    issuer: 'IVC RAISE 2020 conference',
-    year: '2020',
-    description: 'Best paper award for the paper for Autonomous Robotic Exploration and Navigation System using Tri-layered Mapping and Geometrical Path Planning Techniques',
-    image: '/reward_images/Best_paper_2020.jpg',
-    highlight: 'Best paper award',
-    link: 'https://www.linkedin.com/posts/gowtham-sridher_best-paper-award-i-would-like-to-thank-activity-6747807508599062528-cjwH?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE'
-  },
-  {
     title: "Master's graduation",
     issuer: 'Paris Lodron Universitaet Salzburg and Fachhochschule Salzburg',
     year: '2025',
@@ -189,8 +180,17 @@ export const awardsAndRecognitions: AwardEntry[] = [
     highlight: 'Graduation',
     link: 'https://www.linkedin.com/posts/gowtham-sridher_im-happy-to-share-that-ive-completed-my-activity-7299182381213622272-qPdd?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE'
   },
-  
 
+  {
+    title: 'Best paper award',
+    issuer: 'IVC RAISE 2020 conference',
+    year: '2020',
+    description: 'Best paper award for the paper for Autonomous Robotic Exploration and Navigation System using Tri-layered Mapping and Geometrical Path Planning Techniques',
+    image: '/reward_images/Best_paper_2020.jpg',
+    highlight: 'Best paper award',
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_best-paper-award-i-would-like-to-thank-activity-6747807508599062528-cjwH?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE'
+  },
+  
 ];
 
 
