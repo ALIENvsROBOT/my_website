@@ -190,7 +190,6 @@ export const awardsAndRecognitions: AwardEntry[] = [
     highlight: 'Best paper award',
     link: 'https://www.linkedin.com/posts/gowtham-sridher_best-paper-award-i-would-like-to-thank-activity-6747807508599062528-cjwH?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE'
   },
-  
 ];
 
 
