@@ -195,17 +195,25 @@ export const awardsAndRecognitions: AwardEntry[] = [
 
 export const spotlightSkills: string[] = [
   'Human-Computer Interaction',
-  'Robotics',
-  'XR Applications',
+  'AI Inferencing',
+  'LLM',
+  'LangChain',
+  'Ollama',
+  'vLLM',
+  'Fine-tuning',
+  'Creating innovative interaction in physical world',
+  'AI automation',
+  'RAG',
   'Physical Prototyping',
-  'Computer Vision',
   'Python',
   'C++',
-  'Unity',
-  'ROS',
   'Embedded Systems',
-  'Tangible User Interface',
-  'Neural Nets'
+  'Computer Vision',
+  'Robotics',
+  'Neural Nets',
+  'Docker',
+  'Server',
+  'Game engine'
 ];
 
 export const researchFocusAreas: string[] = [

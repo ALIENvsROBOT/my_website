@@ -27,7 +27,9 @@ import {
   DoubleSide,
   Line,
   LineBasicMaterial,
-  BufferAttribute
+  BufferAttribute,
+  Plane,
+  Ray
 } from 'three';
 
 // Helper function to convert array to Vector3
@@ -368,6 +370,15 @@ function ParticleSwarm() {
   const mesh = useRef<InstancedMesh>(null);
   const mouse = useRef<[number, number]>([0, 0]);
 
+  // Reusable math objects to avoid per-frame allocations
+  const mouseNdc = useRef(new Vector3(0, 0, 0.5));
+  const cameraNormal = useRef(new Vector3());
+  const planePoint = useRef(new Vector3());
+  const targetPoint = useRef(new Vector3());
+  const tmpVec = useRef(new Vector3());
+  const interactionPlane = useMemo(() => new Plane(), []);
+  const ray = useMemo(() => new Ray(), []);
+
   const dummy = useMemo(() => new Matrix4(), []);
   const particles = useMemo(() => {
     return Array.from({ length: count }, () => ({
@@ -403,17 +414,33 @@ function ParticleSwarm() {
 
     const time = clock.getElapsedTime();
 
+    // Compute a camera-aligned interaction point from mouse
+    // 1) Build plane ~5 units in front of camera, orthogonal to camera forward
+    camera.getWorldDirection(cameraNormal.current).normalize();
+    planePoint.current.copy(camera.position);
+    tmpVec.current.copy(cameraNormal.current).multiplyScalar(5);
+    planePoint.current.add(tmpVec.current);
+    interactionPlane.setFromNormalAndCoplanarPoint(
+      cameraNormal.current,
+      planePoint.current
+    );
+
+    // 2) Ray from camera through mouse NDC and intersect with plane
+    mouseNdc.current.set(mouse.current[0], mouse.current[1], 0.5);
+    ray.origin.copy(camera.position);
+    ray.direction.copy(mouseNdc.current).unproject(camera).sub(camera.position).normalize();
+    const hasHit = ray.intersectPlane(interactionPlane, targetPoint.current);
+
     // Update each particle
     particles.forEach((particle, i) => {
-      // Convert mouse position to 3D space
-      const mouseX = mouse.current[0] * 5;
-      const mouseY = mouse.current[1] * 5;
-      const mouseZ = 0;
+      // Calculate direction to camera-aligned target point (if available)
+      const tx = hasHit ? targetPoint.current.x : 0;
+      const ty = hasHit ? targetPoint.current.y : 0;
+      const tz = hasHit ? targetPoint.current.z : 0;
 
-      // Calculate direction to mouse
-      const dx = mouseX - particle.position[0];
-      const dy = mouseY - particle.position[1];
-      const dz = mouseZ - particle.position[2];
+      const dx = tx - particle.position[0];
+      const dy = ty - particle.position[1];
+      const dz = tz - particle.position[2];
 
       // Apply attraction/repulsion
       particle.velocity[0] += dx * particle.attraction;
