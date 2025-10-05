@@ -324,6 +324,10 @@ const ContactSection = () => {
                     <a href="mailto:gowtham.sridher5@gmail.com" className="text-blue-400 hover:text-blue-300 transition-colors">
                       gowtham.sridher5@gmail.com
                     </a>
+                    <br />
+                    <a href="mailto:gowtham.sridhar@ait.ac.at" className="text-blue-400 hover:text-blue-300 transition-colors">
+                      gowtham.sridhar@ait.ac.at
+                    </a>
                     <p className="text-xs text-gray-400 mt-1">Response time: Usually within 24-48 hours</p>
                   </div>
                 </motion.li>

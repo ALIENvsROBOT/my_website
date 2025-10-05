@@ -1,3 +1,5 @@
+import type { StaticImageData } from 'next/image';
+
 export type SkillLevel = {
   name: string;
   level: number;
@@ -16,6 +18,17 @@ export type EducationEntry = {
   institution: string;
   period: string;
   location: string;
+};
+
+export type AwardEntry = {
+  title: string;
+  issuer: string;
+  year: string;
+  description: string;
+  image: string | StaticImageData;
+  fallbackImage?: string | StaticImageData;
+  highlight?: string;
+  link?: string;
 };
 
 export type ProfileBasics = {
@@ -138,6 +151,48 @@ export const educationEntries: EducationEntry[] = [
     location: 'Chennai, India'
   }
 ];
+
+export const awardsAndRecognitions: AwardEntry[] = [
+  {
+    title: 'eAward 2025: Best digitalization projects from business and administration awarded',
+    issuer: 'report.at',
+    year: '2025',
+    description: 'The eAward business prize honors digitalization projects and has been awarded since 2005. And the "eAward 2025" also shows the possibilities of information technology when redesigning business processes. These are all nominees.',
+    image: 'https://media.licdn.com/dms/image/v2/D4D10AQG5Irfn3QBlUA/image-shrink_1280/B4DZmghYxUJMAM-/0/1759334731797?e=1760295600&v=beta&t=MbmjOh04ly9TvyW28Y8h2R83M4CcQd63gKYYeqq6h18',
+    highlight: 'Winner',
+    link: 'https://www.linkedin.com/posts/austrian-institute-of-technology_ait-buildsavr-eaward-activity-7379184705994297344-vsi-?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE'
+  },
+  {
+    title: 'Schmiede 2024 hallein salzburg. Intuitve User Interface project',
+    issuer: 'salzburger nachrichten',
+    year: '2024',
+    description: 'Got featured in the news article for the Intuitve User Interface project',
+    image: '/reward_images/news_salzburg_sept_2024.png',
+    highlight: 'News article',
+    link: 'https://pressreader.com/article/281844354017503'
+  },
+  {
+    title: 'Best paper award',
+    issuer: 'IVC RAISE 2020 conference',
+    year: '2020',
+    description: 'Best paper award for the paper for Autonomous Robotic Exploration and Navigation System using Tri-layered Mapping and Geometrical Path Planning Techniques',
+    image: '/reward_images/Best_paper_2020.jpg',
+    highlight: 'Best paper award',
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_best-paper-award-i-would-like-to-thank-activity-6747807508599062528-cjwH?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE'
+  },
+  {
+    title: "Master's graduation",
+    issuer: 'Paris Lodron Universitaet Salzburg and Fachhochschule Salzburg',
+    year: '2025',
+    description: "Master's graduation Human-Computer Interaction (Joint Degree)",
+    image: '/reward_images/graduation.jpeg',
+    highlight: 'Graduation',
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_im-happy-to-share-that-ive-completed-my-activity-7299182381213622272-qPdd?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE'
+  },
+  
+
+];
+
 
 export const spotlightSkills: string[] = [
   'Human-Computer Interaction',

@@ -10,6 +10,7 @@ const Footer = () => {
     { href: '#home', label: 'Home' },
     { href: '#about', label: 'About' },
     { href: '#projects', label: 'Projects' },
+    { href: '#awards', label: 'Awards' },
     { href: '#contact', label: 'Contact' },
   ];
   
@@ -56,7 +57,7 @@ const Footer = () => {
             </a>
             
             <p className="text-lightText/70 mb-6 max-w-md">
-              Junior Scientist at AIT focusing on Human-Computer Interaction, XR Applications, and Robotics. 
+              Junior Scientist at AIT focusing on Human-Computer Interaction, AI, XR Applications, and Robotics. 
               Creating innovative real-world interactions with technology.
             </p>
             
@@ -123,6 +124,14 @@ const Footer = () => {
                 </svg>
                 <a href="mailto:gowtham.sridher5@gmail.com" className="text-lightText/70 hover:text-secondary transition-colors duration-300">
                   gowtham.sridher5@gmail.com
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-secondary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <a href="mailto:gowtham.sridhar@ait.ac.at" className="text-lightText/70 hover:text-secondary transition-colors duration-300">
+                  gowtham.sridhar@ait.ac.at
                 </a>
               </li>
               <li className="flex items-start gap-3">

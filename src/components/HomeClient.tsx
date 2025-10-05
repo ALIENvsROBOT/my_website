@@ -9,6 +9,7 @@ const EnhancedParticleBackground = dynamic(() => import('@/components/EnhancedPa
 const CustomCursor = dynamic(() => import('@/components/CustomCursor'), { ssr: false });
 const RedesignedHeroSection = dynamic(() => import('@/components/RedesignedHeroSection'), { ssr: false });
 const AboutSection = dynamic(() => import('@/components/AboutSection'), { ssr: false });
+const AwardsSection = dynamic(() => import('@/components/AwardsSection'), { ssr: false });
 const ProjectsSection = dynamic(() => import('@/components/ProjectsSection'), { ssr: false });
 const ContactSection = dynamic(() => import('@/components/ContactSection'), { ssr: false });
 
@@ -65,6 +66,9 @@ export default function HomeClient() {
           </Suspense>
           <Suspense fallback={<div className="min-h-screen" />}>
             <ProjectsSection />
+          </Suspense>
+          <Suspense fallback={<div className="min-h-screen" />}>
+            <AwardsSection />
           </Suspense>
           <Suspense fallback={<div className="min-h-screen" />}>
             <ContactSection />
