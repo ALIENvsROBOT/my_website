@@ -58,9 +58,13 @@ export const metadata: Metadata = {
     images: ['https://www.gowthamsridhar.com/images/shareLinkprofile.png'],
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: [
+      { url: '/images/profile.jpg', type: 'image/jpeg', sizes: '16x16' },
+      { url: '/images/profile.jpg', type: 'image/jpeg', sizes: '32x32' },
+      { url: '/images/profile.jpg', type: 'image/jpeg', sizes: '48x48' }
+    ],
+    shortcut: [{ url: '/images/profile.jpg', type: 'image/jpeg' }],
+    apple: [{ url: '/images/profile.jpg', sizes: '180x180' }],
   },
   manifest: '/site.webmanifest',
 };
@@ -81,7 +85,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/jpeg" sizes="16x16" href="/images/profile.jpg" />
+        <link rel="icon" type="image/jpeg" sizes="32x32" href="/images/profile.jpg" />
+        <link rel="icon" type="image/jpeg" sizes="48x48" href="/images/profile.jpg" />
         <link 
           href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" 
           rel="stylesheet" 
