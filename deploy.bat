@@ -40,6 +40,20 @@ echo. > .nojekyll
 :: Get the current branch name
 for /f "tokens=*" %%a in ('git rev-parse --abbrev-ref HEAD') do set BRANCH=%%a
 
+echo.
+echo Step 0: Pulling latest changes from remote (branch: %BRANCH%)...
+git fetch --all --prune
+if %ERRORLEVEL% NEQ 0 (
+    echo Error: Failed to fetch from remote repository
+    goto :eof
+)
+git pull --rebase --autostash origin %BRANCH%
+if %ERRORLEVEL% NEQ 0 (
+    echo Error: Failed to pull latest changes. Please resolve any merge conflicts and re-run.
+    goto :eof
+)
+echo Done.
+
 :: Ask for commit message
 set /p COMMIT_MSG="Enter commit message (or press Enter for default): "
 
@@ -73,7 +87,18 @@ echo Done.
 
 echo.
 echo Step 3: Pushing to remote repository (branch: %BRANCH%)...
-git push origin %BRANCH%
+set "PUSH_FLAGS=%GIT_PUSH_FLAGS%"
+if defined PUSH_FLAGS (
+    rem Safety: remove any force flags if present in provided flags
+    set "PUSH_FLAGS=!PUSH_FLAGS:--force=!"
+    set "PUSH_FLAGS=!PUSH_FLAGS:-f=!"
+)
+if defined PUSH_FLAGS (
+    echo Using sanitized push flags: !PUSH_FLAGS!
+    git push origin %BRANCH% !PUSH_FLAGS!
+) else (
+    git push origin %BRANCH%
+)
 if %ERRORLEVEL% NEQ 0 (
     echo Error: Failed to push to remote repository
     goto :eof
