@@ -150,6 +150,7 @@ const AwardsSection = () => {
   const gridRef = useRef<HTMLUListElement | null>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
   const [isExpanded, setIsExpanded] = useState(false);
+  const touchClickGuardRef = useRef(false);
   const [gridHeights, setGridHeights] = useState({ collapsed: 0, expanded: 0 });
   const [hasScrollableOverflow, setHasScrollableOverflow] = useState(false);
   const [firstRowCount, setFirstRowCount] = useState(0);
@@ -275,6 +276,15 @@ const AwardsSection = () => {
     });
   };
 
+  const handleToggleClick = () => {
+    if (touchClickGuardRef.current) {
+      // Ignore the synthetic click that follows a touch event
+      touchClickGuardRef.current = false;
+      return;
+    }
+    handleToggle();
+  };
+
   return (
     <section id="awards" className="relative py-20" ref={sectionRef}>
       <div className="absolute inset-x-0 top-12 h-36 bg-gradient-to-r from-secondary/10 via-transparent to-highlight/10 blur-3xl" aria-hidden="true" />
@@ -353,9 +363,10 @@ const AwardsSection = () => {
               <div className="mt-8 text-center">
                 <button
                   type="button"
-                  onClick={handleToggle}
+                  onClick={handleToggleClick}
                   onTouchEnd={(e) => {
                     e.preventDefault();
+                    touchClickGuardRef.current = true;
                     handleToggle();
                   }}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-8 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:scale-[1.02] hover:bg-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-darkBg [touch-action:manipulation]"
