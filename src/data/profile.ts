@@ -158,7 +158,7 @@ export const awardsAndRecognitions: AwardEntry[] = [
     issuer: 'report.at',
     year: '2025',
     description: 'The eAward business prize honors digitalization projects and has been awarded since 2005. And the "eAward 2025" also shows the possibilities of information technology when redesigning business processes. These are all nominees.',
-    image: 'https://media.licdn.com/dms/image/v2/D4D10AQG5Irfn3QBlUA/image-shrink_1280/B4DZmghYxUJMAM-/0/1759334731797?e=1760295600&v=beta&t=MbmjOh04ly9TvyW28Y8h2R83M4CcQd63gKYYeqq6h18',
+    image: 'https://www.report.at/images/2025eAwardcMilenaKrobath_281.jpg',
     highlight: 'Winner',
     link: 'https://www.linkedin.com/posts/austrian-institute-of-technology_ait-buildsavr-eaward-activity-7379184705994297344-vsi-?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE'
   },
