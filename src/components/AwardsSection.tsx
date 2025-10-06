@@ -195,7 +195,7 @@ const AwardsSection = () => {
     }
 
     const collapsedBottom = orderedRows[0].bottom;
-    const expandedBottom = orderedRows[1]?.bottom ?? orderedRows[0].bottom;
+    const expandedBottom = orderedRows[orderedRows.length - 1].bottom;
 
     const computedStyles = window.getComputedStyle(grid);
     const rowGap = Number.parseFloat(computedStyles.rowGap || "0");
@@ -260,7 +260,6 @@ const AwardsSection = () => {
   const collapsedVisibleCount = measurementReady
     ? firstRowCount
     : Math.min(awardsAndRecognitions.length, 3);
-  const effectiveMaxHeight = isExpanded ? gridHeights.expanded : gridHeights.collapsed;
   const canExpand =
     awardsAndRecognitions.length > collapsedVisibleCount &&
     (gridHeights.expanded > gridHeights.collapsed + 1 || hasScrollableOverflow);
@@ -321,11 +320,21 @@ const AwardsSection = () => {
                   id="awards-grid"
                   ref={gridRef as unknown as React.RefObject<HTMLUListElement>}
                   className={`grid gap-6 sm:grid-cols-2 xl:grid-cols-3 transition-[max-height] duration-500 ease-in-out will-change-[max-height] ${
-                    isExpanded && (hasScrollableOverflow || gridHeights.expanded > gridHeights.collapsed + 1)
-                      ? "overflow-y-auto pr-1 sm:pr-2"
+                    isExpanded
+                      ? hasScrollableOverflow
+                        ? "overflow-y-auto pr-1 sm:pr-2"
+                        : "overflow-visible"
                       : "overflow-hidden"
                   }`}
-                  style={{ maxHeight: measurementReady ? `${effectiveMaxHeight}px` : undefined }}
+                  style={{
+                    maxHeight: !measurementReady
+                      ? undefined
+                      : isExpanded
+                        ? hasScrollableOverflow
+                          ? `${gridHeights.expanded}px`
+                          : undefined
+                        : `${gridHeights.collapsed}px`,
+                  }}
                 >
                   {awardsAndRecognitions.map((award, index) => (
                     <li key={`${award.title}-${award.year}`}>
