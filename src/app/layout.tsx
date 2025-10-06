@@ -18,7 +18,10 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://www.gowthamsridhar.com'),
   alternates: {
-    canonical: '/',
+    canonical: 'https://www.gowthamsridhar.com/',
+    languages: {
+      'en-US': 'https://www.gowthamsridhar.com/',
+    },
   },
   robots: {
     index: true,
@@ -177,6 +180,28 @@ export default function RootLayout({
               setTimeout(() => {
                 document.documentElement.style.visibility = 'visible';
               }, 1000);
+            `
+          }}
+        />
+        {/* Enforce canonical scheme+host in client for static export: force https and www */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var loc = window.location;
+                  var host = loc.hostname;
+                  var isHttp = loc.protocol === 'http:';
+                  var isWww = host.startsWith('www.');
+                  var targetHost = isWww ? host : 'www.' + host.replace(/^www\./, '');
+                  if (isHttp || host !== targetHost) {
+                    var targetUrl = 'https://' + targetHost + loc.pathname + loc.search + loc.hash;
+                    if (loc.href !== targetUrl) {
+                      loc.replace(targetUrl);
+                    }
+                  }
+                } catch (e) {}
+              })();
             `
           }}
         />
