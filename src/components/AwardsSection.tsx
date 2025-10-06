@@ -354,7 +354,11 @@ const AwardsSection = () => {
                 <button
                   type="button"
                   onClick={handleToggle}
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-8 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:scale-[1.02] hover:bg-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-darkBg"
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    handleToggle();
+                  }}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-8 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:scale-[1.02] hover:bg-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-darkBg [touch-action:manipulation]"
                 >
                   {isExpanded ? "Collapse awards" : "View more awards"}
                   {!isExpanded && remainingCollapsedCount > 0 && (
