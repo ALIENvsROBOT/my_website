@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Gowtham Sridhar | HCI Researcher & AI Expert | Portfolio',
-  description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, Mixed Reality, and UI/UX Design for innovative technological interfaces.',
+  description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, Applied AI, XR Applications, and UI/UX Design for innovative technological interfaces.',
   keywords: 'Gowtham Sridhar, HCI Researcher, AI Expert, Applied AI, XR Expert, Human-Computer Interaction, XR Applications, UI/UX Design, Mixed Reality, AIT, Junior Scientist, Portfolio, Interactive Technology, Research Publications, Technology Innovation, Extended Reality, User Experience',
   authors: [{ name: 'Gowtham Sridhar', url: 'https://www.gowthamsridhar.com' }],
   creator: 'Gowtham Sridhar',

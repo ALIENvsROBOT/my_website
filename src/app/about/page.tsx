@@ -14,8 +14,8 @@ import {
   languagesSpoken,
 } from '@/data/profile';
 
-const pageTitle = 'About Gowtham Sridhar | HCI Researcher & XR Specialist';
-const pageDescription = 'Learn about Gowtham Sridhar\'s background as a Human-Computer Interaction researcher, XR prototyper, and robotics enthusiast based in Vienna, Austria.';
+const pageTitle = 'About Gowtham Sridhar | HCI Researcher & Applied AI Specialist';
+const pageDescription = 'Learn about Gowtham Sridhar\'s background as a Human-Computer Interaction researcher, Applied AI expert, XR prototyper, and robotics enthusiast based in Vienna, Austria.';
 const pageUrl = 'https://www.gowthamsridhar.com/about';
 
 const aboutProfileJsonLd = {
