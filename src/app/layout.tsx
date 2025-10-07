@@ -6,9 +6,9 @@ import SEOStructuredData from '@/components/SEOStructuredData';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Gowtham Sridhar | HCI Researcher & XR Expert | Portfolio',
+  title: 'Gowtham Sridhar | HCI Researcher & AI Expert | Portfolio',
   description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, Mixed Reality, and UI/UX Design for innovative technological interfaces.',
-  keywords: 'Gowtham Sridhar, HCI Researcher, XR Expert, Human-Computer Interaction, XR Applications, UI/UX Design, Mixed Reality, AIT, Junior Scientist, Portfolio, Interactive Technology, Research Publications, Technology Innovation, Extended Reality, User Experience',
+  keywords: 'Gowtham Sridhar, HCI Researcher, AI Expert, Applied AI, XR Expert, Human-Computer Interaction, XR Applications, UI/UX Design, Mixed Reality, AIT, Junior Scientist, Portfolio, Interactive Technology, Research Publications, Technology Innovation, Extended Reality, User Experience',
   authors: [{ name: 'Gowtham Sridhar', url: 'https://www.gowthamsridhar.com' }],
   creator: 'Gowtham Sridhar',
   publisher: 'Gowtham Sridhar',
@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: 'Gowtham Sridhar | HCI Researcher & XR Expert',
-    description: 'Specializing in Human-Computer Interaction, XR Applications, and UI/UX Design to create seamless technological interfaces and innovative mixed reality experiences.',
+    title: 'Gowtham Sridhar | HCI Researcher & AI Expert',
+    description: 'Specializing in Human-Computer Interaction, Applied AI, XR Applications, and UI/UX Design to create seamless technological interfaces and innovative mixed reality experiences.',
     url: 'https://www.gowthamsridhar.com',
     siteName: 'Gowtham Sridhar Portfolio',
     locale: 'en_US',
@@ -46,14 +46,14 @@ export const metadata: Metadata = {
         url: 'https://www.gowthamsridhar.com/images/shareLinkprofile.png',
         width: 1200,
         height: 630,
-        alt: 'Gowtham Sridhar - HCI Researcher and XR Expert',
+        alt: 'Gowtham Sridhar - HCI Researcher and AI Expert',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gowtham Sridhar | HCI Researcher & XR Expert',
-    description: 'Specializing in Human-Computer Interaction, XR Applications, and UI/UX Design to create seamless technological interfaces and innovative mixed reality experiences.',
+    title: 'Gowtham Sridhar | HCI Researcher & AI Expert',
+    description: 'Specializing in Human-Computer Interaction, Applied AI, XR Applications, and UI/UX Design to create seamless technological interfaces and innovative mixed reality experiences.',
     creator: '@gowtham_sridhar',
     images: ['https://www.gowthamsridhar.com/images/shareLinkprofile.png'],
   },
@@ -95,11 +95,11 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <SEOStructuredData 
           name="Gowtham Sridhar"
-          jobTitle="HCI Researcher & XR Expert"
+          jobTitle="HCI Researcher & AI Expert"
           worksFor="Austrian Institute of Technology (AIT)"
           worksForUrl="https://www.ait.ac.at/"
           educationalCredentials="M.Sc. Human-Computer Interaction (Joint Degree)"
-          description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, and UI/UX Design."
+          description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, Applied AI researcher, XR Applications, and UI/UX Design."
           image="https://www.gowthamsridhar.com/images/shareLinkprofile.png"
           sameAs={[
             "https://www.linkedin.com/in/gowtham-sridher/",
@@ -112,6 +112,7 @@ export default function RootLayout({
           hIndex={15} 
           researchInterests={[
             "Human-Computer Interaction", 
+            "AI expert",
             "XR Applications", 
             "UI/UX Design",
             "Mixed Reality"
