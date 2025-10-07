@@ -53,7 +53,7 @@ export type ProfileBasics = {
 
 export const profileBasics: ProfileBasics = {
   name: 'Gowtham Sridhar',
-  headline: 'Human-Computer Interaction Researcher and XR Specialist',
+  headline: 'Human-Computer Interaction Researcher and Applied AI Specialist',
   jobTitle: 'Junior Scientist, Center for Technology Experience',
   employer: {
     name: 'Austrian Institute of Technology (AIT)',
