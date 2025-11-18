@@ -198,6 +198,10 @@ export default function RootLayout({
                 try {
                   var loc = window.location;
                   var host = loc.hostname;
+                  var isLocalHost = host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host.endsWith('.local');
+                  if (isLocalHost) {
+                    return;
+                  }
                   var isHttp = loc.protocol === 'http:';
                   var isWww = host.startsWith('www.');
                   var targetHost = isWww ? host : 'www.' + host.replace(/^www\./, '');

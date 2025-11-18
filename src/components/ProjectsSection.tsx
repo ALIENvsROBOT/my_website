@@ -162,6 +162,9 @@ const ProjectsSection = () => {
   
   // All projects sorted by featured first
   const sortedProjects = [...projects.filter(p => p.featured), ...projects.filter(p => !p.featured)];
+  const totalProjects = sortedProjects.length;
+  const visibleProjects = showAll ? sortedProjects : sortedProjects.slice(0, initialProjectCount);
+  const remainingProjects = Math.max(totalProjects - visibleProjects.length, 0);
   
   // Handler for toggling project visibility with explicit touch handling
   const handleToggleProjects = () => {
@@ -202,42 +205,32 @@ const ProjectsSection = () => {
         </motion.div>
 
         {/* Projects grid container with conditional height and scroll */}
-        <div className={`relative overflow-hidden ${showAll ? 'lg:h-[calc(3*100%/2)] h-[calc(4*100%/3)]' : ''}`}>
+        <div className="relative overflow-hidden">
           <motion.div
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className={`grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 ${showAll ? 'overflow-y-auto max-h-[800px] pr-2' : ''}`}
+            className={`grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 transition-[max-height] duration-500 ease-out ${showAll ? 'overflow-visible' : 'max-h-[900px]'}`}
             style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366F1 #1F2937' }}
           >
             {/* Show either all projects or just initial count */}
-            {(showAll ? sortedProjects : sortedProjects.slice(0, initialProjectCount)).map((project, index) => (
+            {visibleProjects.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))}
           </motion.div>
-          
-          {/* Custom scrollbar styling for webkit browsers */}
-          {showAll && (
-            <style jsx global>{`
-              .grid::-webkit-scrollbar {
-                width: 6px;
-              }
-              .grid::-webkit-scrollbar-track {
-                background: rgba(31, 41, 55, 0.5);
-                border-radius: 3px;
-              }
-              .grid::-webkit-scrollbar-thumb {
-                background: rgba(99, 102, 241, 0.5);
-                border-radius: 3px;
-              }
-              .grid::-webkit-scrollbar-thumb:hover {
-                background: rgba(99, 102, 241, 0.8);
-              }
-            `}</style>
+          {!showAll && (
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-darkBg via-darkBg/85 to-transparent" aria-hidden="true" />
           )}
         </div>
         
         {/* Toggle button - extremely simplified for mobile touch */}
         <div className="text-center mt-12 relative z-10">
+          {!showAll && remainingProjects > 0 && (
+            <div className="mb-4 flex justify-center">
+              <span className="inline-flex items-center gap-2 rounded-full border border-secondary/40 bg-darkBg/90 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-secondary/90 shadow-lg shadow-darkBg/60">
+                +{remainingProjects} more
+              </span>
+            </div>
+          )}
           <button 
             onClick={handleToggleProjects}
             onTouchEnd={(e) => {
@@ -258,6 +251,20 @@ const ProjectsSection = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={showAll ? 'show-all-projects' : 'partial-projects'}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 0.8, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
+              className="mt-3 text-sm text-lightText/70"
+            >
+              {showAll
+                ? `Displaying all ${totalProjects} projects. Collapse to jump back to highlights.`
+                : `Showing ${visibleProjects.length} of ${totalProjects} projects • ${remainingProjects} more available`}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
     </section>

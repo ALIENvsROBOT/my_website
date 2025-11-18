@@ -3,7 +3,7 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 
 import { awardsAndRecognitions } from "@/data/profile";
 import type { AwardEntry } from "@/data/profile";
@@ -150,7 +150,6 @@ const AwardsSection = () => {
   const gridRef = useRef<HTMLUListElement | null>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
   const [isExpanded, setIsExpanded] = useState(false);
-  const touchClickGuardRef = useRef(false);
   const [gridHeights, setGridHeights] = useState({ collapsed: 0, expanded: 0 });
   const [hasScrollableOverflow, setHasScrollableOverflow] = useState(false);
   const [firstRowCount, setFirstRowCount] = useState(0);
@@ -265,6 +264,9 @@ const AwardsSection = () => {
     awardsAndRecognitions.length > collapsedVisibleCount &&
     (gridHeights.expanded > gridHeights.collapsed + 1 || hasScrollableOverflow);
   const remainingCollapsedCount = Math.max(awardsAndRecognitions.length - collapsedVisibleCount, 0);
+  const totalAwards = awardsAndRecognitions.length;
+  const visibleAwardsCount = isExpanded ? totalAwards : Math.min(totalAwards, collapsedVisibleCount);
+  const hiddenAwardsCount = Math.max(totalAwards - visibleAwardsCount, 0);
 
   const handleToggle = () => {
     setIsExpanded((prev) => {
@@ -274,15 +276,6 @@ const AwardsSection = () => {
       }
       return next;
     });
-  };
-
-  const handleToggleClick = () => {
-    if (touchClickGuardRef.current) {
-      // Ignore the synthetic click that follows a touch event
-      touchClickGuardRef.current = false;
-      return;
-    }
-    handleToggle();
   };
 
   return (
@@ -355,21 +348,28 @@ const AwardsSection = () => {
               </motion.div>
 
               {!isExpanded && canExpand && (
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-darkBg via-darkBg/70 to-transparent" aria-hidden="true" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-darkBg via-darkBg/75 to-transparent" aria-hidden="true" />
               )}
             </div>
 
             {canExpand && (
-              <div className="mt-8 text-center">
+              <div className="text-center mt-12 relative z-10">
+                {!isExpanded && remainingCollapsedCount > 0 && (
+                  <div className="mb-4 flex justify-center">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-secondary/40 bg-darkBg/90 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-secondary/90 shadow-lg shadow-darkBg/60">
+                      +{remainingCollapsedCount} more
+                    </span>
+                  </div>
+                )}
                 <button
                   type="button"
-                  onClick={handleToggleClick}
+                  onClick={handleToggle}
                   onTouchEnd={(e) => {
                     e.preventDefault();
-                    touchClickGuardRef.current = true;
                     handleToggle();
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-8 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:scale-[1.02] hover:bg-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-darkBg [touch-action:manipulation]"
+                  className="w-full max-w-xs mx-auto py-5 px-6 bg-secondary text-white rounded-md text-lg font-medium shadow-lg active:bg-highlight"
+                  style={{ touchAction: "manipulation" }}
                 >
                   {isExpanded ? "Collapse awards" : "View more awards"}
                   {!isExpanded && remainingCollapsedCount > 0 && (
@@ -377,14 +377,28 @@ const AwardsSection = () => {
                   )}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
+                    className={`h-5 w-5 inline-block ml-2 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={isExpanded ? "showing-all-awards" : "partial-awards"}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 0.8, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.25 }}
+                    className="mt-3 text-sm text-lightText/70"
+                  >
+                    {isExpanded
+                      ? `Showing all ${totalAwards} awards. Collapse to keep the hero row pinned.`
+                      : `Showing ${visibleAwardsCount} of ${totalAwards} awards • ${hiddenAwardsCount} more available`}
+                  </motion.p>
+                </AnimatePresence>
                 {isExpanded && hasScrollableOverflow && (
                   <p className="mt-3 text-xs text-lightText/60">Scroll within the grid to discover the full list of awards.</p>
                 )}
