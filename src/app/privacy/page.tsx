@@ -30,7 +30,7 @@ export default function PrivacyPolicy() {
 							As an HCI (Human-Computer Interaction) researcher, I value digital ethics and data transparency. This policy outlines how information is handled when you interact with this professional portfolio. To understand how visitors interact with my research and 3D demonstrations, I use <strong>PostHog</strong>, an open-source, privacy-focused analytics platform.
 						</p>
 						<p>
-							What is tracked includes page views, session patterns, interaction patterns (e.g., clicks on 3D elements), and device metadata. Your approximate location (City/Country) is derived from your IP address. Data is processed exclusively on EU servers (PostHog EU Cloud) to ensure compliance with European data standards.
+							What is tracked includes page views, session patterns (including anonymous interaction replays), technical performance metrics (Web Vitals), interaction patterns (e.g., clicks on 3D elements), and device metadata. Your approximate location (City/Country) is derived from your IP address. Data is processed exclusively on EU servers (PostHog EU Cloud) to ensure compliance with European data standards.
 						</p>
 						<p>
 							I collect this information strictly for technical research and professional development. It helps me optimize interactive 3D performance, identify high-interest research topics, and monitor the accessibility of the platform across different regions. If you use the contact form, the information you provide (Name, Email, Message) is only used to respond to your inquiry and is never sold or shared with third parties.
