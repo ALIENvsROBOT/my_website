@@ -47,7 +47,14 @@ export default function EnhancedSEO({
         '@type': 'Organization',
         name: 'AIT',
         url: 'https://www.ait.ac.at/'
-      }
+      },
+      sameAs: [
+        "https://www.linkedin.com/in/gowtham-sridher/",
+        "https://github.com/ALIENvsROBOT",
+        "https://scholar.google.com/citations?user=ipXbKeQAAAAJ",
+        "https://www.researchgate.net/profile/Sridhar-Gowtham",
+        "https://publications.ait.ac.at/en/persons/gowtham-sridhar/"
+      ]
     },
     creator: {
       '@type': 'Person',
@@ -109,7 +116,8 @@ export default function EnhancedSEO({
         "https://www.linkedin.com/in/gowtham-sridher/",
         "https://github.com/ALIENvsROBOT",
         "https://scholar.google.com/citations?user=ipXbKeQAAAAJ",
-        "https://twitter.com/gowtham_sridhar"
+        "https://www.researchgate.net/profile/Sridhar-Gowtham",
+        "https://publications.ait.ac.at/en/persons/gowtham-sridhar/"
       ]
     },
     // key topics this page is "about" - helps with semantic search queries

@@ -62,13 +62,6 @@ export const metadata: Metadata = {
       }
     ],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Gowtham Sridhar | HCI Researcher & AI Expert',
-    description: 'Specializing in Human-Computer Interaction, Applied AI, XR Applications, and UI/UX Design to create seamless technological interfaces and innovative mixed reality experiences.',
-    creator: '@gowtham_sridhar',
-    images: ['https://www.gowthamsridhar.com/images/shareLinkprofile.png'],
-  },
   icons: {
     icon: [
       { url: '/images/profile.jpg', type: 'image/jpeg', sizes: '16x16' },
@@ -130,7 +123,9 @@ export default function RootLayout({
           sameAs={[
             "https://www.linkedin.com/in/gowtham-sridher/",
             "https://github.com/ALIENvsROBOT",
-            "https://scholar.google.com/citations?user=ipXbKeQAAAAJ"
+            "https://scholar.google.com/citations?user=ipXbKeQAAAAJ",
+            "https://www.researchgate.net/profile/Sridhar-Gowtham",
+            "https://publications.ait.ac.at/en/persons/gowtham-sridhar/"
           ]}
           mainEntityOfPage="https://www.gowthamsridhar.com"
           url="https://www.gowthamsridhar.com"
