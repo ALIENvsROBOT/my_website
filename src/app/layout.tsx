@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import SEOStructuredData from '@/components/SEOStructuredData';
 import { PHProvider } from './providers';
+import PrivacyNotice from '@/components/PrivacyNotice';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -221,6 +222,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <PHProvider>
           {children}
+          <PrivacyNotice />
         </PHProvider>
       </body>
     </html>

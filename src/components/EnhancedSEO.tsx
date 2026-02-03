@@ -92,8 +92,8 @@ export default function EnhancedSEO({
       height: 630,
       caption: pageTitle
     },
-    datePublished: '2023-01-01T00:00:00+00:00', // Update with actual date
-    dateModified: new Date().toISOString(),
+    datePublished: '2023-01-01T00:00:00+00:00',
+    dateModified: new Date().toISOString().split('T')[0], // Auto-updates date without milliseconds
     author: {
       '@type': 'Person',
       name: 'Gowtham Sridhar',
@@ -108,16 +108,19 @@ export default function EnhancedSEO({
   return (
     <>
       <script
+        suppressHydrationWarning
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
       {breadcrumbSchema && (
         <script
+          suppressHydrationWarning
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
         />
       )}
       <script
+        suppressHydrationWarning
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
