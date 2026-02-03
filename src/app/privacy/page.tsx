@@ -1,3 +1,9 @@
+/**
+ * @file privacy/page.tsx
+ * @description The Privacy Policy page. 
+ * Designed as a minimalist, text-focused page consistent with the portfolio's aesthetics.
+ */
+
 'use client'
 
 import React from 'react';
@@ -13,6 +19,7 @@ export default function PrivacyPolicy() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
 				>
+					{/* Navigation link back to the main 3D scene */}
 					<Link
 						href="/"
 						className="text-[#6366f1] hover:text-[#818cf8] transition-colors duration-300 mb-8 inline-flex items-center gap-2 font-medium"
@@ -36,9 +43,10 @@ export default function PrivacyPolicy() {
 							I collect this information strictly for technical research and professional development. It helps me optimize interactive 3D performance, identify high-interest research topics, and monitor the accessibility of the platform across different regions. If you use the contact form, the information you provide (Name, Email, Message) is only used to respond to your inquiry and is never sold or shared with third parties.
 						</p>
 						<p>
-							Under GDPR, you have the right to access, rectify, or request the deletion of your data. For any inquiries regarding your privacy or data removal, please contact me directly at: <a href="mailto:gowtham.sridhar@ait.ac.at" className="text-[#6366f1] hover:text-[#818cf8] transition-colors underline decoration-[#6366f1]/30 underline-offset-4">gowtham.sridher5@gmail.com</a>.
+							Under GDPR, you have the right to access, rectify, or request the deletion of your data. For any inquiries regarding your privacy or data removal, please contact me directly at: <a href="mailto:gowtham.sridher5@gmail.com" className="text-[#6366f1] hover:text-[#818cf8] transition-colors underline decoration-[#6366f1]/30 underline-offset-4">gowtham.sridher5@gmail.com</a>.
 						</p>
 
+						{/* Manual timestamp for static export accuracy */}
 						<div className="pt-10 border-t border-white/5 text-xs text-white/40 font-mono tracking-wider uppercase">
 							Last Updated: February 03, 2026
 						</div>

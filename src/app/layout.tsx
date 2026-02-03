@@ -1,3 +1,9 @@
+/**
+ * @file layout.tsx
+ * @description The root layout of the application.
+ * Defines global metadata, imports fonts, and wraps the application in context providers.
+ */
+
 import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
@@ -7,6 +13,10 @@ import PrivacyNotice from '@/components/PrivacyNotice';
 
 const inter = Inter({ subsets: ['latin'] });
 
+/**
+ * Global Metadata
+ * Comprehensive SEO configuration for the portfolio.
+ */
 export const metadata: Metadata = {
   title: 'Gowtham Sridhar | HCI Researcher & AI Expert | Portfolio',
   description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, Applied AI, XR Applications, and UI/UX Design for innovative technological interfaces.',
@@ -71,6 +81,10 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
 };
 
+/**
+ * Viewport Configuration
+ * Optimization for mobile responsiveness and performance.
+ */
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -79,6 +93,10 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 };
 
+/**
+ * RootLayout Component
+ * The skeleton of every page in the application.
+ */
 export default function RootLayout({
   children,
 }: {
@@ -95,6 +113,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        {/* Detailed Scholarly Schema for Researchers */}
         <SEOStructuredData
           name="Gowtham Sridhar"
           jobTitle="HCI Researcher & AI Expert"
@@ -129,6 +149,8 @@ export default function RootLayout({
             addressCountry: "Austria"
           }}
         />
+
+        {/* Inline script for performance optimizations (Mobile & Animations) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -192,7 +214,8 @@ export default function RootLayout({
             `
           }}
         />
-        {/* Enforce canonical scheme+host in client for static export: force https and www */}
+
+        {/* Canonical Scheme Enforcement (HTTPS + WWW) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -222,6 +245,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <PHProvider>
           {children}
+          {/* Subtle Privacy Informational Banner */}
           <PrivacyNotice />
         </PHProvider>
       </body>

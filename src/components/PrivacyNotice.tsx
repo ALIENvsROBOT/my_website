@@ -1,15 +1,28 @@
+/**
+ * @file PrivacyNotice.tsx
+ * @description A subtle, non-intrusive UI component to inform users about data usage.
+ * It uses localStorage to ensure it only appears once per visitor.
+ */
+
 'use client'
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
+/**
+ * PrivacyNotice Component
+ * Renders a small floating banner in the bottom-left corner after a short delay.
+ */
 const PrivacyNotice = () => {
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
+		// Check if the user has already acknowledged the notice in a previous session
 		const hasConsented = localStorage.getItem('privacy-consent');
+
 		if (!hasConsented) {
+			// Delay appearance by 2 seconds to not interrupt the initial 3D load experience
 			const timer = setTimeout(() => {
 				setIsVisible(true);
 			}, 2000);
@@ -17,6 +30,9 @@ const PrivacyNotice = () => {
 		}
 	}, []);
 
+	/**
+	 * Saves the acknowledgement to localStorage and hides the notice.
+	 */
 	const handleAccept = () => {
 		localStorage.setItem('privacy-consent', 'true');
 		setIsVisible(false);
@@ -31,6 +47,7 @@ const PrivacyNotice = () => {
 					exit={{ opacity: 0, y: 20, scale: 0.9 }}
 					className="fixed bottom-6 left-6 z-[100] max-w-xs"
 				>
+					{/* Using the project's 'glass-effect-dark' for visual consistency with 3D elements */}
 					<div className="glass-effect-dark p-4 rounded-xl border border-secondary/30 shadow-2xl flex flex-col gap-3">
 						<div className="flex items-start gap-3">
 							<div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">

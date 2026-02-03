@@ -1,3 +1,9 @@
+/**
+ * @file EnhancedSEO.tsx
+ * @description Injects JSON-LD Structured Data Schema into the page head.
+ * Optimized for React 19 / Next.js 16 to avoid hydration mismatches.
+ */
+
 import React from 'react';
 
 interface EnhancedSEOProps {
@@ -8,6 +14,10 @@ interface EnhancedSEOProps {
   imageUrl?: string;
 }
 
+/**
+ * EnhancedSEO Component
+ * Generates valid Schema.org markup for better Google Search visibility.
+ */
 export default function EnhancedSEO({
   pageTitle,
   pageDescription,
@@ -16,7 +26,7 @@ export default function EnhancedSEO({
   imageUrl = 'https://www.gowthamsridhar.com/images/shareLinkprofile.png',
 }: EnhancedSEOProps) {
 
-  // Website Schema
+  // Website Schema Definition
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -47,6 +57,7 @@ export default function EnhancedSEO({
       '@type': 'Person',
       name: 'Gowtham Sridhar'
     },
+    // Auto-updating year. suppressHydrationWarning is used on the script tag to allow this.
     copyrightYear: new Date().getFullYear(),
     inLanguage: 'en-US',
     license: 'https://www.gowthamsridhar.com/terms'
@@ -72,7 +83,7 @@ export default function EnhancedSEO({
     ]
   } : null;
 
-  // WebPage Schema
+  // WebPage Schema Definition
   const webPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -93,7 +104,8 @@ export default function EnhancedSEO({
       caption: pageTitle
     },
     datePublished: '2023-01-01T00:00:00+00:00',
-    dateModified: new Date().toISOString().split('T')[0], // Auto-updates date without milliseconds
+    // dateModified is stabilized to YYYY-MM-DD to avoid millisecond-level hydration mismatches.
+    dateModified: new Date().toISOString().split('T')[0],
     author: {
       '@type': 'Person',
       name: 'Gowtham Sridhar',
@@ -107,6 +119,11 @@ export default function EnhancedSEO({
 
   return (
     <>
+      {/* 
+          suppressHydrationWarning is CRITICAL here. 
+          Static exports bake the date in at build time, but browsers might 
+          see a different date if the user visits exactly at midnight.
+      */}
       <script
         suppressHydrationWarning
         type="application/ld+json"
