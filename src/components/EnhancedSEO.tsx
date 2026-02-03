@@ -84,9 +84,13 @@ export default function EnhancedSEO({
   } : null;
 
   // WebPage Schema Definition
+  // Use 'ProfilePage' for the homepage to strongly signal this is a personal portfolio
+  const isHome = !pagePath;
+  const schemaType = isHome ? 'ProfilePage' : 'WebPage';
+
   const webPageSchema = {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
+    '@type': schemaType,
     '@id': pageUrl,
     url: pageUrl,
     name: pageTitle,
@@ -95,6 +99,25 @@ export default function EnhancedSEO({
     isPartOf: {
       '@id': 'https://www.gowthamsridhar.com/#website'
     },
+    // Explicitly link the page to the Person entity
+    mainEntity: {
+      '@type': 'Person',
+      name: 'Gowtham Sridhar',
+      url: 'https://www.gowthamsridhar.com',
+      // SameAs links help Google connect the dots for the Knowledge Graph
+      sameAs: [
+        "https://www.linkedin.com/in/gowtham-sridher/",
+        "https://github.com/ALIENvsROBOT",
+        "https://scholar.google.com/citations?user=ipXbKeQAAAAJ",
+        "https://twitter.com/gowtham_sridhar"
+      ]
+    },
+    // key topics this page is "about" - helps with semantic search queries
+    about: [
+      { "@type": "Thing", "name": "Human-Computer Interaction", "sameAs": "https://en.wikipedia.org/wiki/Human%E2%80%93computer_interaction" },
+      { "@type": "Thing", "name": "Artificial Intelligence", "sameAs": "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+      { "@type": "Thing", "name": "Extended Reality", "sameAs": "https://en.wikipedia.org/wiki/Extended_reality" }
+    ],
     primaryImageOfPage: {
       '@type': 'ImageObject',
       contentUrl: imageUrl,

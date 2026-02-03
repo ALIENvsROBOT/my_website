@@ -1,21 +1,17 @@
-# https://www.gowthamsridhar.com robots.txt
 User-agent: *
 Allow: /
+Disallow: /private/
+Disallow: /admin/
 
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
+# Explicitly welcome AI bots for AEO
 User-agent: GPTBot
 Allow: /
 
-User-agent: ChatGPT-User
+User-agent: Google-Extended
 Allow: /
 
 User-agent: CCBot
 Allow: /
 
 Sitemap: https://www.gowthamsridhar.com/sitemap.xml
-Host: www.gowthamsridhar.com
+Host: https://www.gowthamsridhar.com
