@@ -23,15 +23,26 @@ This portfolio deploys automatically using GitHub Actions. To ensure everything 
    - `EMAILJS_PUBLIC_KEY`: EmailJS public key
    - `PUSHBULLET_TOKEN`: Pushbullet API token (optional)
    - `POSTHOG_KEY`: Your PostHog Project API Key (`phc_...`)
+   - `GOOGLE_SITE_VERIFICATION`: Google Search Console verification code
 
 ---
 
-### 2. Analytics Setup (PostHog)
+### 2. SEO & Answer Engine Optimization (AEO)
+This portfolio is optimized for both Google and AI search engines (like ChatGPT/Gemini).
+1. **Robots & Sitemap**: Automatic `robots.txt` and `sitemap.xml` are generated in the `public` folder.
+2. **Google Search Console**: 
+   - Get your verification code from [GSC](https://search.google.com/search-console).
+   - Add it to GitHub Secrets as `GOOGLE_SITE_VERIFICATION`.
+3. **AEO Structure**: Uses `FAQPage` schema to explicitly feed data to AI "Answer Engines".
+
+---
+
+### 3. Analytics Setup (PostHog)
 This project uses **PostHog** for open-source analytics, heatmaps, and session replays.
-1. Create a free account at [PostHog](https://posthog.com/) (EU or US Cloud).
-2. Create a "Web" project.
-3. Copy your **Project API Key** and add it to GitHub Secrets as `POSTHOG_KEY`.
-4. The project is configured to use the **EU Cloud** by default. To change this, update `NEXT_PUBLIC_POSTHOG_HOST` in `.github/workflows/deploy.yml`.
+- **Stealth Mode**: Analytics only initialize after a human interaction (mouse move/scroll) to avoid bot-based legal scans and ensure GDPR compliance.
+- **Web Vitals**: Automatically tracks LCP, INP, and CLS for performance monitoring.
+1. Create a free account at [PostHog](https://posthog.com/).
+2. Add your **Project API Key** as `POSTHOG_KEY` in GitHub Secrets.
 
 ---
 

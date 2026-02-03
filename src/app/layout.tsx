@@ -105,8 +105,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Placeholder for Google Search Console verification - User must add their code here */}
-        <meta name="google-site-verification" content="ADD_YOUR_CODE_HERE" />
+        {/* Google Search Console verification - Injected via GitHub Secrets during build */}
+        {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
+          <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION} />
+        )}
         <link rel="icon" type="image/jpeg" sizes="16x16" href="/images/profile.jpg" />
         <link rel="icon" type="image/jpeg" sizes="32x32" href="/images/profile.jpg" />
         <link rel="icon" type="image/jpeg" sizes="48x48" href="/images/profile.jpg" />
