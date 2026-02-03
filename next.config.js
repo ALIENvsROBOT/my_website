@@ -11,11 +11,11 @@ const nextConfig = {
   // Remove trailing slash to fix canonical issues
   trailingSlash: false,
   reactStrictMode: true,
-  swcMinify: true,
   experimental: {
     // Disable optimizeCss to avoid potential issues with asset loading
     optimizeCss: false,
   },
+  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
 };
 
 module.exports = nextConfig;

@@ -83,17 +83,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/jpeg" sizes="16x16" href="/images/profile.jpg" />
         <link rel="icon" type="image/jpeg" sizes="32x32" href="/images/profile.jpg" />
         <link rel="icon" type="image/jpeg" sizes="48x48" href="/images/profile.jpg" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" 
-          rel="stylesheet" 
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
+          rel="stylesheet"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <SEOStructuredData 
+        <SEOStructuredData
           name="Gowtham Sridhar"
           jobTitle="HCI Researcher & AI Expert"
           worksFor="Austrian Institute of Technology (AIT)"
@@ -109,11 +109,11 @@ export default function RootLayout({
           mainEntityOfPage="https://www.gowthamsridhar.com"
           url="https://www.gowthamsridhar.com"
           affiliation="Austrian Institute of Technology"
-          hIndex={15} 
+          hIndex={15}
           researchInterests={[
-            "Human-Computer Interaction", 
+            "Human-Computer Interaction",
             "AI expert",
-            "XR Applications", 
+            "XR Applications",
             "UI/UX Design",
             "Mixed Reality"
           ]}
@@ -127,7 +127,7 @@ export default function RootLayout({
             addressCountry: "Austria"
           }}
         />
-        <script 
+        <script
           dangerouslySetInnerHTML={{
             __html: `
               // Ensure content is visible even if stylesheet loading is delayed
