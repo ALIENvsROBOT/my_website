@@ -1,64 +1,73 @@
 # Gowtham Sridhar Portfolio
 
-## Deployment
+A cutting-edge, 3D-interactive personal portfolio built with **Next.js 16**, **React 19**, and **Three.js**.
 
-### GitHub Pages Configuration
+## 🚀 Modern Tech Stack
+- **Framework**: Next.js 16 (Turbopack)
+- **Engine**: React 19
+- **3D Graphics**: @react-three/fiber & @react-three/drei (Three.js)
+- **Animations**: Framer Motion 12 & GSAP
+- **Analytics**: PostHog (Open Source)
+- **Deployment**: Node.js 24 LTS on GitHub Pages
 
-This portfolio is set up to deploy automatically to GitHub Pages using GitHub Actions workflow.
+## 📦 Deployment & Environment Variables
 
-#### Environment Variables Setup
+### 1. GitHub Pages Configuration
+This portfolio deploys automatically using GitHub Actions. To ensure everything (Contact Form + Analytics) works, set up the following **Secrets** in your repository:
 
-For the contact form to work properly when deployed to GitHub Pages, you need to set up the following secrets in your GitHub repository:
+#### **GitHub Repository Secrets**
+1. Go to **Settings** → **Secrets and variables** → **Actions**
+2. Add these secrets:
+   - `EMAILJS_SERVICE_ID`: EmailJS service ID
+   - `EMAILJS_TEMPLATE_ID`: EmailJS template ID
+   - `EMAILJS_PUBLIC_KEY`: EmailJS public key
+   - `PUSHBULLET_TOKEN`: Pushbullet API token (optional)
+   - `POSTHOG_KEY`: Your PostHog Project API Key (`phc_...`)
 
-1. Go to your GitHub repository settings
-2. Navigate to "Secrets and variables" → "Actions"
-3. Click on "New repository secret"
-4. Add the following secrets:
-   - `EMAILJS_SERVICE_ID`: Your EmailJS service ID
-   - `EMAILJS_TEMPLATE_ID`: Your EmailJS template ID
-   - `EMAILJS_PUBLIC_KEY`: Your EmailJS public key
-   - `PUSHBULLET_TOKEN`: Your Pushbullet API token (legacy support)
+---
 
-### EmailJS Setup Instructions
+### 2. Analytics Setup (PostHog)
+This project uses **PostHog** for open-source analytics, heatmaps, and session replays.
+1. Create a free account at [PostHog](https://posthog.com/) (EU or US Cloud).
+2. Create a "Web" project.
+3. Copy your **Project API Key** and add it to GitHub Secrets as `POSTHOG_KEY`.
+4. The project is configured to use the **EU Cloud** by default. To change this, update `NEXT_PUBLIC_POSTHOG_HOST` in `.github/workflows/deploy.yml`.
 
-1. Sign up for a free account at [EmailJS](https://www.emailjs.com/)
-2. Create an Email Service (Gmail, Outlook, etc.)
-3. Create an Email Template
-4. Find your Service ID, Template ID, and User ID (public key) in the EmailJS dashboard
-5. Add these values as GitHub Secrets
+---
 
-## Local Development Setup
+### 3. Contact Form (EmailJS)
+1. Sign up at [EmailJS](https://www.emailjs.com/)
+2. Create an Email Service and Template.
+3. Add your credentials to GitHub Secrets as shown above.
 
-### Environment Variables
+---
 
-To run this website locally, you need to set up the following environment variables:
+## 🛠️ Local Development
 
-1. Create a `.env.local` file in the root directory of the project
-2. Add the following variables:
+### **Prerequisites**
+- **Node.js**: v24.x (LTS) or higher
+- **npm**: v10.x or higher
 
-```
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
-NEXT_PUBLIC_PUSHBULLET_TOKEN=your_pushbullet_token
-```
-
-### Installing Dependencies
-
+### **Environment Variables**
+Create a `.env.local` file in the root:
 ```bash
-npm install
-# or
-yarn install
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_id
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_id
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_key
+NEXT_PUBLIC_POSTHOG_KEY=your_phc_key
+NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
 ```
 
-### Running the Development Server
-
+### **Getting Started**
 ```bash
+# Install dependencies (use legacy-peer-deps for R3F compatibility)
+npm install --legacy-peer-deps
+
+# Run dev server
 npm run dev
-# or
-yarn dev
+
+# Build for static export
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to view the website.
-
-Alternatively, the contact form will fallback to using EmailJS if the server API is not available. 
+Open [http://localhost:3000](http://localhost:3000) to view your site. 

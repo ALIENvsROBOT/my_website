@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import SEOStructuredData from '@/components/SEOStructuredData';
+import { PHProvider } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -218,7 +219,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        {children}
+        <PHProvider>
+          {children}
+        </PHProvider>
       </body>
     </html>
   );
