@@ -3,12 +3,12 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { AnimatePresence, motion, useInView } from "framer-motion";
+import { AnimatePresence, motion, useInView, type Variants } from "framer-motion";
 
 import { awardsAndRecognitions } from "@/data/profile";
 import type { AwardEntry } from "@/data/profile";
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 32, scale: 0.96 },
   visible: (index: number) => ({
     opacity: 1,
@@ -322,13 +322,12 @@ const AwardsSection = () => {
                 <ul
                   id="awards-grid"
                   ref={gridRef as unknown as React.RefObject<HTMLUListElement>}
-                  className={`grid gap-6 sm:grid-cols-2 xl:grid-cols-3 transition-[max-height] duration-500 ease-in-out will-change-[max-height] ${
-                    isExpanded
+                  className={`grid gap-6 sm:grid-cols-2 xl:grid-cols-3 transition-[max-height] duration-500 ease-in-out will-change-[max-height] ${isExpanded
                       ? hasScrollableOverflow
                         ? "overflow-y-auto pr-1 sm:pr-2"
                         : "overflow-visible"
                       : "overflow-hidden"
-                  }`}
+                    }`}
                   style={{
                     maxHeight: !measurementReady
                       ? undefined

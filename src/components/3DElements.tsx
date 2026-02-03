@@ -97,8 +97,8 @@ const neuralConnectionsFragmentShader = `
 
 // Modern digital DNA/neural network nodes
 function NeuralNetwork({ count = 150, connections = 100 }) {
-  const pointsRef = useRef<any>();
-  const linesRef = useRef<any>();
+  const pointsRef = useRef<any>(null);
+  const linesRef = useRef<any>(null);
   const nodesRef = useRef<InstancedMesh>(null);
 
   // Create node positions
@@ -232,21 +232,15 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={count}
-            array={positions}
-            itemSize={3}
+            args={[positions, 3]}
           />
           <bufferAttribute
             attach="attributes-size"
-            count={count}
-            array={sizes}
-            itemSize={1}
+            args={[sizes, 1]}
           />
           <bufferAttribute
             attach="attributes-color"
-            count={count}
-            array={colors}
-            itemSize={3}
+            args={[colors, 3]}
           />
         </bufferGeometry>
         <shaderMaterial
@@ -264,21 +258,15 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={count}
-            array={positions}
-            itemSize={3}
+            args={[positions, 3]}
           />
           <bufferAttribute
             attach="attributes-color"
-            count={count}
-            array={colors}
-            itemSize={3}
+            args={[colors, 3]}
           />
           <bufferAttribute
             attach="index"
-            count={connections * 2}
-            array={indices}
-            itemSize={1}
+            args={[indices, 1]}
           />
         </bufferGeometry>
         <lineBasicMaterial
