@@ -23,7 +23,7 @@ export default function EnhancedSEO({
   pageDescription,
   pageUrl,
   pagePath,
-  imageUrl = 'https://www.gowthamsridhar.com/images/shareLinkprofile.png',
+  imageUrl = 'https://www.gowthamsridhar.com/images/profile.jpg',
 }: EnhancedSEOProps) {
 
   // Website Schema Definition
@@ -32,7 +32,7 @@ export default function EnhancedSEO({
     '@type': 'WebSite',
     name: 'Gowtham Sridhar - HCI Researcher & AI Expert',
     url: 'https://www.gowthamsridhar.com',
-    description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, XR Applications, and UI/UX Design.',
+    description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Applied AI, HCI, XR Applications, and UI/UX Design.',
     potentialAction: {
       '@type': 'SearchAction',
       target: 'https://www.gowthamsridhar.com/search?q={search_term_string}',
@@ -42,7 +42,7 @@ export default function EnhancedSEO({
       '@type': 'Person',
       name: 'Gowtham Sridhar',
       url: 'https://www.gowthamsridhar.com',
-      jobTitle: 'HCI Researcher & AI Expert',
+      jobTitle: 'Junior Scientist, Applied AI & HCI Researcher',
       worksFor: {
         '@type': 'Organization',
         name: 'AIT',

@@ -53,13 +53,13 @@ export type ProfileBasics = {
 
 export const profileBasics: ProfileBasics = {
   name: 'Gowtham Sridhar',
-  headline: 'Human-Computer Interaction Researcher and Applied AI Specialist',
-  jobTitle: 'Junior Scientist, Center for Technology Experience',
+  headline: 'Applied AI Researcher and HCI Specialist',
+  jobTitle: 'Junior Scientist, Applied AI & HCI Researcher',
   employer: {
     name: 'Austrian Institute of Technology (AIT)',
     url: 'https://www.ait.ac.at/'
   },
-  image: 'https://www.gowthamsridhar.com/images/shareLinkprofile.png',
+  image: 'https://www.gowthamsridhar.com/images/profile.jpg',
   location: {
     city: 'Vienna',
     country: 'Austria'
@@ -71,7 +71,7 @@ export const profileBasics: ProfileBasics = {
     'https://www.linkedin.com/in/gowtham-sridher/',
     'https://github.com/ALIENvsROBOT',
     'https://scholar.google.com/citations?user=ipXbKeQAAAAJ',
-    'https://x.com/gowtham_sridhar'
+    'https://www.researchgate.net/profile/Sridhar-Gowtham'
   ]
 };
 
@@ -233,5 +233,5 @@ export const profileSocialLinks: { label: string; url: string }[] = [
   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/gowtham-sridher/' },
   { label: 'GitHub', url: 'https://github.com/ALIENvsROBOT' },
   { label: 'Google Scholar', url: 'https://scholar.google.com/citations?user=ipXbKeQAAAAJ' },
-  { label: 'ResearchGate', url: 'https://www.researchgate.net/profile/Gowtham-Sridhar' }
+  { label: 'ResearchGate', url: 'https://www.researchgate.net/profile/Sridhar-Gowtham' }
 ];

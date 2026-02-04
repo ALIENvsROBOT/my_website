@@ -21,6 +21,13 @@ interface SEOStructuredDataProps {
     postalCode?: string;
     addressCountry?: string;
   };
+  knowsAbout?: string[];
+  skills?: string[];
+  awards?: string[];
+  memberOf?: Array<{ name: string; url?: string }>;
+  gender?: string;
+  nationality?: string;
+  birthPlace?: string;
 }
 
 export default function SEOStructuredData({
@@ -39,12 +46,22 @@ export default function SEOStructuredData({
   researchInterests,
   alumniOf,
   address,
+  knowsAbout,
+  skills,
+  awards,
+  memberOf,
+  gender,
+  nationality,
+  birthPlace,
 }: SEOStructuredDataProps) {
   const personSchema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name,
     jobTitle,
+    gender,
+    nationality: nationality ? { '@type': 'Country', name: nationality } : undefined,
+    birthPlace: birthPlace ? { '@type': 'Place', name: birthPlace } : undefined,
     worksFor: {
       '@type': 'Organization',
       name: worksFor,
@@ -78,6 +95,26 @@ export default function SEOStructuredData({
     ...(researchInterests && { 
       knowsAbout: researchInterests 
     }),
+    ...(knowsAbout && !researchInterests && {
+      knowsAbout: knowsAbout
+    }),
+    ...(skills && {
+      hasOccupation: {
+        '@type': 'Occupation',
+        name: jobTitle,
+        skills: skills.join(', ')
+      }
+    }),
+    ...(awards && {
+      award: awards
+    }),
+    ...(memberOf && {
+      memberOf: memberOf.map(org => ({
+        '@type': 'Organization',
+        name: org.name,
+        ...(org.url && { url: org.url })
+      }))
+    }),
     ...(alumniOf && {
       alumniOf: Array.isArray(alumniOf) 
         ? alumniOf.map(org => ({ '@type': 'Organization', name: org }))
@@ -91,10 +128,26 @@ export default function SEOStructuredData({
     }),
   };
 
+  // Add Website schema to help with Sitelinks and Site Name
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': name,
+    'alternateName': [`${name} Portfolio`, 'Gowtham Sridhar HCI'],
+    'url': url,
+  };
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+    </>
   );
-} 
+}
+ 

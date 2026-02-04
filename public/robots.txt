@@ -14,4 +14,4 @@ User-agent: CCBot
 Allow: /
 
 Sitemap: https://www.gowthamsridhar.com/sitemap.xml
-Host: https://www.gowthamsridhar.com
+Host: www.gowthamsridhar.com

@@ -30,9 +30,9 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://www.gowthamsridhar.com'),
   alternates: {
-    canonical: 'https://www.gowthamsridhar.com/',
+    canonical: 'https://www.gowthamsridhar.com',
     languages: {
-      'en-US': 'https://www.gowthamsridhar.com/',
+      'en-US': 'https://www.gowthamsridhar.com',
     },
   },
   robots: {
@@ -114,12 +114,12 @@ export default function RootLayout({
         {/* Detailed Scholarly Schema for Researchers */}
         <SEOStructuredData
           name="Gowtham Sridhar"
-          jobTitle="HCI Researcher & AI Expert"
+          jobTitle="Junior Scientist, Applied AI researcher & HCI Expert"
           worksFor="Austrian Institute of Technology (AIT)"
           worksForUrl="https://www.ait.ac.at/"
           educationalCredentials="M.Sc. Human-Computer Interaction (Joint Degree)"
-          description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Human-Computer Interaction, Applied AI researcher, XR Applications, and UI/UX Design."
-          image="https://www.gowthamsridhar.com/images/shareLinkprofile.png"
+          description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Applied AI, Human-Computer Interaction (HCI), XR Applications, and robotics."
+          image="https://www.gowthamsridhar.com/images/profile.jpg"
           sameAs={[
             "https://www.linkedin.com/in/gowtham-sridher/",
             "https://github.com/ALIENvsROBOT",
@@ -132,11 +132,14 @@ export default function RootLayout({
           affiliation="Austrian Institute of Technology"
           hIndex={15}
           researchInterests={[
-            "Human-Computer Interaction",
-            "AI expert",
+            "Applied AI",
+            "Human-Computer Interaction (HCI)",
             "XR Applications",
-            "UI/UX Design",
-            "Mixed Reality"
+            "Robotics",
+            "Tangible User Interfaces",
+            "Mixed Reality",
+            "Explainable AI",
+            "Augmented Reality"
           ]}
           alumniOf={[
             "Paris Lodron Universitaet Salzburg",
@@ -147,6 +150,28 @@ export default function RootLayout({
             addressLocality: "Vienna",
             addressCountry: "Austria"
           }}
+          skills={[
+            "Human-Computer Interaction",
+            "Artificial Intelligence",
+            "Machine Learning",
+            "XR Applications",
+            "Robotics",
+            "UI/UX Design",
+            "Physical Prototyping",
+            "Computer Vision",
+            "Python",
+            "C++"
+          ]}
+          nationality="India"
+          memberOf={[
+            { name: "AIT Austrian Institute of Technology", url: "https://www.ait.ac.at/" },
+            { name: "ACM SIGCHI", url: "https://sigchi.org/" }
+          ]}
+          awards={[
+            "eAward 2025: Best digitalization projects",
+            "Schmiede 2024 Hallein Salzburg Feature",
+            "Best Paper Award IVC RAISE 2020"
+          ]}
         />
 
         {/* Inline script for performance optimizations (Mobile & Animations) */}
@@ -223,14 +248,20 @@ export default function RootLayout({
                   var loc = window.location;
                   var host = loc.hostname;
                   var isLocalHost = host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host.endsWith('.local');
-                  if (isLocalHost) {
-                    return;
-                  }
+                  if (isLocalHost) return;
+                  
                   var isHttp = loc.protocol === 'http:';
                   var isWww = host.startsWith('www.');
-                  var targetHost = isWww ? host : 'www.' + host.replace(/^www\./, '');
-                  if (isHttp || host !== targetHost) {
-                    var targetUrl = 'https://' + targetHost + loc.pathname + loc.search + loc.hash;
+                  var targetHost = isWww ? host : 'www.' + host;
+                  
+                  var path = loc.pathname;
+                  // Remove trailing slash except for root
+                  if (path.length > 1 && path.endsWith('/')) {
+                    path = path.slice(0, -1);
+                  }
+                  
+                  if (isHttp || !isWww || loc.pathname !== path) {
+                    var targetUrl = 'https://' + targetHost + path + loc.search + loc.hash;
                     if (loc.href !== targetUrl) {
                       loc.replace(targetUrl);
                     }

@@ -17,7 +17,7 @@ export const projects: Project[] = [
     description: 'A production-grade, self-hosted "Sovereign AI" stack that evolves local LLMs into a complete platform with integrated RAG, agentic orchestration, and full-stack observability.',
     image: '/Project_images/LLM_arch.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=AI+Stack',
-    technologies: ['AI', 'LLM', 'RAG', 'Agentic Orchestration', 'Full-Stack Observability', 'Human-computer Interaction', ''],
+    technologies: ['AI', 'LLM', 'RAG', 'Agentic Orchestration', 'Full-Stack Observability', 'Human-computer Interaction'],
     link: 'https://www.linkedin.com/posts/gowtham-sridher_ai-stack-activity-7406014926206521344-XgsF?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE',
     featured: true
   },

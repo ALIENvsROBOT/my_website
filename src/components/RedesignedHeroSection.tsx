@@ -100,7 +100,7 @@ const RedesignedHeroSection = () => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  <p>HCI Researcher & AI Expert | Junior Scientist at AIT</p>
+                  <p>Applied AI & HCI Researcher | Junior Scientist at AIT</p>
                 </motion.div>
               </div>
             </div>
@@ -141,7 +141,7 @@ const RedesignedHeroSection = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 0.8 }}
             >
-              {['Human-Computer Interaction', 'AI Applications', 'UI/UX Design', 'Robotics', 'XR'].map((skill, index) => (
+              {['Applied AI', 'HCI', 'UI/UX Design', 'Robotics', 'XR'].map((skill, index) => (
                 <motion.span
                   key={skill}
                   className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-900/30 text-indigo-200 border border-indigo-800/30 backdrop-blur-sm"
