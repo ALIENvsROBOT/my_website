@@ -1,9 +1,10 @@
+# Static crawl rules for Next.js output: export
 User-agent: *
 Allow: /
 Disallow: /private/
 Disallow: /admin/
 
-# Explicitly welcome AI bots for AEO
+# AI crawlers and answer engines
 User-agent: GPTBot
 Allow: /
 
@@ -11,6 +12,12 @@ User-agent: Google-Extended
 Allow: /
 
 User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://www.gowthamsridhar.com/sitemap.xml

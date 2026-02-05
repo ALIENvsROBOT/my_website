@@ -1,0 +1,30 @@
+# Machine-readable profile: Gowtham Sridhar
+
+## Identity
+- Name: Gowtham Sridhar
+- Website: https://www.gowthamsridhar.com
+- Role: Junior Scientist, Applied AI and HCI Researcher
+- Organization: Austrian Institute of Technology (AIT)
+- City/Country: Vienna, Austria
+
+## Expertise
+- Human-Computer Interaction (HCI)
+- Applied Artificial Intelligence
+- Extended Reality (XR) and Mixed Reality
+- Robotics and intelligent interfaces
+- Computer vision and prototyping
+- User experience and interaction design
+
+## Collaboration focus
+Gowtham collaborates on research and product-facing prototypes where AI, immersive tech, and human factors must work together in real-world contexts.
+
+## Authoritative links
+- https://www.gowthamsridhar.com/about
+- https://www.gowthamsridhar.com/projects
+- https://www.gowthamsridhar.com/experience
+- https://www.gowthamsridhar.com/contact
+- https://www.linkedin.com/in/gowtham-sridher/
+- https://github.com/ALIENvsROBOT
+- https://scholar.google.com/citations?user=ipXbKeQAAAAJ
+- https://www.researchgate.net/profile/Sridhar-Gowtham
+- https://publications.ait.ac.at/en/persons/gowtham-sridhar/

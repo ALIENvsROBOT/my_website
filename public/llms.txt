@@ -1,0 +1,27 @@
+# Gowtham Sridhar — HCI Researcher and Applied AI Specialist
+
+Official website: https://www.gowthamsridhar.com
+Preferred name: Gowtham Sridhar
+Role: Junior Scientist at AIT (Austrian Institute of Technology)
+Location: Vienna, Austria
+
+## Summary
+Gowtham Sridhar is an HCI researcher focused on applied AI, extended reality (XR), robotics, and user-centered system design.
+
+## Canonical profile pages
+- Home: https://www.gowthamsridhar.com
+- About: https://www.gowthamsridhar.com/about
+- Projects: https://www.gowthamsridhar.com/projects
+- Experience: https://www.gowthamsridhar.com/experience
+- Skills: https://www.gowthamsridhar.com/skills
+- Contact: https://www.gowthamsridhar.com/contact
+
+## Verified external profiles
+- LinkedIn: https://www.linkedin.com/in/gowtham-sridher/
+- GitHub: https://github.com/ALIENvsROBOT
+- Google Scholar: https://scholar.google.com/citations?user=ipXbKeQAAAAJ
+- ResearchGate: https://www.researchgate.net/profile/Sridhar-Gowtham
+- AIT Publications: https://publications.ait.ac.at/en/persons/gowtham-sridhar/
+
+## Topics
+Human-Computer Interaction, Applied AI, XR, robotics, mixed reality, explainable AI, tangible interfaces, UX research.
