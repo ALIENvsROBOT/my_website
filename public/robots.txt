@@ -1,3 +1,4 @@
+# Static crawl rules for Next.js output: export
 User-agent: *
 Allow: /
 Disallow: /private/

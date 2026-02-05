@@ -34,7 +34,7 @@ The site is optimized for both traditional search and AI-based answer engines (C
 1. **Google Search Console**: 
    - Verify your property at [GSC](https://search.google.com/search-console).
    - Use the **HTML Tag** method and paste the string into the `GOOGLE_SITE_VERIFICATION` secret.
-2. **Robots & Sitemap**: These are automatically generated to allow AI crawlers (`GPTBot`, `Google-Extended`) while protecting private paths.
+2. **Robots & Sitemap**: These are served from `public/robots.txt` and `public/sitemap.xml` and configured to allow AI crawlers (`GPTBot`, `Google-Extended`) while protecting private paths.
 
 ---
 
