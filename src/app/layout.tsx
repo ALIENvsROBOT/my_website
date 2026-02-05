@@ -111,6 +111,9 @@ export default function RootLayout({
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs profile" />
+        <link rel="alternate" type="text/plain" href="/llms-full.txt" title="LLMs full profile" />
+
         {/* Detailed Scholarly Schema for Researchers */}
         <SEOStructuredData
           name="Gowtham Sridhar"
