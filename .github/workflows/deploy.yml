@@ -35,6 +35,11 @@ jobs:
       - name: Install critters (required for optimizeCss)
         run: npm install critters --legacy-peer-deps
 
+      - name: Enforce static crawl files for export
+        run: |
+          # Prevent App Router metadata handlers from conflicting with output: export
+          rm -f src/app/robots.ts src/app/sitemap.ts
+
       - name: Update next.js export handling
         run: |
           # Fix for Next.js static export in latest versions
