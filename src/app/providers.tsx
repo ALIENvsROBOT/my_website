@@ -71,9 +71,20 @@ const attachBehavioralTracking = () => {
 
 	const scrollMilestones = new Set<number>()
 	const thresholds = [25, 50, 75, 90, 100]
+	let scrollTrackingUrl = window.location.href
 	let lastHeartbeat = Date.now()
 
+	const resetScrollMilestonesForNewPage = () => {
+		const currentUrl = window.location.href
+		if (currentUrl !== scrollTrackingUrl) {
+			scrollTrackingUrl = currentUrl
+			scrollMilestones.clear()
+		}
+	}
+
 	const captureScrollDepth = () => {
+		resetScrollMilestonesForNewPage()
+
 		const doc = document.documentElement
 		const scrollableHeight = doc.scrollHeight - window.innerHeight
 		if (scrollableHeight <= 0) return
