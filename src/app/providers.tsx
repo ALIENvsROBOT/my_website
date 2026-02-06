@@ -72,6 +72,8 @@ const attachBehavioralTracking = () => {
 	const scrollMilestones = new Set<number>()
 	const thresholds = [25, 50, 75, 90, 100]
 	let scrollTrackingUrl = window.location.href
+	const HEARTBEAT_INTERVAL_MS = 15000
+	const MAX_HEARTBEAT_GAP_MS = HEARTBEAT_INTERVAL_MS * 2
 	let lastHeartbeat = Date.now()
 
 	const resetScrollMilestonesForNewPage = () => {
@@ -134,8 +136,14 @@ const attachBehavioralTracking = () => {
 
 	const captureEngagementHeartbeat = () => {
 		const now = Date.now()
-		const engagedSeconds = Math.round((now - lastHeartbeat) / 1000)
+		const elapsedMs = now - lastHeartbeat
 		lastHeartbeat = now
+
+		if (elapsedMs <= 0 || elapsedMs > MAX_HEARTBEAT_GAP_MS) {
+			return
+		}
+
+		const engagedSeconds = Math.round(elapsedMs / 1000)
 
 		if (document.visibilityState === 'visible') {
 			posthog.capture('engagement_heartbeat', {
@@ -146,6 +154,10 @@ const attachBehavioralTracking = () => {
 	}
 
 	const captureVisibility = () => {
+		if (document.visibilityState === 'visible') {
+			lastHeartbeat = Date.now()
+		}
+
 		posthog.capture('visibility_changed', {
 			visibility_state: document.visibilityState,
 			current_url: window.location.href,
@@ -176,7 +188,7 @@ const attachBehavioralTracking = () => {
 	window.addEventListener('error', captureError)
 	window.addEventListener('unhandledrejection', captureUnhandledRejection)
 
-	setInterval(captureEngagementHeartbeat, 15000)
+	setInterval(captureEngagementHeartbeat, HEARTBEAT_INTERVAL_MS)
 }
 
 /**
