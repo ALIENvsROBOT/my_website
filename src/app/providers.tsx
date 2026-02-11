@@ -198,14 +198,19 @@ const attachBehavioralTracking = () => {
 const initPH = () => {
 	if (posthogInitiated || typeof window === 'undefined') return
 
-	posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+	const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
+	if (!posthogKey) {
+		console.error('[PostHog] Missing NEXT_PUBLIC_POSTHOG_KEY. Analytics initialization skipped.')
+		return
+	}
+
+	posthog.init(posthogKey, {
 		api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
 		person_profiles: 'identified_only',
 		capture_pageview: false,
 		capture_pageleave: true,
 		capture_performance: true,
 		autocapture: true,
-		defaults: '2025-11-30',
 		persistence: 'localStorage+cookie',
 		session_recording: {
 			maskAllInputs: false,
@@ -226,29 +231,8 @@ function PostHogPageView(): null {
 	const searchParams = useSearchParams()
 
 	useEffect(() => {
-		const handleInteraction = () => {
-			initPH()
-
-			if (pathname && posthog) {
-				posthog.capture('$pageview', { '$current_url': getCurrentUrl(pathname, searchParams) })
-			}
-			cleanup()
-		}
-
-		const cleanup = () => {
-			window.removeEventListener('mousemove', handleInteraction)
-			window.removeEventListener('touchstart', handleInteraction)
-			window.removeEventListener('scroll', handleInteraction)
-			window.removeEventListener('keydown', handleInteraction)
-		}
-
-		window.addEventListener('mousemove', handleInteraction, { once: true })
-		window.addEventListener('touchstart', handleInteraction, { once: true })
-		window.addEventListener('scroll', handleInteraction, { once: true })
-		window.addEventListener('keydown', handleInteraction, { once: true })
-
-		return cleanup
-	}, [pathname, searchParams])
+		initPH()
+	}, [])
 
 	useEffect(() => {
 		if (pathname && posthogInitiated && posthog) {
