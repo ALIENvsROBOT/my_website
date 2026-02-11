@@ -9,6 +9,7 @@ To ensure the live site functions correctly, you must add the following **Secret
 | Secret Name | Description |
 | :--- | :--- |
 | `POSTHOG_KEY` | Your PostHog Project API Key (`phc_...`) |
+| `POSTHOG_HOST` | Your PostHog ingestion host (`https://us.i.posthog.com` or `https://eu.i.posthog.com`) as an **Actions Secret or Variable** |
 | `GOOGLE_SITE_VERIFICATION` | Google Search Console verification code |
 | `EMAILJS_SERVICE_ID` | EmailJS service ID for the contact form |
 | `EMAILJS_TEMPLATE_ID` | EmailJS template ID for the contact form |
@@ -22,8 +23,8 @@ To ensure the live site functions correctly, you must add the following **Secret
 This project uses **PostHog** for open-source analytics, including heatmaps and session replays.
 
 1. **Account**: Create a free account at [PostHog](https://posthog.com/).
-2. **Stealth Mode**: The project is configured with "Stealth Mode," meaning tracking only initializes after a human interaction (mouse move, scroll, touch) to avoid bot detection and ensure GDPR compliance.
-3. **Data Residency**: Default is set to **EU Cloud**. If using US Cloud, update the `NEXT_PUBLIC_POSTHOG_HOST` in `.github/workflows/deploy.yml`.
+2. **Initialization**: Analytics initializes on page load to ensure low-interaction sessions are still captured correctly.
+3. **Data Residency**: Set a `POSTHOG_HOST` GitHub Actions Secret or Variable (`https://us.i.posthog.com` for US Cloud or `https://eu.i.posthog.com` for EU Cloud).
 
 ---
 
@@ -45,7 +46,7 @@ For local development, create a `.env.local` file in the root directory. **Never
 ```bash
 # Example .env.local
 NEXT_PUBLIC_POSTHOG_KEY=your_phc_key_here
-NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_key
