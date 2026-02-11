@@ -14,12 +14,19 @@ import Link from 'next/link';
  * PrivacyNotice Component
  * Renders a small floating banner in the bottom-left corner after a short delay.
  */
+const PRIVACY_CONSENT_KEY = 'privacy-consent:v2';
+
 const PrivacyNotice = () => {
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
-		// Check if the user has already acknowledged the notice in a previous session
-		const hasConsented = localStorage.getItem('privacy-consent');
+		let hasConsented = false;
+
+		try {
+			hasConsented = localStorage.getItem(PRIVACY_CONSENT_KEY) === 'true';
+		} catch {
+			hasConsented = false;
+		}
 
 		if (!hasConsented) {
 			// Delay appearance by 2 seconds to not interrupt the initial 3D load experience
@@ -34,7 +41,10 @@ const PrivacyNotice = () => {
 	 * Saves the acknowledgement to localStorage and hides the notice.
 	 */
 	const handleAccept = () => {
-		localStorage.setItem('privacy-consent', 'true');
+		try {
+			localStorage.setItem(PRIVACY_CONSENT_KEY, 'true');
+		} catch {}
+
 		setIsVisible(false);
 	};
 
@@ -45,7 +55,7 @@ const PrivacyNotice = () => {
 					initial={{ opacity: 0, y: 50, scale: 0.9 }}
 					animate={{ opacity: 1, y: 0, scale: 1 }}
 					exit={{ opacity: 0, y: 20, scale: 0.9 }}
-					className="fixed bottom-6 left-6 z-[100] max-w-xs"
+					className="fixed bottom-4 left-4 right-4 z-[100] md:right-auto md:bottom-6 md:left-6 max-w-xs"
 				>
 					{/* Using the project's 'glass-effect-dark' for visual consistency with 3D elements */}
 					<div className="glass-effect-dark p-4 rounded-xl border border-secondary/30 shadow-2xl flex flex-col gap-3">
