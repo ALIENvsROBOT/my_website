@@ -1,7 +1,6 @@
 /**
  * @file providers.tsx
- * @description Global Provider for PostHog Analytics with Stealth Initialization for GDPR compliance.
- * It delays tracking until real human interaction is detected to avoid bot-based legal scans.
+ * @description Global Provider for PostHog Analytics with route pageviews, behavioral events, and web vitals.
  */
 
 'use client'
@@ -15,6 +14,20 @@ import { onLCP, onINP, onCLS } from 'web-vitals'
 // Global flag to track if PostHog has been initialized
 let posthogInitiated = false
 let behavioralTrackingAttached = false
+
+const DEFAULT_POSTHOG_HOST = 'https://us.i.posthog.com'
+
+const getPostHogHost = () => {
+	const configuredHost = process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim()
+	if (!configuredHost) return DEFAULT_POSTHOG_HOST
+
+	if (!/^https?:\/\//.test(configuredHost)) {
+		console.warn(`[PostHog] Invalid NEXT_PUBLIC_POSTHOG_HOST "${configuredHost}". Falling back to ${DEFAULT_POSTHOG_HOST}.`)
+		return DEFAULT_POSTHOG_HOST
+	}
+
+	return configuredHost
+}
 
 const getCurrentUrl = (pathname: string, searchParams: URLSearchParams | null) => {
 	let url = window.origin + pathname
@@ -205,7 +218,7 @@ const initPH = () => {
 	}
 
 	posthog.init(posthogKey, {
-		api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+		api_host: getPostHogHost(),
 		person_profiles: 'always',
 		capture_pageview: false,
 		capture_pageleave: true,
