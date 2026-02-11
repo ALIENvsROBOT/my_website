@@ -9,7 +9,7 @@ To ensure the live site functions correctly, you must add the following **Secret
 | Secret Name | Description |
 | :--- | :--- |
 | `POSTHOG_KEY` | Your PostHog Project API Key (`phc_...`) |
-| `POSTHOG_HOST` | Your PostHog ingestion host (`https://us.i.posthog.com` or `https://eu.i.posthog.com`) |
+| `POSTHOG_HOST` | Your PostHog ingestion host (`https://us.i.posthog.com` or `https://eu.i.posthog.com`) as an **Actions Secret or Variable** |
 | `GOOGLE_SITE_VERIFICATION` | Google Search Console verification code |
 | `EMAILJS_SERVICE_ID` | EmailJS service ID for the contact form |
 | `EMAILJS_TEMPLATE_ID` | EmailJS template ID for the contact form |
@@ -24,7 +24,7 @@ This project uses **PostHog** for open-source analytics, including heatmaps and 
 
 1. **Account**: Create a free account at [PostHog](https://posthog.com/).
 2. **Initialization**: Analytics initializes on page load to ensure low-interaction sessions are still captured correctly.
-3. **Data Residency**: Set a `POSTHOG_HOST` GitHub secret (`https://us.i.posthog.com` for US Cloud or `https://eu.i.posthog.com` for EU Cloud).
+3. **Data Residency**: Set a `POSTHOG_HOST` GitHub Actions Secret or Variable (`https://us.i.posthog.com` for US Cloud or `https://eu.i.posthog.com` for EU Cloud).
 
 ---
 
