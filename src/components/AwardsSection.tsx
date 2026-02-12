@@ -22,6 +22,20 @@ const cardVariants: Variants = {
   }),
 };
 
+const revealAwardVariants: Variants = {
+  hidden: { opacity: 0, y: 28, scale: 0.97 },
+  visible: (order: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.45,
+      ease: "easeOut",
+      delay: Math.max(order, 0) * 0.08,
+    },
+  }),
+};
+
 const resolveImageSource = (source: AwardEntry["image"]) => {
   if (typeof source !== "string") return source;
 
@@ -337,9 +351,15 @@ const AwardsSection = () => {
                   }}
                 >
                   {awardsAndRecognitions.map((award, index) => (
-                    <li key={`${award.title}-${award.year}`}>
+                    <motion.li
+                      key={`${award.title}-${award.year}`}
+                      custom={index - collapsedVisibleCount}
+                      variants={revealAwardVariants}
+                      initial={false}
+                      animate={index < collapsedVisibleCount || isExpanded ? "visible" : "hidden"}
+                    >
                       <AwardTile award={award} index={index} />
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
               </motion.div>
