@@ -332,9 +332,7 @@ const AwardsSection = () => {
                     maxHeight: !measurementReady
                       ? undefined
                       : isExpanded
-                        ? hasScrollableOverflow
-                          ? `${gridHeights.expanded}px`
-                          : undefined
+                        ? `${gridHeights.expanded}px`
                         : `${gridHeights.collapsed}px`,
                   }}
                 >
