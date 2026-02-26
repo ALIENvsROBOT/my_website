@@ -12,6 +12,17 @@
 export const projects: Project[] = [
   
   {
+    id: 11,
+    title: 'MedGemma FHIR-Bridge 💓',
+    description: 'Built for The MedGemma Impact Challenge (Jan 22, 2026 - Feb 24, 2026): an on-premise self-healing pipeline that converts medical dark data into compliant HL7 FHIR R4 resources with a Verify & Repair safety loop.',
+    image: 'https://www.kaggle.com/writeup-links/98880/images/original',
+    fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=MedGemma+FHIR-Bridge',
+    technologies: ['MedGemma 1.5 (4B)', 'FHIR R4', 'HL7', 'vLLM', 'Healthcare AI', 'LOINC', 'SNOMED'],
+    link: 'https://kaggle.com/competitions/med-gemma-impact-challenge/writeups/new-writeup-1769637036213',
+    featured: true
+  },
+
+  {
     id: 10,
     title: 'Sovereign AI stack from Level 0 to Level 8',
     description: 'A production-grade, self-hosted "Sovereign AI" stack that evolves local LLMs into a complete platform with integrated RAG, agentic orchestration, and full-stack observability.',
