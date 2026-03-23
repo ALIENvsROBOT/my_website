@@ -50,7 +50,7 @@ export const projects: Project[] = [
     image: '/Project_images/Gaze_gesture.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Gaze+and+Gesture',
     technologies: ['Computer Vision', 'IoT', 'XR', 'Machine Learning'],
-    link: 'https://bit.ly/3Yk5Ssw',
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_hci-tech-technology-activity-7242855097448181760-WJ9g?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE',
     featured: true
   },
   {
@@ -79,7 +79,7 @@ export const projects: Project[] = [
     image: '/Project_images/voice_contriolled_robot.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Voice+Controlled+Arm',
     technologies: ['Speech Recognition', 'Robotics', 'Natural Language Processing'],
-    link: 'https://bit.ly/423kStS',
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_robot-robotics-hci-activity-7057348833533452288-8S9l?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE',
     featured: true
   },
   {
@@ -107,7 +107,7 @@ export const projects: Project[] = [
     image: '/Project_images/robot_naviagtion.png',
     fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Robot+Navigation',
     technologies: ['Robotics', 'Path Planning', 'ROS', 'Navigation'],
-    link: 'https://bit.ly/3fAGlY5',
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_robotics-research-internship-activity-6955082603892752384-dtAI?utm_source=share&utm_medium=member_desktop&rcm=ACoAACXQpi8BHxHGigkfDsMcszwOKDuyojVn8oE',
     featured: true
   },
   {
