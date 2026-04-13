@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
 
 export default function PrivacyPolicy() {
 	return (
-		<main className="min-h-screen bg-transparent text-zinc-900 py-20 px-4 md:px-8">
+		<main className="relative z-10 min-h-screen bg-transparent text-zinc-900 py-20 px-4 md:px-8">
 			<div className="max-w-4xl mx-auto">
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
