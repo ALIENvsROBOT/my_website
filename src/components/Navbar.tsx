@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const navLinks = [
@@ -26,6 +25,7 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [customCursorEnabled, setCustomCursorEnabled] = useState(true);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [hoveredDesktopNav, setHoveredDesktopNav] = useState<string | null>(null);
 
   useEffect(() => {
     // Check localStorage for cursor preference
@@ -184,7 +184,10 @@ const Navbar = () => {
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav
+            className="hidden md:flex items-center space-x-2"
+            onMouseLeave={() => setHoveredDesktopNav(null)}
+          >
             {navLinks.map((link) => {
               return (
                 <div key={link.href} className="relative group">
@@ -192,43 +195,59 @@ const Navbar = () => {
                     <>
                       {openDropdown === link.href ? (
                         <button
-                          className={`relative text-lightText/90 hover:text-lightText text-sm font-medium transition-colors duration-300 flex items-center gap-1 ${
+                          className={`relative rounded-full px-3 py-2 text-sm font-medium transition-colors duration-300 flex items-center gap-1 ${
                             activeSection.startsWith(link.href.substring(1)) ? 'text-lightText' : 'text-lightText/70'
                           }`}
                           onClick={() => toggleDropdown(link.href)}
+                          onMouseEnter={() => setHoveredDesktopNav(link.href)}
+                          onFocus={() => setHoveredDesktopNav(link.href)}
                           aria-expanded="true"
                           aria-haspopup="menu"
                         >
-                          {link.label}
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          {hoveredDesktopNav === link.href && (
+                            <motion.span
+                              layoutId="desktop-pill-nav-hover"
+                              className="absolute inset-0 rounded-full bg-zinc-200/80 border border-zinc-300/85 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.5)]"
+                              transition={{ type: 'spring', stiffness: 440, damping: 36, mass: 0.58 }}
+                              aria-hidden="true"
+                            />
+                          )}
+                          <span className="relative z-10">{link.label}</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="relative z-10 h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                           </svg>
                           <motion.span
-                            className={`absolute -bottom-1 left-0 h-0.5 bg-secondary transition-all duration-300 ${
-                              activeSection.startsWith(link.href.substring(1)) ? 'w-full' : 'w-0'
-                            }`}
-                            animate={{ width: activeSection.startsWith(link.href.substring(1)) ? '100%' : '0%' }}
+                            className="absolute -bottom-1 left-3 right-3 h-0.5 bg-secondary origin-left"
+                            animate={{ scaleX: activeSection.startsWith(link.href.substring(1)) ? 1 : 0 }}
                             transition={{ duration: 0.3 }}
                           />
                         </button>
                       ) : (
                         <button
-                          className={`relative text-lightText/90 hover:text-lightText text-sm font-medium transition-colors duration-300 flex items-center gap-1 ${
+                          className={`relative rounded-full px-3 py-2 text-sm font-medium transition-colors duration-300 flex items-center gap-1 ${
                             activeSection.startsWith(link.href.substring(1)) ? 'text-lightText' : 'text-lightText/70'
                           }`}
                           onClick={() => toggleDropdown(link.href)}
+                          onMouseEnter={() => setHoveredDesktopNav(link.href)}
+                          onFocus={() => setHoveredDesktopNav(link.href)}
                           aria-expanded="false"
                           aria-haspopup="menu"
                         >
-                          {link.label}
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          {hoveredDesktopNav === link.href && (
+                            <motion.span
+                              layoutId="desktop-pill-nav-hover"
+                              className="absolute inset-0 rounded-full bg-zinc-200/80 border border-zinc-300/85 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.5)]"
+                              transition={{ type: 'spring', stiffness: 440, damping: 36, mass: 0.58 }}
+                              aria-hidden="true"
+                            />
+                          )}
+                          <span className="relative z-10">{link.label}</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="relative z-10 h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                           </svg>
                           <motion.span
-                            className={`absolute -bottom-1 left-0 h-0.5 bg-secondary transition-all duration-300 ${
-                              activeSection.startsWith(link.href.substring(1)) ? 'w-full' : 'w-0'
-                            }`}
-                            animate={{ width: activeSection.startsWith(link.href.substring(1)) ? '100%' : '0%' }}
+                            className="absolute -bottom-1 left-3 right-3 h-0.5 bg-secondary origin-left"
+                            animate={{ scaleX: activeSection.startsWith(link.href.substring(1)) ? 1 : 0 }}
                             transition={{ duration: 0.3 }}
                           />
                         </button>
@@ -255,22 +274,30 @@ const Navbar = () => {
                     </>
                   ) : (
                     <a
-                href={link.href}
-                      className={`relative text-lightText/90 hover:text-lightText text-sm font-medium transition-colors duration-300 ${
+                      href={link.href}
+                      className={`relative rounded-full px-3 py-2 text-sm font-medium transition-colors duration-300 ${
                   activeSection === link.href.substring(1) ? 'text-lightText' : 'text-lightText/70'
                 }`}
-                onClick={(e) => handleNavClick(e, link.href)}
-                aria-current={activeSection === link.href.substring(1) ? 'page' : undefined}
-              >
-                {link.label}
-                <motion.span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-secondary transition-all duration-300 ${
-                    activeSection === link.href.substring(1) ? 'w-full' : 'w-0'
-                  }`}
-                  animate={{ width: activeSection === link.href.substring(1) ? '100%' : '0%' }}
-                  transition={{ duration: 0.3 }}
-                />
-              </a>
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      onMouseEnter={() => setHoveredDesktopNav(link.href)}
+                      onFocus={() => setHoveredDesktopNav(link.href)}
+                      aria-current={activeSection === link.href.substring(1) ? 'page' : undefined}
+                    >
+                      {hoveredDesktopNav === link.href && (
+                        <motion.span
+                          layoutId="desktop-pill-nav-hover"
+                          className="absolute inset-0 rounded-full bg-zinc-200/80 border border-zinc-300/85 shadow-[0_10px_24px_-18px_rgba(0,0,0,0.5)]"
+                          transition={{ type: 'spring', stiffness: 440, damping: 36, mass: 0.58 }}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span className="relative z-10">{link.label}</span>
+                      <motion.span
+                        className="absolute -bottom-1 left-3 right-3 h-0.5 bg-secondary origin-left"
+                        animate={{ scaleX: activeSection === link.href.substring(1) ? 1 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    </a>
                   )}
                 </div>
               );
