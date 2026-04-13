@@ -2,11 +2,10 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import SkillsLogoLoop from './SkillsLogoLoop';
 
 import {
   biographyParagraphs as ABOUT_PARAGRAPHS,
-  coreSkillLevels as skills,
   experienceEntries as experiences,
   educationEntries as education,
   spotlightSkills as SKILLS,
@@ -196,6 +195,15 @@ const AboutSection = () => {
                   {text}
                 </motion.p>
               ))}
+
+              <motion.div
+                className="glass-effect-dark p-5 rounded-lg sci-fi-border"
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.42 }}
+              >
+                <SkillsLogoLoop />
+              </motion.div>
             </div>
 
             <div className="space-y-4">

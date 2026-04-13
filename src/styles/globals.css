@@ -573,6 +573,96 @@
   animation: scroll-x 20s linear infinite;
 }
 
+/* About section: low-cost looping skill logos */
+.skills-loop-shell {
+  margin-top: 0;
+  border-radius: 1rem;
+  border: 1px solid rgba(24, 24, 27, 0.12);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(244, 244, 242, 0.8));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 10px 24px -20px rgba(0, 0, 0, 0.35);
+  padding: 1.1rem 0.95rem;
+}
+
+.skills-loop-header {
+  padding: 0 0.45rem;
+}
+
+.skills-loop-header h4 {
+  margin: 0;
+  color: #1a1a1d;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.skills-loop-rows {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 192px;
+  justify-content: center;
+}
+
+.skills-loop-row {
+  --logo-loop-duration: 34s;
+  overflow: hidden;
+  position: relative;
+  padding-inline: 0.35rem;
+}
+
+.skills-loop-track {
+  display: flex;
+  gap: 0.62rem;
+  width: max-content;
+  will-change: transform;
+  animation: skill-logo-loop var(--logo-loop-duration) linear infinite;
+}
+
+.skills-loop-track.is-reverse {
+  animation-name: skill-logo-loop-reverse;
+}
+
+.skills-loop-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.52rem;
+  white-space: nowrap;
+  border-radius: 999px;
+  border: 1px solid rgba(24, 24, 27, 0.16);
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.92), rgba(242, 242, 240, 0.9));
+  color: rgba(24, 24, 27, 0.9);
+  font-size: 0.78rem;
+  font-weight: 560;
+  letter-spacing: 0.01em;
+  padding: 0.48rem 0.8rem;
+}
+
+.skills-loop-icon {
+  font-size: 0.94rem;
+  color: rgba(30, 30, 33, 0.86);
+  flex-shrink: 0;
+}
+
+@keyframes skill-logo-loop {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes skill-logo-loop-reverse {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 /* Responsive design adjustments */
 @media (max-width: 768px) {
   .holographic-heading {
@@ -604,6 +694,30 @@
   
   .animated-border::before {
     animation: none;
+  }
+
+  .skills-loop-shell {
+    margin-top: 0;
+    padding: 0.85rem 0.7rem;
+    border-radius: 0.9rem;
+  }
+
+  .skills-loop-header h4 {
+    font-size: 0.8rem;
+  }
+
+  .skills-loop-chip {
+    font-size: 0.7rem;
+    padding: 0.38rem 0.58rem;
+  }
+
+  .skills-loop-icon {
+    font-size: 0.82rem;
+  }
+
+  .skills-loop-rows {
+    min-height: 158px;
+    gap: 0.58rem;
   }
 }
 
@@ -713,5 +827,10 @@ a, button, [role="button"], input, select, textarea {
   * {
     animation-duration: 0.001s !important;
     transition-duration: 0.001s !important;
+  }
+
+  .skills-loop-track,
+  .skills-loop-track.is-reverse {
+    animation: none !important;
   }
 }

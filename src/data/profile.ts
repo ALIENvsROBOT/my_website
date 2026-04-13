@@ -76,9 +76,9 @@ export const profileBasics: ProfileBasics = {
 };
 
 export const biographyParagraphs: string[] = [
-  "Hello! I'm Gowtham Sridhar, a Junior Scientist at AIT - Center for Technology Experience in Vienna, Austria. I'm passionate about advancing my expertise at the forefront of Human-Computer Interaction, Robotics, and creating innovative interactions for the physical world.",
-  "I'm committed to embracing challenging projects in robotics and human-computer interaction, employing innovative and efficient coding solutions. Working hands-on with wires and processors, I believe that intricate problems demand intelligent and streamlined approaches.",
-  "Currently, I focus on prototyping XR applications, creating innovative real-world interactions with technology, researching interfaces beyond screens, and developing tangible user interfaces with hardware prototyping."
+  "I am Gowtham Sridhar, a Junior Scientist at AIT - Center for Technology Experience in Vienna. My work centers on Human-Computer Interaction and applied AI, with a focus on designing intelligent interfaces that are useful, usable, and responsible.",
+  "I build end-to-end AI interaction systems using LLM inferencing, computer vision, and human-centered design methods. I translate research into practical prototypes that improve decision making, reduce friction, and support real users in complex workflows.",
+  "My current focus is creating trustworthy AI experiences where model capability and interface clarity are designed together, so advanced systems feel understandable, controllable, and effective in everyday use."
 ];
 
 export const profileHighlights: string[] = [
