@@ -161,13 +161,15 @@ const Navbar = () => {
   return (
     <motion.header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-darkBg/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        isScrolled
+          ? 'bg-white/94 backdrop-blur-lg shadow-lg border-b border-zinc-300/80'
+          : 'bg-transparent border-b border-transparent'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
     >
-      <div className="container mx-auto px-4 md:px-6 py-2">
+      <div className="container mx-auto px-4 md:px-6 py-2.5">
         <div className="flex items-center justify-between">
           <a href="#home" className="flex items-center gap-2 pl-2 md:pl-4" onClick={(e) => handleNavClick(e, '#home')}>
             <motion.div
@@ -175,7 +177,7 @@ const Navbar = () => {
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
             >
-              <span className="text-lightText font-bold text-xl">GS</span>
+              <span className="text-white font-bold text-xl">GS</span>
               <div className="absolute -inset-1 rounded-full opacity-30 animate-glow"></div>
             </motion.div>
             <span className="font-bold text-xl hidden sm:block gradient-text ml-2">Gowtham Sridhar</span>
@@ -354,7 +356,7 @@ const Navbar = () => {
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <nav className="flex flex-col space-y-3 p-6">
+          <nav className="flex flex-col space-y-2 p-5">
             {navLinks.map((link) => {
               return (
                 <div key={link.href} className="flex flex-col">
@@ -362,7 +364,7 @@ const Navbar = () => {
                     <>
                       {openDropdown === link.href ? (
                         <button
-                          className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2 transition-colors duration-300 flex items-center justify-between ${
+                          className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2.5 transition-colors duration-300 flex items-center justify-between ${
                             activeSection.startsWith(link.href.substring(1)) ? 'text-lightText font-semibold' : 'text-lightText/70'
                           }`}
                           onClick={() => toggleDropdown(link.href)}
@@ -375,7 +377,7 @@ const Navbar = () => {
                         </button>
                       ) : (
                         <button
-                          className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2 transition-colors duration-300 flex items-center justify-between ${
+                          className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2.5 transition-colors duration-300 flex items-center justify-between ${
                             activeSection.startsWith(link.href.substring(1)) ? 'text-lightText font-semibold' : 'text-lightText/70'
                           }`}
                           onClick={() => toggleDropdown(link.href)}
@@ -394,9 +396,9 @@ const Navbar = () => {
                             <a
                               key={subLink.href}
                               href={subLink.href}
-                              className={`text-lightText/90 hover:text-lightText text-base py-1 transition-colors duration-300 ${
-                                activeSection === subLink.href.substring(1) ? 'text-lightText font-medium' : 'text-lightText/70'
-                              }`}
+                                className={`text-lightText/90 hover:text-lightText text-base py-1.5 transition-colors duration-300 ${
+                                  activeSection === subLink.href.substring(1) ? 'text-lightText font-medium' : 'text-lightText/70'
+                                }`}
                               onClick={(e) => handleNavClick(e, subLink.href)}
                             >
                               {subLink.label}
@@ -408,7 +410,7 @@ const Navbar = () => {
                   ) : (
                     <a
                 href={link.href}
-                className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2 transition-colors duration-300 ${
+                className={`text-lightText/90 hover:text-lightText text-lg font-medium py-2.5 transition-colors duration-300 ${
                   activeSection === link.href.substring(1) ? 'text-lightText font-semibold' : 'text-lightText/70'
                 }`}
                 onClick={(e) => handleNavClick(e, link.href)}
@@ -427,7 +429,7 @@ const Navbar = () => {
               href="https://drive.google.com/file/d/1ztgsTwIDreJ4ABvrDL8VsZEGR5EWF_4c/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 px-4 py-2 rounded-full bg-secondary hover:bg-highlight text-white text-sm font-medium transition-colors duration-300 flex items-center gap-1 w-fit"
+              className="mt-2 px-4 py-2.5 rounded-full bg-secondary hover:bg-highlight text-white text-sm font-medium transition-colors duration-300 flex items-center gap-1 w-fit"
               aria-label="Download CV"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -440,7 +442,7 @@ const Navbar = () => {
             <button
               type="button"
               onClick={toggleCustomCursor}
-              className="mt-2 px-4 py-2 rounded-full bg-primary/20 text-lightText text-sm font-medium transition-colors duration-300 flex items-center gap-2 w-fit"
+              className="mt-2 px-4 py-2.5 rounded-full bg-primary/20 text-lightText text-sm font-medium transition-colors duration-300 flex items-center gap-2 w-fit"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 

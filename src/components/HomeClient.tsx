@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-const EnhancedParticleBackground = dynamic(() => import('@/components/EnhancedParticleBackground'), { ssr: false });
 const CustomCursor = dynamic(() => import('@/components/CustomCursor'), { ssr: false });
 const RedesignedHeroSection = dynamic(() => import('@/components/RedesignedHeroSection'), { ssr: false });
 const AboutSection = dynamic(() => import('@/components/AboutSection'), { ssr: false });
@@ -43,11 +42,7 @@ export default function HomeClient() {
   }, []);
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden">
-      <Suspense fallback={<div />}>
-        <EnhancedParticleBackground />
-      </Suspense>
-
+    <main className="relative min-h-screen overflow-x-hidden bg-transparent">
       {!isMobile && (
         <Suspense fallback={<div />}>
           <CustomCursor />

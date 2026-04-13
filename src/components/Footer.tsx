@@ -50,7 +50,7 @@ const Footer = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
-                <span className="text-lightText font-bold text-xl">GS</span>
+                <span className="text-white font-bold text-xl">GS</span>
                 <div className="absolute -inset-1 rounded-full opacity-30 animate-glow"></div>
               </motion.div>
               <span className="font-bold text-xl gradient-text ml-2">Gowtham Sridhar</span>
@@ -140,7 +140,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 mt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+        <div className="pt-8 mt-8 border-t border-zinc-300 flex flex-col md:flex-row justify-between items-center">
           <p className="text-lightText/60 text-sm mb-4 md:mb-0">
             &copy; {currentYear} Gowtham Sridhar. All rights reserved.
           </p>

@@ -88,12 +88,10 @@ const AboutSection = () => {
         const tabParam = hash.split('?tab=')[1];
         // Activate the tab based on the parameter
         if (tabParam === 'experience' || tabParam === 'education' || tabParam === 'about') {
-          console.log('Setting active tab to:', tabParam);
           setActiveTab(tabParam);
         }
       } else if (hash === '#about') {
         // When the hash is exactly '#about' (Profile link), set to the 'about' tab
-        console.log('Setting active tab to: about (Profile)');
         setActiveTab('about');
       }
     };
@@ -161,21 +159,21 @@ const AboutSection = () => {
 
         {/* Navigation Tabs */}
         <div className="flex justify-center mb-10">
-          <div className="glass-effect p-1 rounded-full inline-flex">
+          <div className="glass-effect p-1 rounded-full inline-flex flex-wrap gap-1 justify-center">
             <button
-              className={`px-4 py-2 rounded-full text-sm ${activeTab === 'about' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
+              className={`px-4 py-2.5 rounded-full text-sm min-h-[44px] ${activeTab === 'about' ? 'bg-secondary text-white' : 'bg-zinc-100/75 text-lightText/75 hover:text-secondary'}`}
               onClick={() => handleTabClick('about')}
             >
               About
             </button>
             <button
-              className={`px-4 py-2 rounded-full text-sm ${activeTab === 'experience' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
+              className={`px-4 py-2.5 rounded-full text-sm min-h-[44px] ${activeTab === 'experience' ? 'bg-secondary text-white' : 'bg-zinc-100/75 text-lightText/75 hover:text-secondary'}`}
               onClick={() => handleTabClick('experience')}
             >
               Experience
             </button>
             <button
-              className={`px-4 py-2 rounded-full text-sm ${activeTab === 'education' ? 'bg-secondary text-white' : 'text-lightText/70 hover:text-white'}`}
+              className={`px-4 py-2.5 rounded-full text-sm min-h-[44px] ${activeTab === 'education' ? 'bg-secondary text-white' : 'bg-zinc-100/75 text-lightText/75 hover:text-secondary'}`}
               onClick={() => handleTabClick('education')}
             >
               Education
@@ -190,7 +188,7 @@ const AboutSection = () => {
               {ABOUT_PARAGRAPHS.map((text, index) => (
                 <motion.p
                   key={index}
-                  className="text-white/80"
+                  className="text-lightText/80"
                   initial={{ opacity: 0, y: 20 }}
                   animate={isVisible ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
@@ -207,8 +205,8 @@ const AboutSection = () => {
                 animate={isVisible ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                <h3 className="text-xl font-bold mb-4 text-cyan-300 cyan-glow">Skills & Expertise</h3>
-                <ul className="grid grid-cols-2 gap-2">
+                <h3 className="text-xl font-bold mb-4 text-secondary">Skills & Expertise</h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {SKILLS.map((skill, index) => (
                     <motion.li
                       key={index}
@@ -217,7 +215,7 @@ const AboutSection = () => {
                       animate={isVisible ? { opacity: 1, x: 0 } : {}}
                       transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
                     >
-                      <span className="text-indigo-400" aria-hidden="true">{String.fromCharCode(0x25B9)}</span>
+                      <span className="text-zinc-400" aria-hidden="true">{String.fromCharCode(0x25B9)}</span>
                       <span>{skill}</span>
                     </motion.li>
                   ))}
@@ -230,12 +228,12 @@ const AboutSection = () => {
                 animate={isVisible ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.6 }}
               >
-                <h3 className="text-xl font-bold mb-4 text-purple-300">Education</h3>
+                <h3 className="text-xl font-bold mb-4 text-secondary">Education</h3>
                 <ul className="space-y-3">
                   {education.map((edu, index) => (
                     <li key={index} className="text-sm">
                       <div className="flex items-center">
-                        <span className="text-indigo-400 mr-2" aria-hidden="true">{String.fromCodePoint(0x1F393)}</span>
+                        <span className="text-zinc-400 mr-2" aria-hidden="true">{String.fromCodePoint(0x1F393)}</span>
                         <span className="font-semibold">{edu.degree}</span>
                       </div>
                       <div className="ml-6 text-lightText/70">
@@ -261,7 +259,7 @@ const AboutSection = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="glass-effect-dark p-6 rounded-lg sci-fi-border">
-              <h3 className="text-xl font-bold mb-6 text-cyan-300 cyan-glow text-center">Work Experience</h3>
+              <h3 className="text-xl font-bold mb-6 text-secondary text-center">Work Experience</h3>
               <ExperienceTimeline experiences={experiences} />
             </div>
           </motion.div>
@@ -276,7 +274,7 @@ const AboutSection = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="glass-effect-dark p-6 rounded-lg sci-fi-border">
-              <h3 className="text-xl font-bold mb-6 text-purple-300 text-center">Educational Background</h3>
+              <h3 className="text-xl font-bold mb-6 text-secondary text-center">Educational Background</h3>
 
               {education.map((edu, index) => (
                 <motion.div
@@ -288,7 +286,7 @@ const AboutSection = () => {
                   viewport={{ once: true }}
                 >
                   <div className="flex items-center gap-4 mb-3">
-                    <div className="h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center text-2xl" aria-hidden="true">{String.fromCodePoint(0x1F393)}</div>
+                    <div className="h-12 w-12 rounded-full bg-neutral-500/20 flex items-center justify-center text-2xl" aria-hidden="true">{String.fromCodePoint(0x1F393)}</div>
                     <div>
                       <h4 className="text-lg font-semibold gradient-text">{edu.degree}</h4>
                       <p className="text-lightText/80">{edu.institution}</p>
@@ -305,7 +303,7 @@ const AboutSection = () => {
                       </div>
                     </div>
 
-                    <div className="h-px w-full bg-gradient-to-r from-purple-500/30 to-transparent my-4"></div>
+                    <div className="h-px w-full bg-gradient-to-r from-neutral-500/30 to-transparent my-4"></div>
                   </div>
                 </motion.div>
               ))}

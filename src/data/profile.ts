@@ -59,7 +59,7 @@ export const profileBasics: ProfileBasics = {
     name: 'Austrian Institute of Technology (AIT)',
     url: 'https://www.ait.ac.at/'
   },
-  image: 'https://www.gowthamsridhar.com/images/profile.jpg',
+  image: 'https://www.gowthamsridhar.com/images/gowtham-profile.jpg',
   location: {
     city: 'Vienna',
     country: 'Austria'

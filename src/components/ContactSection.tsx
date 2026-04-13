@@ -167,7 +167,7 @@ const ContactSection = () => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl font-bold mb-4 gradient-text">Get In Touch</h2>
-          <p className="text-white/80 max-w-2xl mx-auto">
+          <p className="text-lightText/80 max-w-2xl mx-auto">
             I&apos;m always open to new opportunities and collaborations. Whether you have a question
             or just want to say hello, feel free to drop me a message and I&apos;ll get back to you!
           </p>
@@ -181,7 +181,7 @@ const ContactSection = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="glass-effect p-6 rounded-lg sci-fi-border"
           >
-            <h3 className="text-xl font-bold mb-6 text-cyan-300 cyan-glow">Send Me a Message</h3>
+            <h3 className="text-xl font-bold mb-6 text-secondary">Send Me a Message</h3>
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -193,11 +193,11 @@ const ContactSection = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className={`w-full p-3 bg-black/30 border ${formErrors.name ? 'border-red-500' : 'border-white/10'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent`}
+                  className={`w-full p-3 bg-white/80 border ${formErrors.name ? 'border-gray-500' : 'border-zinc-300/70'} rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:border-transparent`}
                   placeholder="Your Name"
                 />
                 {formErrors.name && (
-                  <p className="mt-1 text-sm text-red-400">{formErrors.name}</p>
+                  <p className="mt-1 text-sm text-zinc-600">{formErrors.name}</p>
                 )}
               </div>
               
@@ -210,11 +210,11 @@ const ContactSection = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className={`w-full p-3 bg-black/30 border ${formErrors.email ? 'border-red-500' : 'border-white/10'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent`}
+                  className={`w-full p-3 bg-white/80 border ${formErrors.email ? 'border-gray-500' : 'border-zinc-300/70'} rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:border-transparent`}
                   placeholder="your.email@example.com"
                 />
                 {formErrors.email && (
-                  <p className="mt-1 text-sm text-red-400">{formErrors.email}</p>
+                  <p className="mt-1 text-sm text-zinc-600">{formErrors.email}</p>
                 )}
               </div>
               
@@ -227,11 +227,11 @@ const ContactSection = () => {
                   onChange={handleChange}
                   required
                   rows={5}
-                  className={`w-full p-3 bg-black/30 border ${formErrors.message ? 'border-red-500' : 'border-white/10'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none`}
+                  className={`w-full p-3 bg-white/80 border ${formErrors.message ? 'border-gray-500' : 'border-zinc-300/70'} rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500/50 focus:border-transparent resize-none`}
                   placeholder="Your message here..."
                 />
                 {formErrors.message && (
-                  <p className="mt-1 text-sm text-red-400">{formErrors.message}</p>
+                  <p className="mt-1 text-sm text-zinc-600">{formErrors.message}</p>
                 )}
               </div>
               
@@ -283,7 +283,7 @@ const ContactSection = () => {
               <motion.p 
                 initial={{ opacity: 0, y: -10 }} 
                 animate={{ opacity: 1, y: 0 }} 
-                className="text-sm text-green-400 text-center mt-2"
+                className="text-sm text-stone-400 text-center mt-2"
               >
                 Thank you for your message! I&apos;ll get back to you as soon as possible.
               </motion.p>
@@ -293,7 +293,7 @@ const ContactSection = () => {
               <motion.p 
                 initial={{ opacity: 0, y: -10 }} 
                 animate={{ opacity: 1, y: 0 }} 
-                className="text-sm text-red-400 text-center mt-2"
+                className="text-sm text-zinc-600 text-center mt-2"
               >
                 Couldn&apos;t send your message. Please try again or contact me directly.
               </motion.p>
@@ -308,7 +308,7 @@ const ContactSection = () => {
             className="space-y-6"
           >
             <div className="glass-effect-dark p-6 rounded-lg sci-fi-border">
-              <h3 className="text-xl font-bold mb-4 text-purple-300">Contact Information</h3>
+              <h3 className="text-xl font-bold mb-4 text-secondary">Contact Information</h3>
               <ul className="space-y-4">
                 <motion.li 
                   className="flex items-start space-x-3"
@@ -316,16 +316,16 @@ const ContactSection = () => {
                   animate={isVisible ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.3, delay: 0.4 }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-400 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-zinc-400 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   <div>
                     <h4 className="font-medium">Email</h4>
-                    <a href="mailto:gowtham.sridher5@gmail.com" className="text-blue-400 hover:text-blue-300 transition-colors">
+                    <a href="mailto:gowtham.sridher5@gmail.com" className="text-lightText/75 hover:text-secondary transition-colors">
                       gowtham.sridher5@gmail.com
                     </a>
                     <br />
-                    <p className="text-xs text-gray-400 mt-1">Response time: Usually within 24-48 hours</p>
+                    <p className="text-xs text-lightText/55 mt-1">Response time: Usually within 24-48 hours</p>
                   </div>
                 </motion.li>
                 
@@ -335,14 +335,14 @@ const ContactSection = () => {
                   animate={isVisible ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.3, delay: 0.5 }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-400 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-zinc-400 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <div>
                     <h4 className="font-medium">Location</h4>
-                    <p className="text-gray-300">Vienna, Austria</p>
-                    <p className="text-xs text-gray-400 mt-1">Central European Time (CET/CEST)</p>
+                    <p className="text-lightText/80">Vienna, Austria</p>
+                    <p className="text-xs text-lightText/55 mt-1">Central European Time (CET/CEST)</p>
                   </div>
                 </motion.li>
 
@@ -352,19 +352,19 @@ const ContactSection = () => {
                   animate={isVisible ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.3, delay: 0.6 }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-400 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-zinc-400 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   <div>
                     <h4 className="font-medium">Availability</h4>
-                    <p className="text-gray-300">Open to new opportunities</p>
-                    <p className="text-xs text-gray-400 mt-1">Remote or on-site in Vienna</p>
+                    <p className="text-lightText/80">Open to new opportunities</p>
+                    <p className="text-xs text-lightText/55 mt-1">Remote or on-site in Vienna</p>
                   </div>
                 </motion.li>
               </ul>
 
-              <div className="mt-6 pt-4 border-t border-white/10">
-                <p className="text-gray-300 text-sm italic">
+              <div className="mt-6 pt-4 border-t border-zinc-300/70">
+                <p className="text-lightText/75 text-sm italic">
                   &quot;Looking forward to connecting and exploring potential collaborations in HCI, robotics, and innovative tech solutions.&quot;
                 </p>
               </div>
@@ -376,23 +376,23 @@ const ContactSection = () => {
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <h3 className="text-xl font-bold mb-4 text-cyan-300">Connect With Me</h3>
-              <p className="text-gray-300 text-sm mb-4">Let&apos;s connect on social platforms or check out my projects:</p>
+              <h3 className="text-xl font-bold mb-4 text-secondary">Connect With Me</h3>
+              <p className="text-lightText/75 text-sm mb-4">Let&apos;s connect on social platforms or check out my projects:</p>
               <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
                 <a 
                   href="https://www.linkedin.com/in/gowtham-sridher/" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="flex items-center gap-3 p-4 bg-[#0077b5]/20 rounded-lg hover:bg-[#0077b5]/30 transition-colors"
+                  className="flex items-center gap-3 p-4 rounded-lg border border-zinc-300/70 bg-white/70 hover:bg-white/90 transition-colors"
                 >
-                  <div className="p-2 bg-[#0077b5]/30 rounded-full flex-shrink-0">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 bg-zinc-200/70 rounded-full flex-shrink-0">
+                    <svg className="w-6 h-6 text-zinc-700" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
                     </svg>
                   </div>
                   <div>
                     <p className="text-sm font-medium">LinkedIn</p>
-                    <p className="text-xs text-gray-400">Professional Network</p>
+                    <p className="text-xs text-lightText/55">Professional Network</p>
                   </div>
                 </a>
                 
@@ -400,16 +400,16 @@ const ContactSection = () => {
                   href="https://github.com/ALIENvsROBOT" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="flex items-center gap-3 p-4 bg-[#333]/20 rounded-lg hover:bg-[#333]/30 transition-colors"
+                  className="flex items-center gap-3 p-4 rounded-lg border border-zinc-300/70 bg-white/70 hover:bg-white/90 transition-colors"
                 >
-                  <div className="p-2 bg-[#333]/30 rounded-full flex-shrink-0">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 bg-zinc-200/70 rounded-full flex-shrink-0">
+                    <svg className="w-6 h-6 text-zinc-700" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
                   </div>
                   <div>
                     <p className="text-sm font-medium">GitHub</p>
-                    <p className="text-xs text-gray-400">Code & Projects</p>
+                    <p className="text-xs text-lightText/55">Code & Projects</p>
                   </div>
                 </a>
               </div>

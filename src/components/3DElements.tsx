@@ -130,27 +130,12 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
       // Randomize sizes slightly
       sizes[i] = 0.05 + Math.random() * 0.05;
 
-      // Gradient colors from purple to blue to cyan
+      // Monochrome value shifts for a cleaner editorial look
       const t = i / count;
-      if (t < 0.33) {
-        // Purple to blue gradient
-        const mix = t / 0.33;
-        colors[i * 3] = 0.5 - 0.1 * mix; // R: purple to blue
-        colors[i * 3 + 1] = 0.2 * mix;    // G: increasing
-        colors[i * 3 + 2] = 0.8;         // B: high
-      } else if (t < 0.66) {
-        // Blue to cyan gradient
-        const mix = (t - 0.33) / 0.33;
-        colors[i * 3] = 0.4 - 0.4 * mix;  // R: decreasing
-        colors[i * 3 + 1] = 0.2 + 0.6 * mix; // G: increasing
-        colors[i * 3 + 2] = 0.8;          // B: high
-      } else {
-        // Cyan to purple gradient (loop back)
-        const mix = (t - 0.66) / 0.34;
-        colors[i * 3] = 0.0 + 0.5 * mix;  // R: increasing
-        colors[i * 3 + 1] = 0.8 - 0.6 * mix; // G: decreasing
-        colors[i * 3 + 2] = 0.8;          // B: high
-      }
+      const shade = 0.2 + 0.55 * (0.5 + 0.5 * Math.sin(t * Math.PI * 3));
+      colors[i * 3] = shade;
+      colors[i * 3 + 1] = shade;
+      colors[i * 3 + 2] = Math.min(shade + 0.03, 1);
     }
 
     // Create the connecting bars (DNA "rungs")
@@ -272,7 +257,7 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
         <lineBasicMaterial
           vertexColors
           transparent
-          opacity={0.4}
+          opacity={0.52}
         />
       </lineSegments>
 
@@ -280,10 +265,10 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
       <instancedMesh ref={nodesRef} args={[undefined, undefined, count]}>
         <sphereGeometry args={[0.05, 10, 10]} />
         <meshStandardMaterial
-          emissive="#ffffff"
-          emissiveIntensity={2}
+          emissive="#A1A1AA"
+          emissiveIntensity={0.72}
           transparent
-          opacity={0.9}
+          opacity={0.82}
         />
       </instancedMesh>
     </group>
@@ -294,7 +279,7 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
 function MorphingText({
   text = "Technologist",
   position = [0, 0, 0] as [number, number, number],
-  color = "#7C3AED",
+  color = "#3F3F46",
   scale = 1
 }: {
   text: string;
@@ -358,7 +343,7 @@ function MorphingText({
 function ParticleSwarm() {
   const count = 100;
   const mesh = useRef<InstancedMesh>(null);
-  const mouse = useRef<[number, number]>([0, 0]);
+  const { pointer } = useThree();
 
   // Reusable math objects to avoid per-frame allocations
   const mouseNdc = useRef(new Vector3(0, 0, 0.5));
@@ -387,18 +372,6 @@ function ParticleSwarm() {
     }));
   }, [count]);
 
-  useEffect(() => {
-    const onMouseMove = (e: MouseEvent) => {
-      mouse.current = [
-        (e.clientX / window.innerWidth) * 2 - 1,
-        -(e.clientY / window.innerHeight) * 2 + 1
-      ];
-    };
-
-    window.addEventListener('mousemove', onMouseMove);
-    return () => window.removeEventListener('mousemove', onMouseMove);
-  }, []);
-
   useFrame(({ clock, camera }) => {
     if (!mesh.current) return;
 
@@ -416,7 +389,7 @@ function ParticleSwarm() {
     );
 
     // 2) Ray from camera through mouse NDC and intersect with plane
-    mouseNdc.current.set(mouse.current[0], mouse.current[1], 0.5);
+    mouseNdc.current.set(pointer.x, pointer.y, 0.5);
     ray.origin.copy(camera.position);
     ray.direction.copy(mouseNdc.current).unproject(camera).sub(camera.position).normalize();
     const hasHit = ray.intersectPlane(interactionPlane, targetPoint.current);
@@ -480,11 +453,11 @@ function ParticleSwarm() {
     <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
       <icosahedronGeometry args={[1, 0]} />
       <meshStandardMaterial
-        color="#ffffff"
-        emissive="#ffffff"
-        emissiveIntensity={1.5}
+        color="#3A3A40"
+        emissive="#5E5E66"
+        emissiveIntensity={0.44}
         transparent
-        opacity={0.6}
+        opacity={0.62}
       />
     </instancedMesh>
   );
@@ -494,7 +467,7 @@ function ParticleSwarm() {
 function SkillTag({
   skill = "",
   position = [0, 0, 0] as [number, number, number],
-  color = "#7C3AED",
+  color = "#52525B",
   delay = 0
 }: {
   skill: string;
@@ -542,9 +515,9 @@ function SkillTag({
         <mesh>
           <planeGeometry args={[skill.length * 0.2 + 0.4, 0.4]} />
           <meshStandardMaterial
-            color={hovered ? "#ffffff" : color}
-            emissive={hovered ? "#ffffff" : color}
-            emissiveIntensity={1}
+            color={hovered ? "#F5F5F4" : "#3F3F46"}
+            emissive={hovered ? "#A1A1AA" : "#27272A"}
+            emissiveIntensity={0.5}
             transparent
             opacity={0.9}
           />
@@ -554,7 +527,7 @@ function SkillTag({
       <Text
         position={[0, 0, 0.01]}
         fontSize={0.15}
-        color={hovered ? color : "#ffffff"}
+        color={hovered ? "#111111" : "#F4F4F5"}
         anchorX="center"
         anchorY="middle"
       >
@@ -649,7 +622,7 @@ export function HeroScene() {
           {/* Add ambient and directional lighting */}
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
-          <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#6366F1" />
+          <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#52525B" />
 
           {/* Main neural network structure */}
           <NeuralNetwork count={120} connections={60} />
@@ -658,7 +631,7 @@ export function HeroScene() {
           <ParticleSwarm />
 
           {/* Animated title */}
-          <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#7C3AED" scale={1.2} />
+          <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#3F3F46" scale={1.2} />
 
           {/* Connection lines from Technologist to skills */}
           <ConnectionLines
@@ -670,16 +643,16 @@ export function HeroScene() {
               [1.5, -1.8, 1],   // Robotics
               [-3, -1.8, 1]     // XR
             ]}
-            colors={["#8B5CF6", "#3B82F6", "#10B981", "#F59E0B", "#EF4444"]}
+            colors={["#52525B", "#52525B", "#3F3F46", "#71717A", "#71717A"]}
           />
 
           {/* Skill tags with cool effects */}
           <group position={[0, -1.8, 1]}>
-            <SkillTag position={[3, 0, 0]} skill="AI" color="#8B5CF6" delay={0.1} />
-            <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#3B82F6" delay={0.2} />
-            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.8} />
-            <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
-            <SkillTag position={[-3, 0, 0]} skill="XR" color="#EF4444" delay={0.5} />
+            <SkillTag position={[3, 0, 0]} skill="AI" color="#52525B" delay={0.1} />
+            <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#52525B" delay={0.2} />
+            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#3F3F46" delay={0.8} />
+            <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#71717A" delay={0.4} />
+            <SkillTag position={[-3, 0, 0]} skill="XR" color="#71717A" delay={0.5} />
           </group>
 
           {/* Camera controls with smooth damping */}
@@ -695,8 +668,6 @@ export function HeroScene() {
             dampingFactor={0.05}
             // Disable touch control to allow page scrolling
             enableRotate={!isMobileDevice}
-            // Ensure touch events don't block scrolling
-            domElement={document.documentElement}
           />
         </PerformanceScene>
       </Suspense>
@@ -725,15 +696,15 @@ export function MobileHeroScene() {
     return (
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-transparent">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-indigo-400 mb-6">Technologist</h2>
+          <h2 className="text-2xl font-bold text-zinc-700 mb-6">Technologist</h2>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">AI</span>
-            <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">HCI</span>
-            <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-500/30">UI/UX</span>
-            <span className="px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30">Robotics</span>
-            <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">XR</span>
+            <span className="px-3 py-1 rounded-full bg-zinc-500/15 text-zinc-700 border border-zinc-500/35">AI</span>
+            <span className="px-3 py-1 rounded-full bg-zinc-500/15 text-zinc-700 border border-zinc-500/35">HCI</span>
+            <span className="px-3 py-1 rounded-full bg-stone-500/15 text-zinc-700 border border-stone-500/35">UI/UX</span>
+            <span className="px-3 py-1 rounded-full bg-neutral-500/15 text-zinc-700 border border-neutral-500/35">Robotics</span>
+            <span className="px-3 py-1 rounded-full bg-zinc-500/15 text-zinc-700 border border-zinc-500/35">XR</span>
           </div>
-          <div className="opacity-40 text-sm text-gray-400">Static mode for older devices</div>
+          <div className="opacity-70 text-sm text-zinc-600">Static mode for older devices</div>
         </div>
       </div>
     );
@@ -750,8 +721,8 @@ export function MobileHeroScene() {
         powerPreference: 'default',
         logarithmicDepthBuffer: true
       }}
-      camera={{ position: [0, 0, 7], fov: 60 }} // Match desktop FOV exactly
-      performance={{ min: 0.5 }} // Match desktop performance threshold
+      camera={{ position: [0, 0, 7], fov: 60 }}
+      performance={{ min: 0.5 }}
       onCreated={({ gl }) => {
         // Ensure vertical scrolling works
         gl.domElement.style.touchAction = 'pan-y';
@@ -762,16 +733,15 @@ export function MobileHeroScene() {
           {/* Match desktop lighting setup */}
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
-          <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#6366F1" />
+          <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#52525B" />
 
-          {/* Full neural network like desktop */}
           <NeuralNetwork count={120} connections={60} />
 
           {/* Interactive particle swarm - same as desktop */}
           <ParticleSwarm />
 
           {/* Animated title - same as desktop */}
-          <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#7C3AED" scale={1.2} />
+          <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#3F3F46" scale={1.2} />
 
           {/* Connection lines - same as desktop */}
           <ConnectionLines
@@ -783,16 +753,16 @@ export function MobileHeroScene() {
               [1.5, -1.8, 1],   // Robotics
               [-3, -1.8, 1]     // XR
             ]}
-            colors={["#8B5CF6", "#3B82F6", "#10B981", "#F59E0B", "#EF4444"]}
+            colors={["#52525B", "#52525B", "#3F3F46", "#71717A", "#71717A"]}
           />
 
           {/* Skill tags - same positions as desktop */}
           <group position={[0, -1.8, 1]}>
-            <SkillTag position={[3, 0, 0]} skill="AI" color="#8B5CF6" delay={0.1} />
-            <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#3B82F6" delay={0.2} />
-            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#10B981" delay={0.8} />
-            <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#F59E0B" delay={0.4} />
-            <SkillTag position={[-3, 0, 0]} skill="XR" color="#EF4444" delay={0.5} />
+            <SkillTag position={[3, 0, 0]} skill="AI" color="#52525B" delay={0.1} />
+            <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#52525B" delay={0.2} />
+            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#3F3F46" delay={0.8} />
+            <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#71717A" delay={0.4} />
+            <SkillTag position={[-3, 0, 0]} skill="XR" color="#71717A" delay={0.5} />
           </group>
 
           {/* Improved camera controls for mobile - disable rotation to allow scrolling */}
@@ -808,8 +778,6 @@ export function MobileHeroScene() {
             dampingFactor={0.05}
             // Disable touch rotation to allow scrolling
             enableRotate={false}
-            // Ensure touch events don't block scrolling
-            domElement={document.documentElement}
           />
         </PerformanceScene>
       </Suspense>
@@ -822,7 +790,9 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
   const [shouldRender, setShouldRender] = useState(true);
   const [lowPerformanceMode, setLowPerformanceMode] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
+  const [isInView, setIsInView] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const fpsRafRef = useRef<number | null>(null);
 
   // Add orientation and performance monitoring
   useEffect(() => {
@@ -844,6 +814,18 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
       // Or very old browsers
       /MSIE|Trident/.test(navigator.userAgent)
     ));
+
+    // Pause heavy rendering when hero leaves viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.08, rootMargin: '80px 0px 80px 0px' }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     // Disable horizontal touch interactions but allow vertical scrolling
     const preventTouchMove = (e: TouchEvent) => {
@@ -892,38 +874,44 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
         }
       }
 
-      if (shouldRender) {
-        requestAnimationFrame(checkFPS);
+      if (shouldRender && isInView) {
+        fpsRafRef.current = requestAnimationFrame(checkFPS);
       }
     };
 
     // Start monitoring FPS
-    const animationId = requestAnimationFrame(checkFPS);
+    if (shouldRender && isInView) {
+      fpsRafRef.current = requestAnimationFrame(checkFPS);
+    }
 
     return () => {
-      cancelAnimationFrame(animationId);
+      if (fpsRafRef.current !== null) {
+        cancelAnimationFrame(fpsRafRef.current);
+        fpsRafRef.current = null;
+      }
       window.removeEventListener('resize', checkOrientation);
       if (containerRef.current && isMobile) {
         containerRef.current.removeEventListener('touchmove', preventTouchMove);
       }
+      observer.disconnect();
     };
-  }, [isMobile, shouldRender, lowPerformanceMode]);
+  }, [isMobile, shouldRender, lowPerformanceMode, isInView]);
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[50vh] md:h-[70vh] min-h-[250px] md:min-h-[400px]"
+      className="relative w-full h-full min-h-[250px] md:min-h-[400px]"
       style={{
         touchAction: 'pan-y', // Allow vertical scrolling
         overscrollBehavior: 'none',
         userSelect: 'none'
       }}
     >
-      {shouldRender ? (
+      {(shouldRender && isInView) ? (
         (isMobile && lowPerformanceMode) ? <MobileHeroScene /> : <HeroScene />
       ) : (
         <div className="w-full h-full flex items-center justify-center bg-transparent">
-          <p className="text-white/70">Interactive 3D elements simplified for better performance.</p>
+          <p className="text-zinc-600">Interactive 3D elements simplified for better performance.</p>
         </div>
       )}
     </div>

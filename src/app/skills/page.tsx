@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 
 export default function SkillsPage() {
   return (
-    <main className="bg-darkBg text-lightText">
+    <main className="bg-transparent text-zinc-900">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="mb-8 text-sm text-lightText/60">
           <ol className="flex items-center gap-2">
@@ -90,14 +90,14 @@ export default function SkillsPage() {
           </p>
           <ul className="mt-6 flex flex-wrap gap-3">
             {spotlightSkills.map((skill) => (
-              <li key={skill} className="rounded-full border border-lightText/15 bg-primary/10 px-4 py-2 text-sm text-lightText/80">
+              <li key={skill} className="rounded-full border border-zinc-300/70 bg-white/70 px-4 py-2 text-sm text-lightText/80">
                 {skill}
               </li>
             ))}
           </ul>
         </section>
 
-        <section aria-labelledby="learning-heading" className="rounded-xl border border-secondary/30 bg-secondary/5 p-6">
+        <section aria-labelledby="learning-heading" className="page-card-emphasis p-6">
           <h2 id="learning-heading" className="text-2xl font-semibold text-secondary">Always Learning</h2>
           <p className="mt-3 text-lightText/80">
             I actively combine tangible user interfaces with AI-driven systems, experiment with multi-sensory XR interactions, and iterate on robotics workflows for safety-critical environments.

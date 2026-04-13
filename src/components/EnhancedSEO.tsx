@@ -23,7 +23,7 @@ export default function EnhancedSEO({
   pageDescription,
   pageUrl,
   pagePath,
-  imageUrl = 'https://www.gowthamsridhar.com/images/profile.jpg',
+  imageUrl = 'https://www.gowthamsridhar.com/images/gowtham-profile.jpg',
 }: EnhancedSEOProps) {
 
   // Website Schema Definition

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -105,7 +105,7 @@ const AwardTile = ({ award, index }: { award: AwardEntry; index: number }) => {
         <div className="mt-5 flex items-center justify-between text-sm text-lightText/70">
           <span className="font-medium text-lightText/90">{award.issuer}</span>
           {award.link && (
-            <span className="inline-flex items-center gap-2 text-cyan-300 transition-colors duration-300 group-hover:text-cyan-100">
+            <span className="inline-flex items-center gap-2 text-lightText/70 transition-colors duration-300 group-hover:text-secondary">
               View
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -310,7 +310,7 @@ const AwardsSection = () => {
             <div className="h-px w-10 bg-gradient-to-l from-transparent to-secondary/70" />
           </div>
           <h2 className="text-3xl font-bold md:text-4xl">
-            <span className="gradient-text cyan-glow">Awards & Recognition</span>
+            <span className="gradient-text">Awards & Recognition</span>
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-sm text-lightText/70 md:text-base">
             A curated collection of accolades celebrating breakthroughs in human-computer interaction, immersive experiences, and collaborative innovation.
@@ -385,7 +385,7 @@ const AwardsSection = () => {
                     e.preventDefault();
                     handleToggle();
                   }}
-                  className="w-full max-w-xs mx-auto py-5 px-6 bg-secondary text-white rounded-md text-lg font-medium shadow-lg active:bg-highlight"
+                  className="w-full max-w-xs mx-auto min-h-[48px] py-4 px-6 bg-secondary text-white rounded-md text-lg font-medium shadow-lg active:bg-highlight"
                   style={{ touchAction: "manipulation" }}
                 >
                   {isExpanded ? "Collapse awards" : "View more awards"}

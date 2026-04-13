@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <main className="bg-darkBg text-lightText">
+    <main className="bg-transparent text-zinc-900">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="mb-8 text-sm text-lightText/60">
           <ol className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export default function ProjectsPage() {
 
         <section className="grid gap-8 md:grid-cols-2">
           {projects.map((project) => (
-            <article key={project.id} className="flex h-full flex-col justify-between rounded-xl border border-lightText/10 bg-primary/5 p-6">
+            <article key={project.id} className="page-card flex h-full flex-col justify-between p-6">
               <div>
                 <header>
                   <h2 className="text-2xl font-semibold text-secondary">{project.title}</h2>

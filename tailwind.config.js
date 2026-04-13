@@ -14,14 +14,14 @@ module.exports = {
         mono: ['JetBrains Mono', ...fontFamily.mono],
       },
       colors: {
-        darkBg: '#030712',
-        darkBgLight: '#111827',
-        primary: '#6366F1',  // Indigo-500
-        secondary: '#6D28D9', // Changed from #8B5CF6 (Violet-500) to #6D28D9 (Violet-700) for better contrast
-        tertiary: '#4F46E5',  // Indigo-600
-        highlight: '#5B21B6', // Changed from #7C3AED (Violet-600) to #5B21B6 (Violet-800) for better contrast
-        lightText: '#F3F4F6', // Gray-100
-        darkText: '#1F2937',  // Gray-800
+        darkBg: '#F4F4F2',
+        darkBgLight: '#FFFFFF',
+        primary: '#6B7280',
+        secondary: '#2F2F31',
+        tertiary: '#7A7A7A',
+        highlight: '#111111',
+        lightText: '#202022',
+        darkText: '#0F0F10',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -29,9 +29,9 @@ module.exports = {
         'gradient-circuit': "url('/images/circuit-pattern.svg')",
       },
       boxShadow: {
-        'neon': '0 0 5px rgba(99, 102, 241, 0.2), 0 0 20px rgba(99, 102, 241, 0.2)',
-        'neon-lg': '0 0 10px rgba(99, 102, 241, 0.3), 0 0 30px rgba(99, 102, 241, 0.2)',
-        'glow': '0 0 40px rgba(124, 58, 237, 0.5)',
+        'neon': '0 0 5px rgba(39, 39, 42, 0.1), 0 0 20px rgba(39, 39, 42, 0.08)',
+        'neon-lg': '0 0 10px rgba(39, 39, 42, 0.14), 0 0 30px rgba(39, 39, 42, 0.1)',
+        'glow': '0 0 40px rgba(39, 39, 42, 0.18)',
       },
       animation: {
         'float': 'float 4s ease-in-out infinite',

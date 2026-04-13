@@ -213,7 +213,7 @@ const initPH = () => {
 
 	const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
 	if (!posthogKey) {
-		console.error('[PostHog] Missing NEXT_PUBLIC_POSTHOG_KEY. Analytics initialization skipped.')
+		// Gracefully skip analytics when key is not configured locally.
 		return
 	}
 

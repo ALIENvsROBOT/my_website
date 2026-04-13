@@ -56,7 +56,7 @@ export const metadata: Metadata = {
 
 export default function ExperiencePage() {
   return (
-    <main className="bg-darkBg text-lightText">
+    <main className="bg-transparent text-zinc-900">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="mb-8 text-sm text-lightText/60">
           <ol className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export default function ExperiencePage() {
             {experienceEntries.map((experience, index) => (
               <li key={`${experience.title}-${experience.company}`} className="mb-8 ml-2">
                 <div className="absolute left-[-11px] mt-1 h-5 w-5 rounded-full border-2 border-secondary bg-darkBg" aria-hidden="true" />
-                <div className="rounded-lg border border-lightText/10 bg-primary/5 p-5">
+                <div className="page-card p-5">
                   <header className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
                     <h3 className="text-xl font-semibold text-secondary">{experience.title}</h3>
                     <p className="text-sm text-lightText/60">{experience.period}</p>
@@ -102,7 +102,7 @@ export default function ExperiencePage() {
           </p>
           <ul className="mt-6 space-y-3">
             {researchFocusAreas.map((focus) => (
-              <li key={focus} className="rounded-lg border border-lightText/10 bg-primary/5 px-4 py-3 text-lightText/80">
+              <li key={focus} className="page-card-soft px-4 py-3 text-lightText/80">
                 {focus}
               </li>
             ))}

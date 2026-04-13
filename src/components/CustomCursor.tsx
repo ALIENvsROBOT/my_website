@@ -106,7 +106,7 @@ const CustomCursor = () => {
         className="custom-cursor-ring"
         animate={{
           scale: isHovering ? 1.2 : 1,
-          borderColor: isHovering ? 'rgba(99, 102, 241, 0.8)' : 'rgba(255, 255, 255, 0.8)'
+          borderColor: isHovering ? 'rgba(39, 39, 42, 0.75)' : 'rgba(39, 39, 42, 0.45)'
         }}
         transition={{
           type: "spring",
@@ -118,7 +118,7 @@ const CustomCursor = () => {
       {/* Add a glow effect when hovering */}
       {isHovering && (
         <motion.div
-          className="absolute inset-0 rounded-full bg-indigo-500"
+          className="absolute inset-0 rounded-full bg-zinc-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.15 }}
           exit={{ opacity: 0 }}

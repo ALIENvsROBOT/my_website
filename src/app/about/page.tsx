@@ -133,7 +133,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="bg-darkBg text-lightText">
+    <main className="bg-transparent text-zinc-900">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="mb-8 text-sm text-lightText/60">
           <ol className="flex items-center gap-2">
@@ -170,7 +170,7 @@ export default function AboutPage() {
 
             <div className="grid gap-4 sm:grid-cols-3">
               {professionalStats.map((stat) => (
-                <div key={stat.label} className="rounded-lg border border-lightText/10 bg-primary/5 p-4">
+                <div key={stat.label} className="page-card-soft p-4">
                   <p className="text-2xl font-semibold text-secondary">{stat.value}</p>
                   <p className="mt-1 text-sm font-medium text-lightText">{stat.label}</p>
                   <p className="mt-2 text-xs text-lightText/60">{stat.description}</p>
@@ -211,7 +211,7 @@ export default function AboutPage() {
           <h2 id="experience-heading" className="text-2xl font-semibold">Professional Experience</h2>
           <div className="mt-6 space-y-6">
             {experienceEntries.map((experience) => (
-              <article key={`${experience.title}-${experience.company}`} className="rounded-xl border border-lightText/10 bg-primary/5 p-6">
+              <article key={`${experience.title}-${experience.company}`} className="page-card p-6">
                 <header className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
                   <h3 className="text-xl font-semibold text-secondary">{experience.title}</h3>
                   <p className="text-sm text-lightText/60">{experience.period}</p>
@@ -228,7 +228,7 @@ export default function AboutPage() {
           <h2 id="education-heading" className="text-2xl font-semibold">Education</h2>
           <ul className="mt-6 space-y-4">
             {educationEntries.map((education) => (
-              <li key={`${education.degree}-${education.institution}`} className="rounded-lg border border-lightText/10 bg-primary/5 p-5">
+              <li key={`${education.degree}-${education.institution}`} className="page-card-soft p-5">
                 <p className="text-lg font-semibold text-secondary">{education.degree}</p>
                 <p className="text-lightText font-medium">{education.institution}</p>
                 <p className="text-sm text-lightText/60">{education.location} - {education.period}</p>
@@ -244,7 +244,7 @@ export default function AboutPage() {
           </p>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
             {spotlightSkills.map((skill) => (
-              <li key={skill} className="rounded-lg border border-lightText/10 bg-primary/5 px-4 py-3 text-lightText/80">
+              <li key={skill} className="page-card-soft px-4 py-3 text-lightText/80">
                 {skill}
               </li>
             ))}
@@ -258,14 +258,14 @@ export default function AboutPage() {
           </p>
           <ul className="mt-4 flex flex-wrap gap-3">
             {languagesSpoken.map((language) => (
-              <li key={language} className="rounded-full border border-lightText/15 bg-primary/10 px-4 py-2 text-sm text-lightText/80">
+              <li key={language} className="rounded-full border border-zinc-300/70 bg-white/70 px-4 py-2 text-sm text-lightText/80">
                 {language}
               </li>
             ))}
           </ul>
         </section>
 
-        <section aria-labelledby="collaboration-heading" className="rounded-xl border border-secondary/30 bg-secondary/5 p-6">
+        <section aria-labelledby="collaboration-heading" className="page-card-emphasis p-6">
           <h2 id="collaboration-heading" className="text-2xl font-semibold text-secondary">Collaborate with Me</h2>
           <p className="mt-3 text-lightText/80">
             {contactSummary.availability}

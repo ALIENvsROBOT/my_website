@@ -54,21 +54,21 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-darkBg via-darkBg/50 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
         
-        {/* Cyber grid overlay */}
-        <div className="absolute inset-0 opacity-30 bg-scan-lines pointer-events-none"></div>
+        {/* Subtle texture overlay */}
+        <div className="absolute inset-0 opacity-15 bg-scan-lines pointer-events-none"></div>
         
         {/* Tech tags */}
         <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2 z-10">
           {project.technologies.slice(0, 3).map((tech, idx) => (
             <span 
               key={idx}
-              className="text-xs px-2 py-1 rounded-full glass-effect-dark text-cyan-300 border border-cyan-500/30"
+              className="text-xs px-2 py-1 rounded-full glass-effect-dark text-secondary border border-zinc-500/30"
             >
               {tech}
             </span>
           ))}
           {project.technologies.length > 3 && (
-            <span className="text-xs px-2 py-1 rounded-full glass-effect-dark text-cyan-300 border border-cyan-500/30">
+            <span className="text-xs px-2 py-1 rounded-full glass-effect-dark text-secondary border border-zinc-500/30">
               +{project.technologies.length - 3}
             </span>
           )}
@@ -78,19 +78,19 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         <div className="absolute bottom-4 right-4 z-10">
           <div className="glass-effect-dark p-1 rounded text-xs tracking-wider border border-secondary/20">
             <div className="flex items-center space-x-1 px-2">
-              <div className="w-1 h-1 rounded-full bg-green-400 animate-pulse"></div>
-              <span className="text-green-400">PROJ-{String(project.id).padStart(3, '0')}</span>
+              <div className="w-1 h-1 rounded-full bg-secondary/70 animate-pulse"></div>
+              <span className="text-secondary/80">PROJ-{String(project.id).padStart(3, '0')}</span>
             </div>
           </div>
         </div>
       
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-darkBg/80 backdrop-blur-sm z-10">
-          <h3 className="text-lg font-bold mb-1 text-lightText group-hover:text-secondary transition-colors duration-300 cyan-glow relative truncate">
+          <h3 className="text-lg font-bold mb-1 text-lightText group-hover:text-secondary transition-colors duration-300 relative truncate">
             {project.title}
             
             {/* Decorative badge for featured projects */}
             {project.featured && (
-              <div className="absolute -left-4 top-1/2 -translate-y-1/2 h-4 w-1 bg-cyan-400"></div>
+              <div className="absolute -left-4 top-1/2 -translate-y-1/2 h-4 w-1 bg-secondary/60"></div>
             )}
           </h3>
           
@@ -99,7 +99,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               href={project.link} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-cyan-300 hover:text-cyan-100 text-sm font-medium inline-flex items-center gap-1 transition-colors duration-300"
+              className="text-secondary hover:text-highlight text-sm font-medium inline-flex items-center gap-1 transition-colors duration-300"
               whileHover={{ x: 5 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -135,7 +135,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           target="_blank"
           rel="noopener noreferrer"
           className="px-5 py-2 rounded-full bg-secondary hover:bg-highlight text-white font-medium transition-colors duration-300 inline-flex items-center gap-2 pointer-events-auto sci-fi-border"
-          style={{ boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' }}
+          style={{ boxShadow: '0 10px 24px rgba(39, 39, 42, 0.2)' }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -155,10 +155,6 @@ const ProjectsSection = () => {
   
   // Calculate how many projects to show initially
   const initialProjectCount = 6; // 3 columns x 2 rows or 2 columns x 3 rows
-  const expandedProjectCount = {
-    desktop: 9, // 3 columns x 3 rows
-    mobile: 8,  // 2 columns x 4 rows
-  };
   
   // All projects sorted by featured first
   const sortedProjects = [...projects.filter(p => p.featured), ...projects.filter(p => !p.featured)];
@@ -168,7 +164,6 @@ const ProjectsSection = () => {
   
   // Handler for toggling project visibility with explicit touch handling
   const handleToggleProjects = () => {
-    console.log("Toggle button clicked");
     setShowAll(!showAll);
   };
 
@@ -187,15 +182,11 @@ const ProjectsSection = () => {
         >
           <div className="flex items-center justify-center mb-4">
             <div className="h-px w-12 bg-gradient-to-r from-transparent to-secondary"></div>
-            <h2 className="text-3xl md:text-4xl font-bold px-4 gradient-text inline-block cyan-glow">Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-bold px-4 gradient-text inline-block">Projects</h2>
             <div className="h-px w-12 bg-gradient-to-l from-transparent to-secondary"></div>
           </div>
           
-          <div className="mb-4 flex items-center justify-center">
-            <div className="h-px bg-gradient-to-r from-transparent via-secondary to-transparent w-20"></div>
-            <span className="px-4 text-xs tracking-widest text-secondary uppercase cyber-glitch mx-2" data-text="Neural Interface">Neural Interface</span>
-            <div className="h-px bg-gradient-to-r from-secondary via-transparent to-transparent w-20"></div>
-          </div>
+          <p className="text-xs uppercase tracking-[0.36em] text-secondary/75 mb-4">Selected Work</p>
           
           <p className="text-lightText/70 mt-6 max-w-2xl mx-auto">
             Explore my innovative projects spanning human-computer interaction, 
@@ -209,8 +200,8 @@ const ProjectsSection = () => {
           <motion.div
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className={`grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 transition-[max-height] duration-500 ease-out ${showAll ? 'overflow-visible' : 'max-h-[900px]'}`}
-            style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366F1 #1F2937' }}
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 transition-[max-height] duration-500 ease-out ${showAll ? 'overflow-visible' : 'max-h-[900px]'}`}
+            style={{ scrollbarWidth: 'thin', scrollbarColor: '#6B7280 #1F2937' }}
           >
             {/* Show either all projects or just initial count */}
             {visibleProjects.map((project, index) => (
@@ -218,7 +209,7 @@ const ProjectsSection = () => {
             ))}
           </motion.div>
           {!showAll && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-darkBg via-darkBg/85 to-transparent" aria-hidden="true" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-zinc-200/95 via-zinc-200/70 to-transparent" aria-hidden="true" />
           )}
         </div>
         
@@ -237,7 +228,7 @@ const ProjectsSection = () => {
               e.preventDefault();
               handleToggleProjects();
             }}
-            className="w-full max-w-xs mx-auto py-5 px-6 bg-secondary text-white rounded-md text-lg font-medium shadow-lg active:bg-highlight"
+            className="w-full max-w-xs mx-auto min-h-[48px] py-4 px-6 bg-secondary text-white rounded-md text-lg font-medium shadow-lg active:bg-highlight"
             style={{ touchAction: 'manipulation' }}
           >
             {showAll ? 'Show Less' : 'Show More Projects'}

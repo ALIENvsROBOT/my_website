@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="bg-darkBg text-lightText">
+    <main className="bg-transparent text-zinc-900">
       <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="mb-8 text-sm text-lightText/60">
           <ol className="flex items-center gap-2">
@@ -78,7 +78,7 @@ export default function ContactPage() {
           </p>
         </header>
 
-        <section aria-labelledby="connect-heading" className="mb-10 rounded-xl border border-lightText/10 bg-primary/5 p-6">
+        <section aria-labelledby="connect-heading" className="mb-10 page-card p-6">
           <h2 id="connect-heading" className="text-2xl font-semibold">Connect Directly</h2>
           <dl className="mt-4 space-y-3">
             <div>
@@ -105,14 +105,14 @@ export default function ContactPage() {
           <p className="mt-3 text-lightText/80">I am especially excited about:</p>
           <ul className="mt-4 space-y-3">
             {researchFocusAreas.map((item) => (
-              <li key={item} className="rounded-lg border border-lightText/10 bg-primary/5 px-4 py-3 text-lightText/80">
+              <li key={item} className="page-card-soft px-4 py-3 text-lightText/80">
                 {item}
               </li>
             ))}
           </ul>
         </section>
 
-        <section aria-labelledby="availability-heading" className="rounded-xl border border-secondary/30 bg-secondary/5 p-6">
+        <section aria-labelledby="availability-heading" className="page-card-emphasis p-6">
           <h2 id="availability-heading" className="text-2xl font-semibold text-secondary">Let&apos;s Collaborate</h2>
           <p className="mt-3 text-lightText/80">
             {contactSummary.availability}

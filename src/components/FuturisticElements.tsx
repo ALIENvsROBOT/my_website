@@ -27,10 +27,10 @@ export const FuturisticButton = ({
   const baseClasses = "relative overflow-hidden rounded-lg font-medium tracking-wider flex items-center justify-center py-3 px-6 transition-all duration-300 ease-out";
   
   const variantClasses = {
-    primary: "bg-gradient-to-r from-indigo-600 to-violet-600 text-white",
-    secondary: "bg-gradient-to-r from-slate-700 to-slate-900 text-white border border-slate-600",
-    outline: "bg-transparent border border-indigo-500 text-indigo-500",
-    ghost: "bg-transparent text-indigo-500 hover:bg-indigo-50/10"
+    primary: "bg-gradient-to-r from-zinc-700 to-zinc-900 text-white",
+    secondary: "bg-gradient-to-r from-zinc-600 to-zinc-800 text-white border border-zinc-600/70",
+    outline: "bg-white/70 border border-zinc-400/70 text-zinc-700 hover:bg-white/95",
+    ghost: "bg-transparent text-zinc-700 hover:bg-zinc-200/45"
   };
   
   return (
@@ -78,16 +78,16 @@ interface FuturisticHeadingProps {
 export const FuturisticHeading = ({ children, accent = "", className = "" }: FuturisticHeadingProps) => {
   return (
     <h2 className={`relative text-3xl sm:text-4xl font-bold mb-8 inline-block ${className}`}>
-      <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300">
+      <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-600">
         {children}
       </span>
       {accent && (
-        <span className="relative z-0 text-indigo-500 ml-1.5">
+        <span className="relative z-0 text-zinc-500 ml-1.5">
           {accent}
         </span>
       )}
       <motion.span
-        className="absolute -bottom-1 left-0 h-[3px] bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full"
+        className="absolute -bottom-1 left-0 h-[3px] bg-gradient-to-r from-zinc-600 to-neutral-600 rounded-full"
         initial={{ width: 0 }}
         whileInView={{ width: '100%' }}
         transition={{ duration: 0.8, delay: 0.2 }}
@@ -115,7 +115,7 @@ export const GlassCard = ({
   
   return (
     <motion.div
-      className={`relative overflow-hidden rounded-xl backdrop-blur-md bg-white/5 border border-white/10 shadow-xl ${className}`}
+      className={`relative overflow-hidden rounded-xl backdrop-blur-md bg-white/70 border border-zinc-300/70 shadow-xl ${className}`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
@@ -126,7 +126,7 @@ export const GlassCard = ({
     >
       {hoverEffect && isHovered && (
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10"
+          className="absolute inset-0 bg-gradient-to-r from-zinc-300/30 to-stone-300/25"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -140,7 +140,7 @@ export const GlassCard = ({
       
       {hoverEffect && (
         <motion.div 
-          className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500"
+          className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-zinc-500 to-neutral-500"
           initial={{ width: '0%' }}
           animate={{ width: isHovered ? '100%' : '0%' }}
           transition={{ duration: 0.3 }}
@@ -211,12 +211,12 @@ interface TechBadgeProps {
 export const TechBadge = ({ tech, delay = 0 }: TechBadgeProps) => {
   return (
     <motion.span
-      className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-indigo-900/50 to-violet-900/50 text-indigo-200 border border-indigo-800/30 backdrop-blur-sm"
+      className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-white/80 to-zinc-100/90 text-zinc-700 border border-zinc-300/70 backdrop-blur-sm"
       initial={{ opacity: 0, scale: 0.8, y: 10 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.3, delay }}
       viewport={{ once: true }}
-      whileHover={{ y: -3, boxShadow: "0 4px 12px rgba(99, 102, 241, 0.3)" }}
+      whileHover={{ y: -3, boxShadow: "0 10px 20px rgba(39, 39, 42, 0.16)" }}
     >
       {tech}
     </motion.span>
@@ -234,12 +234,12 @@ export const SkillBar = ({ skill, percentage, delay = 0 }: SkillBarProps) => {
   return (
     <div className="mb-4">
       <div className="flex justify-between mb-1">
-        <span className="text-sm font-medium text-indigo-100">{skill}</span>
-        <span className="text-sm font-medium text-indigo-200">{percentage}%</span>
+        <span className="text-sm font-medium text-zinc-700">{skill}</span>
+        <span className="text-sm font-medium text-zinc-600">{percentage}%</span>
       </div>
-      <div className="w-full h-2 bg-slate-800/50 rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-zinc-300/60 rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gradient-to-r from-indigo-500 to-purple-500"
+          className="h-full bg-gradient-to-r from-zinc-500 to-neutral-500"
           initial={{ width: 0 }}
           whileInView={{ width: `${percentage}%` }}
           transition={{ duration: 0.8, delay, ease: "easeOut" }}
@@ -268,14 +268,14 @@ export const TimelineItem = ({
 }: TimelineItemProps) => {
   return (
     <motion.div 
-      className="relative pl-8 pb-8 border-l border-gray-700"
+      className="relative pl-8 pb-8 border-l border-zinc-300/80"
       initial={{ opacity: 0, x: -10 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay }}
       viewport={{ once: true, margin: "-100px" }}
     >
       <motion.div
-        className="absolute -left-2.5 mt-1.5 h-5 w-5 rounded-full border-2 border-indigo-500 bg-slate-900"
+        className="absolute -left-2.5 mt-1.5 h-5 w-5 rounded-full border-2 border-zinc-500 bg-white"
         initial={{ scale: 0 }}
         whileInView={{ scale: 1 }}
         transition={{ delay: delay + 0.2, type: "spring" }}
@@ -283,15 +283,15 @@ export const TimelineItem = ({
       />
       
       <div className="mb-1 flex items-baseline">
-        <span className="text-xs font-semibold uppercase tracking-wide text-indigo-400 mr-2">
+        <span className="text-xs font-semibold uppercase tracking-wide text-zinc-400 mr-2">
           {year}
         </span>
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        <h3 className="text-lg font-semibold text-zinc-900">{title}</h3>
       </div>
       
-      <p className="text-sm font-medium text-gray-400 mb-2">{subtitle}</p>
+      <p className="text-sm font-medium text-lightText/70 mb-2">{subtitle}</p>
       
-      <p className="text-sm text-gray-300">{description}</p>
+      <p className="text-sm text-lightText/75">{description}</p>
     </motion.div>
   );
 };
@@ -311,8 +311,8 @@ export const DecorativeCircuit = ({ className = "" }: DecorativeCircuitProps) =>
         <circle cx="60" cy="60" r="4" fill="url(#circuitGradient)" />
         <defs>
           <linearGradient id="circuitGradient" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#6366F1" />
-            <stop offset="1" stopColor="#A855F7" />
+            <stop stopColor="#6B7280" />
+            <stop offset="1" stopColor="#A3A3A3" />
           </linearGradient>
         </defs>
       </svg>
@@ -324,15 +324,15 @@ export const DecorativeCircuit = ({ className = "" }: DecorativeCircuitProps) =>
 export const ScrollIndicator = () => {
   return (
     <div className="flex flex-col items-center mt-6">
-      <p className="text-xs text-indigo-400 uppercase tracking-wider mb-2">Scroll Down</p>
+      <p className="text-xs text-zinc-400 uppercase tracking-wider mb-2">Scroll Down</p>
       <motion.div
-        className="w-5 h-10 rounded-full border border-indigo-500/30 flex justify-center"
+        className="w-5 h-10 rounded-full border border-zinc-500/30 flex justify-center"
         initial={{ opacity: 0.5 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
       >
         <motion.div
-          className="w-1.5 h-1.5 bg-indigo-500 rounded-full mt-2"
+          className="w-1.5 h-1.5 bg-zinc-500 rounded-full mt-2"
           animate={{ y: [0, 16, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         />

@@ -55,10 +55,10 @@ const PrivacyNotice = () => {
 					initial={{ opacity: 0, y: 50, scale: 0.9 }}
 					animate={{ opacity: 1, y: 0, scale: 1 }}
 					exit={{ opacity: 0, y: 20, scale: 0.9 }}
-					className="fixed bottom-4 left-4 right-4 z-[100] md:right-auto md:bottom-6 md:left-6 max-w-xs"
+					className="fixed bottom-4 left-4 right-4 z-[100] md:right-auto md:bottom-6 md:left-6 max-w-[290px]"
 				>
 					{/* Using the project's 'glass-effect-dark' for visual consistency with 3D elements */}
-					<div className="glass-effect-dark p-4 rounded-xl border border-secondary/30 shadow-2xl flex flex-col gap-3">
+					<div className="glass-effect-dark p-3 rounded-xl border border-secondary/25 shadow-xl flex flex-col gap-2">
 						<div className="flex items-start gap-3">
 							<div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
 								<svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,7 +66,7 @@ const PrivacyNotice = () => {
 								</svg>
 							</div>
 							<div>
-								<p className="text-xs text-lightText/90 leading-tight">
+								<p className="text-[11px] text-lightText/90 leading-tight">
 									I use anonymized analytics to improve these HCI experiments. View my
 									<Link href="/privacy" className="text-secondary hover:underline mx-1">Privacy Policy</Link>
 									for details.
@@ -75,7 +75,7 @@ const PrivacyNotice = () => {
 						</div>
 						<button
 							onClick={handleAccept}
-							className="w-full py-1.5 rounded-lg bg-secondary/80 hover:bg-secondary text-white text-[10px] font-bold uppercase tracking-wider transition-colors duration-300"
+							className="w-full py-1.5 rounded-lg bg-secondary/85 hover:bg-secondary text-white text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300"
 						>
 							Acknowledged
 						</button>

@@ -8,6 +8,7 @@ import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import SEOStructuredData from '@/components/SEOStructuredData';
+import EnhancedParticleBackground from '@/components/EnhancedParticleBackground';
 import { PHProvider } from './providers';
 import PrivacyNotice from '@/components/PrivacyNotice';
 
@@ -64,12 +65,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/images/profile.jpg', type: 'image/jpeg', sizes: '16x16' },
-      { url: '/images/profile.jpg', type: 'image/jpeg', sizes: '32x32' },
-      { url: '/images/profile.jpg', type: 'image/jpeg', sizes: '48x48' }
+      { url: '/images/gowtham-profile.jpg', type: 'image/jpeg', sizes: '16x16' },
+      { url: '/images/gowtham-profile.jpg', type: 'image/jpeg', sizes: '32x32' },
+      { url: '/images/gowtham-profile.jpg', type: 'image/jpeg', sizes: '48x48' }
     ],
-    shortcut: [{ url: '/images/profile.jpg', type: 'image/jpeg' }],
-    apple: [{ url: '/images/profile.jpg', sizes: '180x180' }],
+    shortcut: [{ url: '/images/gowtham-profile.jpg', type: 'image/jpeg' }],
+    apple: [{ url: '/images/gowtham-profile.jpg', sizes: '180x180' }],
   },
   manifest: '/site.webmanifest',
 };
@@ -102,9 +103,9 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
           <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION} />
         )}
-        <link rel="icon" type="image/jpeg" sizes="16x16" href="/images/profile.jpg" />
-        <link rel="icon" type="image/jpeg" sizes="32x32" href="/images/profile.jpg" />
-        <link rel="icon" type="image/jpeg" sizes="48x48" href="/images/profile.jpg" />
+        <link rel="icon" type="image/jpeg" sizes="16x16" href="/images/gowtham-profile.jpg" />
+        <link rel="icon" type="image/jpeg" sizes="32x32" href="/images/gowtham-profile.jpg" />
+        <link rel="icon" type="image/jpeg" sizes="48x48" href="/images/gowtham-profile.jpg" />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
           rel="stylesheet"
@@ -122,7 +123,7 @@ export default function RootLayout({
           worksForUrl="https://www.ait.ac.at/"
           educationalCredentials="M.Sc. Human-Computer Interaction (Joint Degree)"
           description="Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Applied AI, Human-Computer Interaction (HCI), XR Applications, and robotics."
-          image="https://www.gowthamsridhar.com/images/profile.jpg"
+          image="https://www.gowthamsridhar.com/images/gowtham-profile.jpg"
           sameAs={[
             "https://www.linkedin.com/in/gowtham-sridher/",
             "https://github.com/ALIENvsROBOT",
@@ -213,7 +214,7 @@ export default function RootLayout({
                   document.querySelectorAll('.premium-glass, .glass-effect-dark').forEach(el => {
                     el.style.backdropFilter = 'none';
                     el.style.webkitBackdropFilter = 'none';
-                    el.style.backgroundColor = 'rgba(5, 7, 22, 0.95)';
+                    el.style.backgroundColor = 'rgba(246, 246, 244, 0.95)';
                   });
                 });
               } else if (isMobile) {
@@ -276,6 +277,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+        <EnhancedParticleBackground />
         <PHProvider>
           {children}
           {/* Subtle Privacy Informational Banner */}

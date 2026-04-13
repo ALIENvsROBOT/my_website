@@ -20,7 +20,7 @@ export default function NotFound() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-950 text-white px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-transparent text-zinc-900 px-4">
       <Head>
         <title>Page Not Found | Gowtham Sridhar</title>
         <meta name="robots" content="noindex, follow" />
@@ -34,7 +34,7 @@ export default function NotFound() {
         pagePath="404"
       />
       
-      <div className="text-center">
+      <div className="text-center page-card px-8 py-10 max-w-2xl w-full">
         <h1 className="text-6xl font-bold mb-4">404</h1>
         <h2 className="text-2xl font-semibold mb-6">Page Not Found</h2>
         <p className="max-w-md mb-8">Sorry, the page you&apos;re looking for does not exist or has been moved.</p>
@@ -42,14 +42,14 @@ export default function NotFound() {
         <div className="mb-8">
           <h3 className="text-xl font-medium mb-4">You might be interested in:</h3>
           <ul className="space-y-2">
-            <li><Link href="/" className="text-blue-400 hover:text-blue-300 underline">Homepage</Link></li>
-            <li><Link href="/projects" className="text-blue-400 hover:text-blue-300 underline">Projects</Link></li>
-            <li><Link href="/about" className="text-blue-400 hover:text-blue-300 underline">About Me</Link></li>
-            <li><Link href="/contact" className="text-blue-400 hover:text-blue-300 underline">Contact</Link></li>
+            <li><Link href="/" className="text-zinc-700 hover:text-zinc-900 underline">Homepage</Link></li>
+            <li><Link href="/projects" className="text-zinc-700 hover:text-zinc-900 underline">Projects</Link></li>
+            <li><Link href="/about" className="text-zinc-700 hover:text-zinc-900 underline">About Me</Link></li>
+            <li><Link href="/contact" className="text-zinc-700 hover:text-zinc-900 underline">Contact</Link></li>
           </ul>
         </div>
         
-        <Link href="/" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+        <Link href="/" className="inline-block bg-secondary hover:bg-highlight text-white font-medium py-2 px-6 rounded-lg transition-colors">
           Return to Homepage
         </Link>
       </div>
