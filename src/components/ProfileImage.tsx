@@ -16,11 +16,11 @@ const ProfileImage = () => {
       transition={{ duration: 0.6, delay: 0.3 }}
     >
       {/* Decorative elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-zinc-500/20 to-neutral-500/20 rounded-full blur-xl opacity-70 z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-amber-500/25 to-yellow-600/20 rounded-full blur-xl opacity-75 z-0"></div>
       <motion.div 
-        className="absolute -inset-0.5 bg-gradient-to-r from-zinc-500 to-neutral-600 rounded-full opacity-75 z-0"
+        className="absolute -inset-0.5 bg-gradient-to-r from-amber-500 to-yellow-600 rounded-full opacity-80 z-0"
         animate={{ 
-          opacity: [0.5, 0.8, 0.5],
+          opacity: [0.52, 0.84, 0.52],
         }}
         transition={{ 
           duration: 4, 
@@ -35,7 +35,7 @@ const ProfileImage = () => {
       </div>
       
       {/* Main image container */}
-      <div className="relative z-10 p-1 rounded-full overflow-hidden backdrop-blur-sm animated-border">
+      <div className="relative z-10 p-1 rounded-full overflow-hidden backdrop-blur-sm border border-amber-400/70 shadow-[0_0_0_1px_rgba(245,158,11,0.32),0_10px_24px_-16px_rgba(161,98,7,0.45)]">
         <div className="w-full h-full aspect-square relative rounded-full overflow-hidden">
           {error ? (
             <div className="w-full h-full bg-gradient-to-br from-zinc-900/50 to-neutral-900/50 flex items-center justify-center">
@@ -58,21 +58,21 @@ const ProfileImage = () => {
       
       {/* Tech details - moved to a smaller badge */}
       <motion.div 
-        className="absolute -bottom-2 -right-1 bg-darkBg/80 px-2 py-0.5 rounded-full text-[10px] border border-zinc-500/30 backdrop-blur-md z-20 font-mono"
+        className="absolute -bottom-2 -right-1 bg-darkBg/85 px-2 py-0.5 rounded-full text-[10px] border border-amber-500/40 backdrop-blur-md z-20 font-mono"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <span className="text-zinc-700">HCI</span>
-        <span className="text-zinc-500 mx-1">|</span>
-        <span className="text-zinc-700">AI</span>
+        <span className="text-amber-800">HCI</span>
+        <span className="text-amber-600 mx-1">|</span>
+        <span className="text-amber-800">AI</span>
       </motion.div>
       
       {/* Glowing dot */}
       <motion.div 
-        className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-neutral-500 z-20"
+        className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-500 z-20"
         animate={{ 
-          boxShadow: ['0 0 3px #9CA3AF', '0 0 6px #9CA3AF', '0 0 3px #9CA3AF']
+          boxShadow: ['0 0 4px #F59E0B', '0 0 8px #FBBF24', '0 0 4px #F59E0B']
         }}
         transition={{ duration: 2, repeat: Infinity }}
       />

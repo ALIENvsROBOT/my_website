@@ -77,11 +77,29 @@ const RedesignedHeroSection = () => {
                 <div className="flex flex-col md:flex-row items-center gap-6">
                   {/* Profile image - smaller and integrated */}
                   <motion.div
-                    className="flex-shrink-0 w-[142px] h-[142px] md:w-[162px] md:h-[162px]"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="relative flex-shrink-0 w-[142px] h-[142px] md:w-[162px] md:h-[162px]"
+                    initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                    animate={{ opacity: 1, y: [0, -6, 0], rotate: [0, 0.55, 0] }}
+                    transition={{
+                      opacity: { duration: 0.8, delay: 0.2 },
+                      y: { duration: 4.8, repeat: Infinity, ease: 'easeInOut' },
+                      rotate: { duration: 5.8, repeat: Infinity, ease: 'easeInOut' },
+                    }}
+                    whileHover={{ scale: 1.03, rotate: 0 }}
+                    whileTap={{ scale: 0.995 }}
                   >
+                    <motion.span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -inset-2 rounded-full border border-amber-500/35"
+                      animate={{ scale: [0.98, 1.035, 0.98], opacity: [0.28, 0.5, 0.28] }}
+                      transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
+                    />
+                    <motion.span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -inset-4 rounded-full border border-yellow-600/30"
+                      animate={{ scale: [0.96, 1.05, 0.96], opacity: [0.16, 0.34, 0.16] }}
+                      transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut', delay: 0.35 }}
+                    />
                     <ProfileImage />
                   </motion.div>
 
