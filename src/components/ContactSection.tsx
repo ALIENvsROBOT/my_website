@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, type Transition } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 
 // EmailJS configuration
@@ -10,7 +10,7 @@ const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'temp
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '8pHCCEEYWjpwYS-UJ';
 
 const PathSketch = () => {
-  const loop = (delay = 0, duration = 3.8) => ({
+  const loop = (delay = 0, duration = 3.8): Transition => ({
     duration,
     delay,
     ease: 'easeInOut',
@@ -91,6 +91,19 @@ const PathSketch = () => {
         transition={loop(1.3, 3.8)}
       />
 
+      <motion.circle
+        cx="260"
+        cy="42"
+        r="16"
+        fill="transparent"
+        stroke="#3F3F46"
+        strokeWidth="2"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0.15 }}
+        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.88, 0.88, 0.15] }}
+        transition={loop(1.5, 3.7)}
+      />
+
       <motion.path
         d="M39 84 L82 121 M82 84 L39 121"
         fill="transparent"
@@ -100,6 +113,17 @@ const PathSketch = () => {
         initial={{ pathLength: 0, opacity: 0.15 }}
         animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.88, 0.88, 0.15] }}
         transition={loop(1.6, 3.7)}
+      />
+
+      <motion.path
+        d="M137 84 L182 121 M182 84 L137 121"
+        fill="transparent"
+        stroke="#52525B"
+        strokeWidth="2.1"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0.15 }}
+        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.9, 0.9, 0.15] }}
+        transition={loop(1.9, 3.8)}
       />
     </motion.svg>
   );

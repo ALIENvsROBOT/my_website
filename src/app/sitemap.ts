@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 
 const siteUrl = 'https://www.gowthamsridhar.com';
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 const routes: Array<{ path: string; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; priority: number }> = [
   { path: '', changeFrequency: 'weekly', priority: 1 },
