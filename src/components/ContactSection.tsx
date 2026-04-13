@@ -9,6 +9,102 @@ const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'servic
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_sgqvlzs';
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '8pHCCEEYWjpwYS-UJ';
 
+const PathSketch = () => {
+  const loop = (delay = 0, duration = 3.8) => ({
+    duration,
+    delay,
+    ease: 'easeInOut',
+    repeat: Infinity,
+    repeatType: 'loop' as const,
+    times: [0, 0.42, 0.74, 1]
+  });
+
+  return (
+    <motion.svg
+      viewBox="0 0 320 140"
+      className="w-full h-full min-h-[120px] max-h-[220px]"
+      preserveAspectRatio="xMidYMid meet"
+      aria-hidden="true"
+      initial={{ opacity: 0.45 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.1, ease: 'easeOut' }}
+    >
+      <motion.rect
+        x="8"
+        y="8"
+        width="304"
+        height="124"
+        rx="14"
+        fill="transparent"
+        stroke="#52525B"
+        strokeWidth="1.6"
+        initial={{ pathLength: 0, opacity: 0.2 }}
+        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.2, 0.85, 0.85, 0.2] }}
+        transition={loop(0, 4.1)}
+      />
+
+      <motion.path
+        d="M110 14V126 M210 14V126 M14 70H306"
+        fill="transparent"
+        stroke="#71717A"
+        strokeWidth="1.35"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0.2 }}
+        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.2, 0.75, 0.75, 0.2] }}
+        transition={loop(0.35, 4.3)}
+      />
+
+      <motion.circle
+        cx="60"
+        cy="42"
+        r="18"
+        fill="transparent"
+        stroke="#3F3F46"
+        strokeWidth="2.1"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0.15 }}
+        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.9, 0.9, 0.15] }}
+        transition={loop(0.5, 3.7)}
+      />
+
+      <motion.path
+        d="M137 20 L182 62 M182 20 L137 62"
+        fill="transparent"
+        stroke="#27272A"
+        strokeWidth="2.3"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0.15 }}
+        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.95, 0.95, 0.15] }}
+        transition={loop(0.9, 3.9)}
+      />
+
+      <motion.circle
+        cx="260"
+        cy="98"
+        r="16"
+        fill="transparent"
+        stroke="#52525B"
+        strokeWidth="2"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0.15 }}
+        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.82, 0.82, 0.15] }}
+        transition={loop(1.3, 3.8)}
+      />
+
+      <motion.path
+        d="M39 84 L82 121 M82 84 L39 121"
+        fill="transparent"
+        stroke="#3F3F46"
+        strokeWidth="2.1"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0.15 }}
+        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.88, 0.88, 0.15] }}
+        transition={loop(1.6, 3.7)}
+      />
+    </motion.svg>
+  );
+};
+
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +120,7 @@ const ContactSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [showDesktopLandscapeSketch, setShowDesktopLandscapeSketch] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   // Initialize EmailJS
@@ -153,6 +250,21 @@ const ContactSection = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1024px) and (orientation: landscape) and (pointer: fine)');
+    const updateVisibility = () => setShowDesktopLandscapeSketch(mediaQuery.matches);
+
+    updateVisibility();
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', updateVisibility);
+      return () => mediaQuery.removeEventListener('change', updateVisibility);
+    }
+
+    mediaQuery.addListener(updateVisibility);
+    return () => mediaQuery.removeListener(updateVisibility);
+  }, []);
+
   return (
     <section 
       id="contact" 
@@ -173,13 +285,13 @@ const ContactSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:items-stretch">
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="glass-effect p-6 rounded-lg sci-fi-border"
+            className="glass-effect p-6 rounded-lg sci-fi-border flex flex-col h-full"
           >
             <h3 className="text-xl font-bold mb-6 text-secondary">Send Me a Message</h3>
             
@@ -297,6 +409,20 @@ const ContactSection = () => {
               >
                 Couldn&apos;t send your message. Please try again or contact me directly.
               </motion.p>
+            )}
+
+            {showDesktopLandscapeSketch && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+                className="mt-6 flex-1 min-h-[175px] rounded-xl border border-zinc-300/75 bg-gradient-to-br from-zinc-100/60 via-zinc-100/45 to-zinc-200/50 p-4 relative overflow-hidden"
+              >
+                <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.65),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.25),transparent)]" />
+                <div className="relative h-full w-full flex items-center justify-center">
+                  <PathSketch />
+                </div>
+              </motion.div>
             )}
           </motion.div>
           
