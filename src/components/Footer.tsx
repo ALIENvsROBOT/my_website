@@ -141,15 +141,15 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 mt-8 border-t border-zinc-300 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-lightText/60 text-sm mb-4 md:mb-0">
+          <p className="text-lightText/85 text-sm mb-4 md:mb-0">
             &copy; {currentYear} Gowtham Sridhar. All rights reserved.
           </p>
 
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-lightText/60 hover:text-secondary text-sm transition-colors duration-300">
+            <Link href="/privacy" className="text-lightText/85 hover:text-secondary text-sm transition-colors duration-300">
               Privacy Policy
             </Link>
-            <Link href="/sitemap.xml" className="text-lightText/60 hover:text-secondary text-sm transition-colors duration-300">
+            <Link href="/sitemap.xml" className="text-lightText/85 hover:text-secondary text-sm transition-colors duration-300">
               Sitemap
             </Link>
           </div>
