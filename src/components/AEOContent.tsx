@@ -44,23 +44,20 @@ export default function AEOContent() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <section aria-labelledby="quick-facts-heading" className="mx-auto mt-16 max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-lightText/10 bg-primary/5 p-6 md:p-8">
-          <h2 id="quick-facts-heading" className="text-2xl font-semibold text-lightText">
-            Quick facts for collaborators and AI assistants
-          </h2>
-          <p className="mt-3 max-w-3xl text-lightText/80">
-            This section summarizes expertise, location, and collaboration information in a concise format that is easy to read for both visitors and answer engines.
-          </p>
-          <dl className="mt-6 grid gap-4 md:grid-cols-2">
-            {faqItems.map((item) => (
-              <div key={item.question} className="rounded-xl border border-lightText/10 bg-darkBg/50 p-4">
-                <dt className="font-medium text-secondary">{item.question}</dt>
-                <dd className="mt-2 text-sm leading-relaxed text-lightText/80">{item.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+      {/* Keep crawlable content available for scrapers/agents while removing it from the visual UI. */}
+      <section aria-hidden="true" className="hidden" data-ai-content="quick-facts">
+        <h2>Quick facts for collaborators and AI assistants</h2>
+        <p>
+          This section summarizes expertise, location, and collaboration information in a concise format that is easy to read for both visitors and answer engines.
+        </p>
+        <dl>
+          {faqItems.map((item) => (
+            <div key={item.question}>
+              <dt>{item.question}</dt>
+              <dd>{item.answer}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
     </>
   );
