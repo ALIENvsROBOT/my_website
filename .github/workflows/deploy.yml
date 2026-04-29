@@ -14,14 +14,18 @@ permissions:
 # Allow only one concurrent deployment
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -32,18 +36,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Install critters (required for optimizeCss)
-        run: npm install critters --legacy-peer-deps
-
-      - name: Enforce static crawl files for export
-        run: |
-          # Prevent App Router metadata handlers from conflicting with output: export
-          rm -f src/app/robots.ts src/app/sitemap.ts
-
-      - name: Update next.js export handling
-        run: |
-          # Fix for Next.js static export in latest versions
-          sed -i 's/"export": "next export"/"export": ""/' package.json
+      - name: Type-check
+        run: npx tsc --noEmit
 
       - name: Build with Next.js
         run: npm run build
@@ -77,6 +71,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: build
     steps:
       - name: Deploy to GitHub Pages
