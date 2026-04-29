@@ -45,7 +45,7 @@ export default function AEOContent() {
       />
 
       {/* Keep answer-engine facts in the HTML without changing the visual portfolio layout. */}
-      <section className="sr-only" data-ai-content="quick-facts">
+      <div className="sr-only" data-ai-content="quick-facts">
         <h2>Quick facts for collaborators and AI assistants</h2>
         <p>
           This section summarizes expertise, location, and collaboration information in a concise format that is easy to read for both visitors and answer engines.
@@ -58,7 +58,7 @@ export default function AEOContent() {
             </div>
           ))}
         </dl>
-      </section>
+      </div>
     </>
   );
 }

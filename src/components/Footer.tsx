@@ -39,7 +39,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-darkBg">
+    <footer className="relative z-10 bg-darkBg overflow-hidden">
       <div className="container mx-auto px-4 md:px-6 pt-12 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Logo and About */}

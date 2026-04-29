@@ -42,36 +42,38 @@ export default function HomeClient() {
   }, []);
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-transparent">
+    <>
       {!isMobile && (
         <Suspense fallback={<div />}>
           <CustomCursor />
         </Suspense>
       )}
 
-      <div className="relative z-10">
-        <Navbar />
+      <main className="relative min-h-screen overflow-x-hidden bg-transparent">
+        <div className="relative z-10">
+          <Navbar />
 
-        <div className="content-container">
-          <Suspense fallback={<div className="min-h-screen" />}>
-            <RedesignedHeroSection />
-          </Suspense>
-          <Suspense fallback={<div className="min-h-screen" />}>
-            <AboutSection />
-          </Suspense>
-          <Suspense fallback={<div className="min-h-screen" />}>
-            <ProjectsSection />
-          </Suspense>
-          <Suspense fallback={<div className="min-h-screen" />}>
-            <AwardsSection />
-          </Suspense>
-          <Suspense fallback={<div className="min-h-screen" />}>
-            <ContactSection />
-          </Suspense>
+          <div className="content-container">
+            <Suspense fallback={<div className="min-h-screen" />}>
+              <RedesignedHeroSection />
+            </Suspense>
+            <Suspense fallback={<div className="min-h-screen" />}>
+              <AboutSection />
+            </Suspense>
+            <Suspense fallback={<div className="min-h-screen" />}>
+              <ProjectsSection />
+            </Suspense>
+            <Suspense fallback={<div className="min-h-screen" />}>
+              <AwardsSection />
+            </Suspense>
+            <Suspense fallback={<div className="min-h-screen" />}>
+              <ContactSection />
+            </Suspense>
+          </div>
         </div>
+      </main>
 
-        <Footer />
-      </div>
-    </main>
+      <Footer />
+    </>
   );
 }
