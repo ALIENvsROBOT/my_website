@@ -141,8 +141,8 @@ export default function EnhancedSEO({
       caption: pageTitle
     },
     datePublished: '2023-01-01T00:00:00+00:00',
-    // dateModified is stabilized to YYYY-MM-DD to avoid millisecond-level hydration mismatches.
-    dateModified: new Date().toISOString().split('T')[0],
+    // Keep this as a stable ISO 8601 datetime so rich-result parsers accept it consistently.
+    dateModified: '2026-04-29T00:00:00+00:00',
     author: {
       '@type': 'Person',
       '@id': personId,
