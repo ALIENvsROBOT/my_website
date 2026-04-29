@@ -63,6 +63,13 @@ export const metadata: Metadata = {
       }
     ],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Gowtham Sridhar | HCI Researcher & AI Expert',
+    description: 'Junior Scientist at AIT specializing in Human-Computer Interaction, Applied AI, XR applications, robotics, and tangible interfaces.',
+    images: ['https://www.gowthamsridhar.com/images/shareLinkprofile.png'],
+    creator: '@ALIENvsROBOT',
+  },
   icons: {
     icon: [
       { url: '/images/gowtham-profile.jpg', type: 'image/jpeg', sizes: '16x16' },
@@ -259,6 +266,12 @@ export default function RootLayout({
                   var targetHost = isWww ? host : 'www.' + host;
                   
                   var path = loc.pathname;
+                  // Normalize static-export index files to the canonical directory URL
+                  if (path === '/index.html') {
+                    path = '/';
+                  } else if (path.endsWith('/index.html')) {
+                    path = path.slice(0, -'/index.html'.length);
+                  }
                   // Remove trailing slash except for root
                   if (path.length > 1 && path.endsWith('/')) {
                     path = path.slice(0, -1);

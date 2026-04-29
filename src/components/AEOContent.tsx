@@ -44,8 +44,8 @@ export default function AEOContent() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      {/* Keep crawlable content available for scrapers/agents while removing it from the visual UI. */}
-      <section aria-hidden="true" className="hidden" data-ai-content="quick-facts">
+      {/* Keep answer-engine facts in the HTML without changing the visual portfolio layout. */}
+      <section className="sr-only" data-ai-content="quick-facts">
         <h2>Quick facts for collaborators and AI assistants</h2>
         <p>
           This section summarizes expertise, location, and collaboration information in a concise format that is easy to read for both visitors and answer engines.

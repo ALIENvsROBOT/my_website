@@ -71,7 +71,8 @@ export const profileBasics: ProfileBasics = {
     'https://www.linkedin.com/in/gowtham-sridher/',
     'https://github.com/ALIENvsROBOT',
     'https://scholar.google.com/citations?user=ipXbKeQAAAAJ',
-    'https://www.researchgate.net/profile/Sridhar-Gowtham'
+    'https://www.researchgate.net/profile/Sridhar-Gowtham',
+    'https://publications.ait.ac.at/en/persons/gowtham-sridhar/'
   ]
 };
 

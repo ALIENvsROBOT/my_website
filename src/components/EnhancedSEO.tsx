@@ -25,27 +25,30 @@ export default function EnhancedSEO({
   pagePath,
   imageUrl = 'https://www.gowthamsridhar.com/images/gowtham-profile.jpg',
 }: EnhancedSEOProps) {
+  const siteUrl = 'https://www.gowthamsridhar.com';
+  const personId = `${siteUrl}/#person`;
+  const websiteId = `${siteUrl}/#website`;
+  const imageObjectId = `${siteUrl}/#primaryimage`;
 
   // Website Schema Definition
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': websiteId,
     name: 'Gowtham Sridhar - HCI Researcher & AI Expert',
-    url: 'https://www.gowthamsridhar.com',
+    alternateName: ['Gowtham Sridhar', 'Gowtham Sridhar Portfolio'],
+    url: siteUrl,
     description: 'Portfolio of Gowtham Sridhar, Junior Scientist at AIT specializing in Applied AI, HCI, XR Applications, and UI/UX Design.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://www.gowthamsridhar.com/search?q={search_term_string}',
-      'query-input': 'required name=search_term_string'
-    },
     author: {
       '@type': 'Person',
+      '@id': personId,
       name: 'Gowtham Sridhar',
-      url: 'https://www.gowthamsridhar.com',
+      url: siteUrl,
       jobTitle: 'Junior Scientist, Applied AI & HCI Researcher',
+      image: imageUrl,
       worksFor: {
         '@type': 'Organization',
-        name: 'AIT',
+        name: 'Austrian Institute of Technology (AIT)',
         url: 'https://www.ait.ac.at/'
       },
       sameAs: [
@@ -58,16 +61,17 @@ export default function EnhancedSEO({
     },
     creator: {
       '@type': 'Person',
+      '@id': personId,
       name: 'Gowtham Sridhar'
     },
     copyrightHolder: {
       '@type': 'Person',
+      '@id': personId,
       name: 'Gowtham Sridhar'
     },
     // Auto-updating year. suppressHydrationWarning is used on the script tag to allow this.
     copyrightYear: new Date().getFullYear(),
-    inLanguage: 'en-US',
-    license: 'https://www.gowthamsridhar.com/terms'
+    inLanguage: 'en-US'
   };
 
   // Breadcrumb Schema (only for non-home pages)
@@ -104,13 +108,14 @@ export default function EnhancedSEO({
     description: pageDescription,
     inLanguage: 'en-US',
     isPartOf: {
-      '@id': 'https://www.gowthamsridhar.com/#website'
+      '@id': websiteId
     },
     // Explicitly link the page to the Person entity
     mainEntity: {
       '@type': 'Person',
+      '@id': personId,
       name: 'Gowtham Sridhar',
-      url: 'https://www.gowthamsridhar.com',
+      url: siteUrl,
       // SameAs links help Google connect the dots for the Knowledge Graph
       sameAs: [
         "https://www.linkedin.com/in/gowtham-sridher/",
@@ -128,6 +133,7 @@ export default function EnhancedSEO({
     ],
     primaryImageOfPage: {
       '@type': 'ImageObject',
+      '@id': imageObjectId,
       contentUrl: imageUrl,
       url: imageUrl,
       width: 1200,
@@ -139,8 +145,9 @@ export default function EnhancedSEO({
     dateModified: new Date().toISOString().split('T')[0],
     author: {
       '@type': 'Person',
+      '@id': personId,
       name: 'Gowtham Sridhar',
-      url: 'https://www.gowthamsridhar.com'
+      url: siteUrl
     },
     speakable: {
       '@type': 'SpeakableSpecification',

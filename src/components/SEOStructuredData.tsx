@@ -54,9 +54,13 @@ export default function SEOStructuredData({
   nationality,
   birthPlace,
 }: SEOStructuredDataProps) {
+  const personId = `${url}/#person`;
+  const websiteId = `${url}/#website`;
+  const profilePageId = `${url}/#profile-page`;
+
   const personSchema = {
-    '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': personId,
     name,
     jobTitle,
     gender,
@@ -77,8 +81,7 @@ export default function SEOStructuredData({
     image,
     sameAs,
     mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': mainEntityOfPage,
+      '@id': profilePageId,
     },
     url,
     ...(affiliation && { affiliation: {
@@ -128,26 +131,47 @@ export default function SEOStructuredData({
     }),
   };
 
-  // Add Website schema to help with Sitelinks and Site Name
+  const profilePageSchema = {
+    '@type': 'ProfilePage',
+    '@id': profilePageId,
+    url: mainEntityOfPage,
+    name: `${name} - official profile`,
+    description,
+    inLanguage: 'en-US',
+    mainEntity: {
+      '@id': personId
+    },
+    isPartOf: {
+      '@id': websiteId
+    },
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: image,
+      contentUrl: image
+    }
+  };
+
   const websiteSchema = {
-    '@context': 'https://schema.org',
     '@type': 'WebSite',
-    'name': name,
-    'alternateName': [`${name} Portfolio`, 'Gowtham Sridhar HCI'],
-    'url': url,
+    '@id': websiteId,
+    name,
+    alternateName: [`${name} Portfolio`, 'Gowtham Sridhar HCI'],
+    url,
+    inLanguage: 'en-US',
+    publisher: {
+      '@id': personId
+    }
+  };
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [personSchema, profilePageSchema, websiteSchema]
   };
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
   );
 }
- 
