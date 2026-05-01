@@ -93,6 +93,11 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               <div className="absolute -left-4 top-1/2 -translate-y-1/2 h-4 w-1 bg-secondary/60"></div>
             )}
           </h3>
+          {project.date && (
+            <p className="mb-2 text-xs font-medium uppercase tracking-[0.22em] text-secondary/80">
+              {project.date}
+            </p>
+          )}
           
           <div className="flex justify-between items-center">
             <motion.a 

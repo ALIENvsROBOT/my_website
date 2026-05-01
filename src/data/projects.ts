@@ -6,11 +6,26 @@
   fallbackImage: string;
   technologies: string[];
   link: string;
+  date?: string;
+  datePublished?: string;
   featured?: boolean;
 };
 
 export const projects: Project[] = [
   
+  {
+    id: 12,
+    title: 'AI Agent Harness: Build the Car, Not Just the Engine',
+    description: 'An applied AI and HCI article explaining why reliable AI agents need a production harness around the model: orchestration loops, context compaction, tool and skill registries, memory, lifecycle hooks, subagents, observability, and human approvals.',
+    image: '/Project_images/AI_harness.png',
+    fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=AI+Agent+Harness',
+    technologies: ['AI Agents', 'Agent Harness', 'HCI', 'Human-AI Interaction', 'LLMs', 'AI Safety'],
+    link: 'https://www.linkedin.com/pulse/everyone-building-ai-agents-almost-nobody-right-thing-gowtham-sridhar-f5bzf',
+    date: 'May 1, 2026',
+    datePublished: '2026-05-01',
+    featured: true
+  },
+
   {
     id: 11,
     title: 'MedGemma FHIR-Bridge 💓',

@@ -19,6 +19,7 @@ const projectListJsonLd = {
       description: project.description,
       url: project.link,
       keywords: project.technologies.join(', '),
+      ...(project.datePublished ? { datePublished: project.datePublished } : {}),
     }
   })),
 };
@@ -73,6 +74,11 @@ export default function ProjectsPage() {
               <div>
                 <header>
                   <h2 className="text-2xl font-semibold text-secondary">{project.title}</h2>
+                  {project.date && (
+                    <p className="mt-2 text-xs font-semibold uppercase tracking-[0.28em] text-secondary/70">
+                      {project.date}
+                    </p>
+                  )}
                   <p className="mt-3 text-lightText/80 leading-relaxed">
                     {project.description}
                   </p>
