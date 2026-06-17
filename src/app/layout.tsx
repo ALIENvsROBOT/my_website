@@ -204,8 +204,8 @@ export default function RootLayout({
                 navigator.userAgent.match(/iPhone/i) ||
                 navigator.userAgent.match(/iPad/i);
               
-              if (isMobile && document.body) {
-                document.body.classList.add('mobile-optimized');
+              if (isMobile) {
+                document.documentElement.classList.add('mobile-optimized');
                 
                 // Disable some expensive animations for better performance
                 document.addEventListener('DOMContentLoaded', () => {
@@ -224,21 +224,14 @@ export default function RootLayout({
                     el.style.backgroundColor = 'rgba(246, 246, 244, 0.95)';
                   });
                 });
-              } else if (isMobile) {
-                // If body isn't ready yet, wait for DOMContentLoaded
-                document.addEventListener('DOMContentLoaded', () => {
-                  if (document.body) {
-                    document.body.classList.add('mobile-optimized');
-                  }
-                });
               }
               
               // Add resize listener to adjust performance settings when screen size changes
               window.addEventListener('resize', () => {
-                if (window.innerWidth < 768 && document.body) {
-                  document.body.classList.add('mobile-optimized');
-                } else if (document.body) {
-                  document.body.classList.remove('mobile-optimized');
+                if (window.innerWidth < 768) {
+                  document.documentElement.classList.add('mobile-optimized');
+                } else {
+                  document.documentElement.classList.remove('mobile-optimized');
                 }
               });
               
