@@ -1,134 +1,14 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, type Transition } from 'framer-motion';
+import { motion } from 'framer-motion';
+import Strands from './Strands';
 import emailjs from '@emailjs/browser';
 
 // EmailJS configuration
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_gqp7epi';
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_sgqvlzs';
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '8pHCCEEYWjpwYS-UJ';
-
-const PathSketch = () => {
-  const loop = (delay = 0, duration = 3.8): Transition => ({
-    duration,
-    delay,
-    ease: 'easeInOut',
-    repeat: Infinity,
-    repeatType: 'loop' as const,
-    times: [0, 0.42, 0.74, 1]
-  });
-
-  return (
-    <motion.svg
-      viewBox="0 0 320 140"
-      className="w-full h-full min-h-[120px] max-h-[220px]"
-      preserveAspectRatio="xMidYMid meet"
-      aria-hidden="true"
-      initial={{ opacity: 0.45 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1.1, ease: 'easeOut' }}
-    >
-      <motion.rect
-        x="8"
-        y="8"
-        width="304"
-        height="124"
-        rx="14"
-        fill="transparent"
-        stroke="#52525B"
-        strokeWidth="1.6"
-        initial={{ pathLength: 0, opacity: 0.2 }}
-        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.2, 0.85, 0.85, 0.2] }}
-        transition={loop(0, 4.1)}
-      />
-
-      <motion.path
-        d="M110 14V126 M210 14V126 M14 70H306"
-        fill="transparent"
-        stroke="#71717A"
-        strokeWidth="1.35"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0.2 }}
-        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.2, 0.75, 0.75, 0.2] }}
-        transition={loop(0.35, 4.3)}
-      />
-
-      <motion.circle
-        cx="60"
-        cy="42"
-        r="18"
-        fill="transparent"
-        stroke="#3F3F46"
-        strokeWidth="2.1"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0.15 }}
-        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.9, 0.9, 0.15] }}
-        transition={loop(0.5, 3.7)}
-      />
-
-      <motion.path
-        d="M137 20 L182 62 M182 20 L137 62"
-        fill="transparent"
-        stroke="#27272A"
-        strokeWidth="2.3"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0.15 }}
-        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.95, 0.95, 0.15] }}
-        transition={loop(0.9, 3.9)}
-      />
-
-      <motion.circle
-        cx="260"
-        cy="98"
-        r="16"
-        fill="transparent"
-        stroke="#52525B"
-        strokeWidth="2"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0.15 }}
-        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.82, 0.82, 0.15] }}
-        transition={loop(1.3, 3.8)}
-      />
-
-      <motion.circle
-        cx="260"
-        cy="42"
-        r="16"
-        fill="transparent"
-        stroke="#3F3F46"
-        strokeWidth="2"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0.15 }}
-        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.88, 0.88, 0.15] }}
-        transition={loop(1.5, 3.7)}
-      />
-
-      <motion.path
-        d="M39 84 L82 121 M82 84 L39 121"
-        fill="transparent"
-        stroke="#3F3F46"
-        strokeWidth="2.1"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0.15 }}
-        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.88, 0.88, 0.15] }}
-        transition={loop(1.6, 3.7)}
-      />
-
-      <motion.path
-        d="M137 84 L182 121 M182 84 L137 121"
-        fill="transparent"
-        stroke="#52525B"
-        strokeWidth="2.1"
-        strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0.15 }}
-        animate={{ pathLength: [0, 1, 1, 0], opacity: [0.15, 0.9, 0.9, 0.15] }}
-        transition={loop(1.9, 3.8)}
-      />
-    </motion.svg>
-  );
-};
-
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -144,7 +24,7 @@ const ContactSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [showDesktopLandscapeSketch, setShowDesktopLandscapeSketch] = useState(false);
+  const [showDesktopStrands, setShowDesktopStrands] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   // Initialize EmailJS
@@ -276,7 +156,7 @@ const ContactSection = () => {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 1024px) and (orientation: landscape) and (pointer: fine)');
-    const updateVisibility = () => setShowDesktopLandscapeSketch(mediaQuery.matches);
+    const updateVisibility = () => setShowDesktopStrands(mediaQuery.matches);
 
     updateVisibility();
 
@@ -435,17 +315,29 @@ const ContactSection = () => {
               </motion.p>
             )}
 
-            {showDesktopLandscapeSketch && (
+            {showDesktopStrands && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, ease: 'easeOut' }}
-                className="mt-6 flex-1 min-h-[175px] rounded-xl border border-zinc-300/75 bg-gradient-to-br from-zinc-100/60 via-zinc-100/45 to-zinc-200/50 p-4 relative overflow-hidden"
+                className="mt-6 flex-1 min-h-[210px] rounded-xl border border-zinc-300/75 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 p-0 relative overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_18px_45px_-34px_rgba(0,0,0,0.8)]"
               >
-                <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.65),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.25),transparent)]" />
-                <div className="relative h-full w-full flex items-center justify-center">
-                  <PathSketch />
-                </div>
+                <span className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.15),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.08),transparent_58%)]" />
+                <Strands
+                  colors={["#F97316", "#7C3AED", "#06B6D4"]}
+                  count={3}
+                  speed={0.42}
+                  amplitude={0.92}
+                  waviness={1.05}
+                  thickness={0.62}
+                  glow={2.35}
+                  taper={3.4}
+                  spread={1.08}
+                  intensity={0.52}
+                  saturation={1.35}
+                  opacity={0.88}
+                  scale={1.28}
+                />
               </motion.div>
             )}
           </motion.div>
