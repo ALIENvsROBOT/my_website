@@ -320,7 +320,7 @@ const ContactSection = () => {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, ease: 'easeOut' }}
-                className="mt-6 flex-1 min-h-[clamp(280px,28vw,360px)] rounded-xl border border-zinc-300/75 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 p-0 relative overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_18px_45px_-34px_rgba(0,0,0,0.8)]"
+                className="mt-6 h-64 min-h-0 flex-none rounded-xl border border-zinc-300/75 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 p-0 relative overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_18px_45px_-34px_rgba(0,0,0,0.8)]"
               >
                 <span className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.15),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.08),transparent_58%)]" />
                 <Strands
