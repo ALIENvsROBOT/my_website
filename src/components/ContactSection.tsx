@@ -320,23 +320,24 @@ const ContactSection = () => {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, ease: 'easeOut' }}
-                className="mt-6 flex-1 min-h-[280px] rounded-xl border border-zinc-300/75 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 p-0 relative overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_18px_45px_-34px_rgba(0,0,0,0.8)]"
+                className="mt-6 flex-1 min-h-[clamp(280px,28vw,360px)] rounded-xl border border-zinc-300/75 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-800 p-0 relative overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_18px_45px_-34px_rgba(0,0,0,0.8)]"
               >
                 <span className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.15),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.08),transparent_58%)]" />
                 <Strands
-                  colors={["#F97316", "#7C3AED", "#06B6D4"]}
+                  colors={["#FF4D00", "#B026FF", "#00E5FF"]}
                   count={3}
                   speed={0.42}
-                  amplitude={0.92}
+                  amplitude={1.08}
                   waviness={1.05}
-                  thickness={0.78}
-                  glow={2.85}
+                  thickness={0.58}
+                  glow={2.25}
                   taper={3.4}
-                  spread={1.08}
-                  intensity={0.52}
-                  saturation={1.35}
-                  opacity={0.88}
+                  spread={1.42}
+                  intensity={0.68}
+                  saturation={1.85}
+                  opacity={0.96}
                   scale={2.05}
+                  className="origin-center scale-x-[1.68] scale-y-[1.2]"
                 />
               </motion.div>
             )}
