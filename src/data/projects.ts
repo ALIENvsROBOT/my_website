@@ -14,6 +14,19 @@
 export const projects: Project[] = [
   
   {
+    id: 13,
+    title: 'Voice-Interactive Portfolio Agent',
+    description: 'A native voice AI layer for my personal website that turns a static portfolio into an active, agentic interface: visitors can speak naturally, get contextual answers, and navigate work without clicking around. Finished on June 19, 2026 with a focused one-week overall build timeline.',
+    image: '/Project_images/voice_interactive_portfolio_agent.png',
+    fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=Voice+AI+Portfolio',
+    technologies: ['Voice AI', 'HCI', 'UX Design', 'Agentic Interfaces', 'Next.js', 'Human-AI Interaction'],
+    link: 'https://www.linkedin.com/posts/gowtham-sridher_humancomputerinteraction-voiceai-uxdesign-activity-7471293019141591040-b085',
+    date: 'June 19, 2026',
+    datePublished: '2026-06-19',
+    featured: true
+  },
+
+  {
     id: 12,
     title: 'AI Agent Harness: Build the Car, Not Just the Engine',
     description: 'An applied AI and HCI article explaining why reliable AI agents need a production harness around the model: orchestration loops, context compaction, tool and skill registries, memory, lifecycle hooks, subagents, observability, and human approvals.',
