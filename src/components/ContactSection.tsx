@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Strands from './Strands';
 import emailjs from '@emailjs/browser';
+import { trackAnalyticsEvent } from '@/lib/analytics-consent';
 
 // EmailJS configuration
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_gqp7epi';
@@ -26,6 +27,7 @@ const ContactSection = () => {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [showDesktopStrands, setShowDesktopStrands] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const hasStartedFormRef = useRef(false);
 
   // Initialize EmailJS
   useEffect(() => {
@@ -78,6 +80,11 @@ const ContactSection = () => {
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+
+    if (!hasStartedFormRef.current) {
+      hasStartedFormRef.current = true;
+      trackAnalyticsEvent('contact_form_started', { form_name: 'contact' });
+    }
     setFormData(prev => ({ ...prev, [name]: value }));
     
     // Clear error for this field when typing
@@ -97,10 +104,12 @@ const ContactSection = () => {
     
     // Validate form before submission
     if (!validateForm()) {
+      trackAnalyticsEvent('contact_form_validation_failed', { form_name: 'contact' });
       return;
     }
-    
+
     setIsSubmitting(true);
+    trackAnalyticsEvent('contact_form_submit_attempted', { form_name: 'contact' });
     
     try {
       // Using EmailJS to send form data
@@ -121,12 +130,14 @@ const ContactSection = () => {
       if (result.status === 200) {
         setSubmitStatus('success');
         setFormData({ name: '', email: '', message: '' });
+        trackAnalyticsEvent('contact_form_submit_succeeded', { form_name: 'contact' });
       } else {
         throw new Error('Failed to send message');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');
+      trackAnalyticsEvent('contact_form_submit_failed', { form_name: 'contact' });
     } finally {
       setIsSubmitting(false);
     }

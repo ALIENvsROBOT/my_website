@@ -1,7 +1,6 @@
 /**
  * @file PrivacyNotice.tsx
- * @description A subtle, non-intrusive UI component to inform users about data usage.
- * It uses localStorage to ensure it only appears once per visitor.
+ * @description Consent control for optional, privacy-preserving analytics.
  */
 
 'use client'
@@ -9,26 +8,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { getAnalyticsConsent, setAnalyticsConsent } from '@/lib/analytics-consent';
 
 /**
  * PrivacyNotice Component
  * Renders a small floating banner in the bottom-left corner after a short delay.
  */
-const PRIVACY_CONSENT_KEY = 'privacy-consent:v2';
-
 const PrivacyNotice = () => {
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
-		let hasConsented = false;
-
-		try {
-			hasConsented = localStorage.getItem(PRIVACY_CONSENT_KEY) === 'true';
-		} catch {
-			hasConsented = false;
-		}
-
-		if (!hasConsented) {
+		if (!getAnalyticsConsent()) {
 			// Delay appearance by 2 seconds to not interrupt the initial 3D load experience
 			const timer = setTimeout(() => {
 				setIsVisible(true);
@@ -38,13 +28,10 @@ const PrivacyNotice = () => {
 	}, []);
 
 	/**
-	 * Saves the acknowledgement to localStorage and hides the notice.
+	 * Records the visitor's explicit analytics preference before enabling collection.
 	 */
-	const handleAccept = () => {
-		try {
-			localStorage.setItem(PRIVACY_CONSENT_KEY, 'true');
-		} catch {}
-
+	const handleChoice = (choice: 'granted' | 'denied') => {
+		setAnalyticsConsent(choice);
 		setIsVisible(false);
 	};
 
@@ -70,18 +57,26 @@ const PrivacyNotice = () => {
 							</div>
 							<div>
 								<p className="text-[11px] text-lightText/90 leading-tight">
-									I use anonymized analytics to improve these HCI experiments. View my
+									May I use optional analytics to understand page visits, link clicks, and performance? I do not record form contents or session replays. View my
 									<Link href="/privacy" className="text-secondary hover:underline mx-1">Privacy Policy</Link>
 									for details.
 								</p>
 							</div>
 						</div>
-						<button
-							onClick={handleAccept}
-							className="w-full py-1.5 rounded-lg bg-secondary/85 hover:bg-secondary text-white text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300"
-						>
-							Acknowledged
-						</button>
+						<div className="grid grid-cols-2 gap-2">
+							<button
+								onClick={() => handleChoice('denied')}
+								className="py-1.5 rounded-lg border border-lightText/20 text-lightText text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 hover:bg-white/10"
+							>
+								Reject
+							</button>
+							<button
+								onClick={() => handleChoice('granted')}
+								className="py-1.5 rounded-lg bg-secondary/85 hover:bg-secondary text-white text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300"
+							>
+								Accept analytics
+							</button>
+						</div>
 					</div>
 				</motion.aside>
 			)}

@@ -9,7 +9,7 @@ To ensure the live site functions correctly, you must add the following **Secret
 | Secret Name | Description |
 | :--- | :--- |
 | `POSTHOG_KEY` | Your PostHog Project API Key (`phc_...`) |
-| `POSTHOG_HOST` | Your PostHog ingestion host (`https://us.i.posthog.com` or `https://eu.i.posthog.com`) as an **Actions Secret or Variable** |
+| `POSTHOG_HOST` | Your PostHog ingestion host. Use `https://eu.i.posthog.com` for EU residency or `https://us.i.posthog.com` for US residency. |
 | `GOOGLE_SITE_VERIFICATION` | Google Search Console verification code |
 | `EMAILJS_SERVICE_ID` | EmailJS service ID for the contact form |
 | `EMAILJS_TEMPLATE_ID` | EmailJS template ID for the contact form |
@@ -20,11 +20,13 @@ To ensure the live site functions correctly, you must add the following **Secret
 
 ## 📊 Analytics Setup (PostHog)
 
-This project uses **PostHog** for open-source analytics, including heatmaps and session replays.
+This project uses **PostHog** for consent-based product analytics. It does not enable autocapture, heatmaps, or session replay.
 
 1. **Account**: Create a free account at [PostHog](https://posthog.com/).
-2. **Initialization**: Analytics initializes on page load to ensure low-interaction sessions are still captured correctly.
-3. **Data Residency**: Set a `POSTHOG_HOST` GitHub Actions Secret or Variable (`https://us.i.posthog.com` for US Cloud or `https://eu.i.posthog.com` for EU Cloud).
+2. **Consent**: Analytics starts only after a visitor selects **Accept analytics**; a visitor can reject or later revoke the preference from `/privacy`.
+3. **Data Residency**: Set `POSTHOG_HOST` to your project region. No default host is used, so a missing host disables analytics instead of silently sending data to the wrong region.
+4. **IP policy**: In PostHog, set **Settings → Project → General → IP data capture** to **Discard IP addresses**. This cannot be controlled by the static site build.
+5. **Schema**: See [analytics.md](./analytics.md) for the complete event/property contract and data boundaries.
 
 ---
 
@@ -45,12 +47,14 @@ For local development, create a `.env.local` file in the root directory. **Never
 
 ```bash
 # Example .env.local
-NEXT_PUBLIC_POSTHOG_KEY=your_phc_key_here
-NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=your_phc_key_here
+NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_key
 ```
+
+`NEXT_PUBLIC_POSTHOG_KEY` remains supported for existing deployments, but `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` is the preferred name from the current PostHog documentation.
 
 ## 🚀 Deployment Workflow
 

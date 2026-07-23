@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 import { projects } from '@/data/projects';
+import { trackAnalyticsEvent } from '@/lib/analytics-consent';
 
 // Project card component with hover detail view
 interface ProjectCardProps {
@@ -19,6 +20,10 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
   // Toggle visibility on mobile touch
   const toggleHover = () => {
     setIsHovered(!isHovered);
+    trackAnalyticsEvent('project_card_toggled', {
+      project_id: String(project.id),
+      next_state: isHovered ? 'collapsed' : 'expanded',
+    });
   };
   
   return (
@@ -102,6 +107,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           <div className="flex justify-between items-center">
             <motion.a 
               href={project.link} 
+              data-analytics-id={`project-${project.id}-view`}
               target="_blank" 
               rel="noopener noreferrer"
               className="text-secondary hover:text-highlight text-sm font-medium inline-flex items-center gap-1 transition-colors duration-300"
@@ -137,6 +143,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         
         <a
           href={project.link}
+          data-analytics-id={`project-${project.id}-explore`}
           target="_blank"
           rel="noopener noreferrer"
           className="px-5 py-2 rounded-full bg-secondary hover:bg-highlight text-white font-medium transition-colors duration-300 inline-flex items-center gap-2 pointer-events-auto sci-fi-border"
@@ -170,6 +177,10 @@ const ProjectsSection = () => {
   // Handler for toggling project visibility with explicit touch handling
   const handleToggleProjects = () => {
     setShowAll(!showAll);
+    trackAnalyticsEvent('project_list_toggled', {
+      next_state: showAll ? 'collapsed' : 'expanded',
+      total_projects: totalProjects,
+    });
   };
 
   return (

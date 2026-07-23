@@ -4,7 +4,7 @@ A cutting-edge, 3D-interactive personal portfolio built with **Next.js 16**, **R
 
 ## 🚀 Features
 - **3D Neural Network**: High-performance interactive visualization.
-- **Stealth Analytics**: Professional GDPR-compliant tracking powered by PostHog.
+- **Consent-based Analytics**: Privacy-preserving PostHog events that begin only after an explicit opt-in.
 - **AEO Optimized**: Structured data ready for the new era of AI search (ChatGPT, Gemini).
 - **Glassmorphism Design**: Premium, visually stunning interface.
 
@@ -33,6 +33,7 @@ npm run dev
 ## 📖 Documentation
 Detailed guides for configuration and deployment can be found in the `docs` folder:
 - [**Deployment & Setup Guide**](./docs/deployment.md): Instructions for GitHub Secrets, PostHog, EmailJS, and SEO verification.
+- [**Analytics Event Schema**](./docs/analytics.md): Event contract, data boundaries, and consent behavior.
 
 ---
 

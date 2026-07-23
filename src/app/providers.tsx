@@ -1,275 +1,337 @@
-/**
- * @file providers.tsx
- * @description Global Provider for PostHog Analytics with route pageviews, behavioral events, and web vitals.
- */
-
 'use client'
 
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect, Suspense } from 'react'
-import { onLCP, onINP, onCLS } from 'web-vitals'
+import { Suspense, useEffect, useState } from 'react'
+import { onCLS, onINP, onLCP } from 'web-vitals'
+import {
+	ANALYTICS_CONSENT_EVENT,
+	ANALYTICS_TRACK_EVENT,
+	getAnalyticsConsent,
+	type AnalyticsProperties,
+	type AnalyticsConsent,
+} from '@/lib/analytics-consent'
 
-// Global flag to track if PostHog has been initialized
 let posthogInitiated = false
-let behavioralTrackingAttached = false
 
-const DEFAULT_POSTHOG_HOST = 'https://us.i.posthog.com'
+const POSTHOG_DEFAULTS_DATE = '2026-05-30'
+const SENSITIVE_PROPERTY_NAMES = new Set([
+	'$current_url',
+	'$referrer',
+	'$referring_domain',
+	'$elements',
+	'$elements_chain',
+	'$event_type',
+])
 
-const getPostHogHost = () => {
-	const configuredHost = process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim()
-	if (!configuredHost) return DEFAULT_POSTHOG_HOST
+function getPostHogConfig() {
+	const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN?.trim()
+		?? process.env.NEXT_PUBLIC_POSTHOG_KEY?.trim()
+	const host = process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim()
 
-	if (!/^https?:\/\//.test(configuredHost)) {
-		console.warn(`[PostHog] Invalid NEXT_PUBLIC_POSTHOG_HOST "${configuredHost}". Falling back to ${DEFAULT_POSTHOG_HOST}.`)
-		return DEFAULT_POSTHOG_HOST
-	}
+	if (!token || !host) return null
 
-	return configuredHost
-}
-
-const getCurrentUrl = (pathname: string, searchParams: URLSearchParams | null) => {
-	let url = window.origin + pathname
-	if (searchParams && searchParams.toString()) {
-		url = `${url}?${searchParams.toString()}`
-	}
-	return url
-}
-
-const captureEnvContext = () => {
-	if (!posthogInitiated) return
-
-	const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
-	const connection = (navigator as Navigator & {
-		connection?: { effectiveType?: string; downlink?: number; rtt?: number; saveData?: boolean }
-	}).connection
-
-	posthog.register({
-		browser_language: navigator.language,
-		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-		screen_resolution: `${window.screen.width}x${window.screen.height}`,
-		viewport_resolution: `${window.innerWidth}x${window.innerHeight}`,
-		network_effective_type: connection?.effectiveType ?? 'unknown',
-		network_downlink_mbps: connection?.downlink ?? null,
-		network_rtt_ms: connection?.rtt ?? null,
-		network_save_data: connection?.saveData ?? null,
-		navigation_type: navigationEntry?.type ?? 'unknown',
-		referrer_domain: document.referrer
-			? new URL(document.referrer, window.location.origin).hostname
-			: 'direct',
-	})
-
-	if (window.location.search) {
-		const query = new URLSearchParams(window.location.search)
-		const campaignProps = {
-			utm_source: query.get('utm_source'),
-			utm_medium: query.get('utm_medium'),
-			utm_campaign: query.get('utm_campaign'),
-			utm_term: query.get('utm_term'),
-			utm_content: query.get('utm_content'),
-			gclid: query.get('gclid'),
-			fbclid: query.get('fbclid'),
-		}
-
-		if (Object.values(campaignProps).some(Boolean)) {
-			posthog.capture('campaign_parameters_detected', campaignProps)
-		}
+	try {
+		const url = new URL(host)
+		if (url.protocol !== 'https:') return null
+		return { token, host: url.origin + url.pathname.replace(/\/$/, '') }
+	} catch {
+		return null
 	}
 }
 
-const attachBehavioralTracking = () => {
-	if (!posthogInitiated || behavioralTrackingAttached) return
-	behavioralTrackingAttached = true
-
-	const scrollMilestones = new Set<number>()
-	const thresholds = [25, 50, 75, 90, 100]
-	let scrollTrackingUrl = window.location.href
-	const HEARTBEAT_INTERVAL_MS = 15000
-	const MAX_HEARTBEAT_GAP_MS = HEARTBEAT_INTERVAL_MS * 2
-	let lastHeartbeat = Date.now()
-
-	const resetScrollMilestonesForNewPage = () => {
-		const currentUrl = window.location.href
-		if (currentUrl !== scrollTrackingUrl) {
-			scrollTrackingUrl = currentUrl
-			scrollMilestones.clear()
-		}
-	}
-
-	const captureScrollDepth = () => {
-		resetScrollMilestonesForNewPage()
-
-		const doc = document.documentElement
-		const scrollableHeight = doc.scrollHeight - window.innerHeight
-		if (scrollableHeight <= 0) return
-
-		const depth = Math.round((window.scrollY / scrollableHeight) * 100)
-		thresholds.forEach((threshold) => {
-			if (depth >= threshold && !scrollMilestones.has(threshold)) {
-				scrollMilestones.add(threshold)
-				posthog.capture('scroll_depth_reached', {
-					scroll_depth_percent: threshold,
-					current_url: window.location.href,
-				})
-			}
-		})
-	}
-
-	const captureOutboundClicks = (event: MouseEvent) => {
-		const target = event.target as HTMLElement | null
-		const link = target?.closest('a[href]') as HTMLAnchorElement | null
-		if (!link) return
-
-		const destination = new URL(link.href, window.location.origin)
-		if (destination.origin !== window.location.origin) {
-			posthog.capture('outbound_link_clicked', {
-				link_url: destination.href,
-				link_text: link.textContent?.trim().slice(0, 120) || 'unknown',
-				current_url: window.location.href,
-			})
-		}
-
-		if (/(\.pdf|\.zip|\.docx?|\.xlsx?|\.pptx?)$/i.test(destination.pathname)) {
-			posthog.capture('file_download_clicked', {
-				file_url: destination.href,
-				file_extension: destination.pathname.split('.').pop()?.toLowerCase() ?? 'unknown',
-				current_url: window.location.href,
-			})
-		}
-	}
-
-	const captureCopy = () => {
-		const selectedTextLength = window.getSelection()?.toString().trim().length ?? 0
-		posthog.capture('content_copied', {
-			selected_text_length: selectedTextLength,
-			current_url: window.location.href,
-		})
-	}
-
-	const captureEngagementHeartbeat = () => {
-		const now = Date.now()
-		const elapsedMs = now - lastHeartbeat
-		lastHeartbeat = now
-
-		if (elapsedMs <= 0 || elapsedMs > MAX_HEARTBEAT_GAP_MS) {
-			return
-		}
-
-		const engagedSeconds = Math.round(elapsedMs / 1000)
-
-		if (document.visibilityState === 'visible') {
-			posthog.capture('engagement_heartbeat', {
-				engaged_seconds: engagedSeconds,
-				current_url: window.location.href,
-			})
-		}
-	}
-
-	const captureVisibility = () => {
-		if (document.visibilityState === 'visible') {
-			lastHeartbeat = Date.now()
-		}
-
-		posthog.capture('visibility_changed', {
-			visibility_state: document.visibilityState,
-			current_url: window.location.href,
-		})
-	}
-
-	const captureError = (event: ErrorEvent) => {
-		posthog.capture('frontend_error', {
-			message: event.message,
-			source: event.filename,
-			line: event.lineno,
-			column: event.colno,
-			current_url: window.location.href,
-		})
-	}
-
-	const captureUnhandledRejection = (event: PromiseRejectionEvent) => {
-		posthog.capture('frontend_unhandled_rejection', {
-			reason: String(event.reason),
-			current_url: window.location.href,
-		})
-	}
-
-	window.addEventListener('scroll', captureScrollDepth, { passive: true })
-	document.addEventListener('click', captureOutboundClicks)
-	document.addEventListener('copy', captureCopy)
-	document.addEventListener('visibilitychange', captureVisibility)
-	window.addEventListener('error', captureError)
-	window.addEventListener('unhandledrejection', captureUnhandledRejection)
-
-	setInterval(captureEngagementHeartbeat, HEARTBEAT_INTERVAL_MS)
+function getPagePath(pathname: string | null) {
+	return pathname || '/'
 }
 
-/**
- * Initializes the PostHog SDK with professional-grade tracking features.
- * Uses configured PostHog host with US Cloud fallback by default.
- */
-const initPH = () => {
-	if (posthogInitiated || typeof window === 'undefined') return
+function getReferrerDomain() {
+	if (!document.referrer) return 'direct'
 
-	const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
-	if (!posthogKey) {
-		// Gracefully skip analytics when key is not configured locally.
-		return
+	try {
+		return new URL(document.referrer).hostname
+	} catch {
+		return 'unknown'
+	}
+}
+
+function getSectionId(element: Element | null) {
+	const section = element?.closest('section[id], section[aria-labelledby]')
+	if (!section) return 'none'
+	return section.id || section.getAttribute('aria-labelledby') || 'unnamed'
+}
+
+function getCampaignProperties(search: string) {
+	if (!search) return {}
+
+	const searchParams = new URLSearchParams(search)
+	const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign'] as const
+	return campaignKeys.reduce<Record<string, string>>((properties, key) => {
+		const value = searchParams.get(key)?.trim()
+		if (value && /^[A-Za-z0-9._-]{1,100}$/.test(value)) properties[key] = value
+		return properties
+	}, {})
+}
+
+function capture(event: string, properties: AnalyticsProperties) {
+	if (posthogInitiated && posthog.has_opted_in_capturing()) {
+		posthog.capture(event, properties)
+	}
+}
+
+function initializePostHog() {
+	if (typeof window === 'undefined') return false
+	if (posthogInitiated) return true
+
+	const config = getPostHogConfig()
+	if (!config) {
+		if (process.env.NODE_ENV !== 'production') {
+			console.warn('[Analytics] PostHog is disabled: configure NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN and NEXT_PUBLIC_POSTHOG_HOST.')
+		}
+		return false
 	}
 
-	posthog.init(posthogKey, {
-		api_host: getPostHogHost(),
-		person_profiles: 'always',
+	posthog.init(config.token, {
+		api_host: config.host,
+		defaults: POSTHOG_DEFAULTS_DATE,
+		opt_out_capturing_by_default: true,
+		respect_dnt: true,
 		capture_pageview: false,
-		capture_pageleave: true,
-		capture_performance: true,
-		autocapture: true,
-		persistence: 'localStorage+cookie',
-		session_recording: {
-			maskAllInputs: false,
-			maskTextSelector: '*:not(.ph-no-capture)',
-			recordCrossOriginIframes: false,
-		},
-		advanced_disable_flags: true,
-		request_batching: true,
+		capture_pageleave: false,
+		capture_performance: false,
+		autocapture: false,
+		disable_session_recording: true,
+		person_profiles: 'identified_only',
+		property_denylist: Array.from(SENSITIVE_PROPERTY_NAMES),
+		sanitize_properties: (properties) => Object.fromEntries(
+			Object.entries(properties).filter(([key]) => !SENSITIVE_PROPERTY_NAMES.has(key)),
+		),
 	})
 
 	posthogInitiated = true
-	captureEnvContext()
-	attachBehavioralTracking()
+	return true
 }
 
-function PostHogPageView(): null {
+function PostHogAnalytics(): null {
 	const pathname = usePathname()
 	const searchParams = useSearchParams()
+	const [consent, setConsent] = useState<AnalyticsConsent>(null)
+	const pagePath = getPagePath(pathname)
+	const search = searchParams?.toString() ?? ''
 
 	useEffect(() => {
-		initPH()
+		initializePostHog()
+		setConsent(getAnalyticsConsent())
+
+		const handleConsentChange = (event: Event) => {
+			const nextConsent = (event as CustomEvent<AnalyticsConsent>).detail
+			setConsent(nextConsent)
+
+			if (nextConsent === 'denied' && posthogInitiated) {
+				posthog.opt_out_capturing()
+			}
+		}
+
+		const handleTrackedEvent = (event: Event) => {
+			const detail = (event as CustomEvent<{ event: string; properties: AnalyticsProperties }>).detail
+			if (detail?.event) capture(detail.event, detail.properties)
+		}
+
+		window.addEventListener(ANALYTICS_CONSENT_EVENT, handleConsentChange)
+		window.addEventListener(ANALYTICS_TRACK_EVENT, handleTrackedEvent)
+		return () => {
+			window.removeEventListener(ANALYTICS_CONSENT_EVENT, handleConsentChange)
+			window.removeEventListener(ANALYTICS_TRACK_EVENT, handleTrackedEvent)
+		}
 	}, [])
 
 	useEffect(() => {
-		if (pathname && posthogInitiated && posthog) {
-			posthog.capture('$pageview', {
-				'$current_url': getCurrentUrl(pathname, searchParams),
-			})
+		if (consent === 'granted' && posthogInitiated) {
+			posthog.opt_in_capturing()
 		}
-	}, [pathname, searchParams])
+	}, [consent])
 
 	useEffect(() => {
-		const captureVital = (metric: { name: string; value: number; id: string }) => {
-			if (posthogInitiated && posthog) {
-				posthog.capture('$web_vitals', {
-					vital_name: metric.name,
-					vital_value: metric.value,
-					vital_id: metric.id,
+		if (consent !== 'granted' || !posthogInitiated) return
+
+		capture('page_viewed', {
+			page_path: pagePath,
+			page_title: document.title.slice(0, 160),
+			referrer_domain: getReferrerDomain(),
+			...getCampaignProperties(search),
+		})
+	}, [consent, pagePath, search])
+
+	useEffect(() => {
+		if (consent !== 'granted' || !posthogInitiated) return
+
+		const observedSections = new Set<string>()
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (!entry.isIntersecting) return
+				const sectionId = getSectionId(entry.target)
+				if (observedSections.has(sectionId)) return
+				observedSections.add(sectionId)
+				capture('section_viewed', { page_path: pagePath, section_id: sectionId })
+				observer.unobserve(entry.target)
+			})
+		}, { threshold: 0.4 })
+
+		document.querySelectorAll('section[id], section[aria-labelledby]').forEach((section) => observer.observe(section))
+		return () => observer.disconnect()
+	}, [consent, pagePath])
+
+	useEffect(() => {
+		if (consent !== 'granted' || !posthogInitiated) return
+
+		let visibleSince = document.visibilityState === 'visible' ? Date.now() : null
+		let engagedMs = 0
+		let maxScrollDepth = 0
+		let reported = false
+
+		const updateEngagement = () => {
+			if (visibleSince !== null) {
+				engagedMs += Date.now() - visibleSince
+				visibleSince = null
+			}
+		}
+
+		const updateScrollDepth = () => {
+			const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight
+			if (scrollableHeight <= 0) return
+			const depth = Math.min(100, Math.round((window.scrollY / scrollableHeight) * 100))
+			maxScrollDepth = Math.max(maxScrollDepth, depth)
+		}
+
+		const reportEngagement = (exitReason: 'pagehide' | 'route_change') => {
+			if (reported) return
+			reported = true
+			updateEngagement()
+			updateScrollDepth()
+			if (engagedMs < 1000 && maxScrollDepth === 0) return
+			capture('page_engagement_completed', {
+				page_path: pagePath,
+				engaged_seconds: Math.round(engagedMs / 1000),
+				max_scroll_depth_percent: maxScrollDepth,
+				exit_reason: exitReason,
+			})
+		}
+
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === 'visible') {
+				visibleSince = Date.now()
+			} else {
+				updateEngagement()
+			}
+		}
+
+		const handlePageHide = () => reportEngagement('pagehide')
+
+		window.addEventListener('scroll', updateScrollDepth, { passive: true })
+		document.addEventListener('visibilitychange', handleVisibilityChange)
+		window.addEventListener('pagehide', handlePageHide, { once: true })
+
+		return () => {
+			window.removeEventListener('scroll', updateScrollDepth)
+			document.removeEventListener('visibilitychange', handleVisibilityChange)
+			window.removeEventListener('pagehide', handlePageHide)
+			reportEngagement('route_change')
+		}
+	}, [consent, pagePath])
+
+	useEffect(() => {
+		if (consent !== 'granted' || !posthogInitiated) return
+
+		const handleClick = (event: MouseEvent) => {
+			const target = event.target as Element | null
+			const link = target?.closest('a[href]') as HTMLAnchorElement | null
+			const button = target?.closest('button') as HTMLButtonElement | null
+
+			if (button) {
+				capture('control_clicked', {
+					page_path: pagePath,
+					section_id: getSectionId(button),
+					control_id: button.dataset.analyticsId || button.getAttribute('aria-label') || button.id || button.type || 'button',
 				})
 			}
+
+			if (!link) return
+
+			const destination = new URL(link.href, window.location.origin)
+			const isDownload = /\.(pdf|zip|docx?|xlsx?|pptx?)$/i.test(destination.pathname)
+
+			if (isDownload) {
+				capture('file_download_clicked', {
+					page_path: pagePath,
+					link_id: link.dataset.analyticsId || 'download',
+					file_extension: destination.pathname.split('.').pop()?.toLowerCase() ?? 'unknown',
+				})
+			}
+
+			if (destination.origin !== window.location.origin) {
+				const destinationType = destination.protocol === 'mailto:' ? 'email' : 'external'
+				capture('outbound_link_clicked', {
+					page_path: pagePath,
+					section_id: getSectionId(link),
+					link_id: link.dataset.analyticsId || 'external',
+					destination_host: destinationType === 'email' ? 'mailto' : destination.hostname,
+					destination_type: destinationType,
+				})
+			} else {
+				capture('internal_navigation_clicked', {
+					page_path: pagePath,
+					section_id: getSectionId(link),
+					link_id: link.dataset.analyticsId || 'navigation',
+					destination_path: `${destination.pathname}${destination.hash}`,
+				})
+			}
+		}
+
+		const handleCopy = () => {
+			capture('content_copied', {
+				page_path: pagePath,
+				selected_text_length: window.getSelection()?.toString().trim().length ?? 0,
+			})
+		}
+
+		let errorEventsSent = 0
+		const captureError = (errorType: 'error' | 'unhandled_rejection') => {
+			if (errorEventsSent >= 5) return
+			errorEventsSent += 1
+			capture('frontend_error_observed', { page_path: pagePath, error_type: errorType })
+		}
+		const handleError = () => captureError('error')
+		const handleUnhandledRejection = () => captureError('unhandled_rejection')
+
+		document.addEventListener('click', handleClick)
+		document.addEventListener('copy', handleCopy)
+		window.addEventListener('error', handleError)
+		window.addEventListener('unhandledrejection', handleUnhandledRejection)
+
+		return () => {
+			document.removeEventListener('click', handleClick)
+			document.removeEventListener('copy', handleCopy)
+			window.removeEventListener('error', handleError)
+			window.removeEventListener('unhandledrejection', handleUnhandledRejection)
+		}
+	}, [consent, pagePath])
+
+	useEffect(() => {
+		if (consent !== 'granted' || !posthogInitiated) return
+
+		const captureVital = (metric: { name: string; value: number; rating: string }) => {
+			capture('web_vital_measured', {
+				page_path: window.location.pathname,
+				metric_name: metric.name,
+				metric_value: Math.round(metric.value),
+				metric_rating: metric.rating,
+			})
 		}
 
 		onLCP(captureVital)
 		onINP(captureVital)
 		onCLS(captureVital)
-	}, [])
+	}, [consent])
 
 	return null
 }
@@ -278,7 +340,7 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
 	return (
 		<PostHogProvider client={posthog}>
 			<Suspense fallback={null}>
-				<PostHogPageView />
+				<PostHogAnalytics />
 			</Suspense>
 			{children}
 		</PostHogProvider>

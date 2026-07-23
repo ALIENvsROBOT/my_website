@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import SkillsLogoLoop from './SkillsLogoLoop';
+import { trackAnalyticsEvent } from '@/lib/analytics-consent';
 
 import {
   biographyParagraphs as ABOUT_PARAGRAPHS,
@@ -109,6 +110,7 @@ const AboutSection = () => {
   // Update URL when tabs are clicked directly
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
+    trackAnalyticsEvent('about_tab_selected', { tab_name: tab });
     // Update URL without scrolling
     if (tab === 'about') {
       window.history.pushState(null, '', '#about');

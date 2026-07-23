@@ -9,8 +9,20 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { getAnalyticsConsent, setAnalyticsConsent, type AnalyticsConsent } from '@/lib/analytics-consent';
 
 export default function PrivacyPolicy() {
+	const [analyticsConsent, setAnalyticsConsentState] = React.useState<AnalyticsConsent>(null);
+
+	React.useEffect(() => {
+		setAnalyticsConsentState(getAnalyticsConsent());
+	}, []);
+
+	const updateAnalyticsConsent = (choice: 'granted' | 'denied') => {
+		setAnalyticsConsent(choice);
+		setAnalyticsConsentState(choice);
+	};
+
 	return (
 		<main className="relative z-10 min-h-screen bg-transparent text-zinc-900 py-20 px-4 md:px-8">
 			<div className="max-w-4xl mx-auto">
@@ -38,8 +50,16 @@ export default function PrivacyPolicy() {
 							As an HCI (Human-Computer Interaction) researcher, I value digital ethics and data transparency. This policy outlines how information is handled when you interact with this professional portfolio. To understand how visitors interact with my research and 3D demonstrations, I use <strong>PostHog</strong>, an open-source, privacy-focused analytics platform.
 						</p>
 						<p>
-							What is tracked includes page views, session patterns (including anonymous interaction replays), technical performance metrics (Web Vitals), interaction patterns (e.g., clicks on 3D elements), and device metadata. Your approximate location (City/Country) is derived from your IP address. Data is processed exclusively on EU servers (PostHog EU Cloud) to ensure compliance with European data standards.
+							Optional analytics begins only if you explicitly accept it. It records page paths, referrer domains, safe campaign labels, engagement time, scroll depth, outbound-link destinations, downloads, copy interaction length, Web Vitals, and anonymized error counts. It does not use session replay, heatmaps, autocapture, form values, copied text, full URLs, arbitrary URL query strings, or user identification. The configured PostHog region determines where analytics data is processed.
 						</p>
+						<section className="rounded-xl border border-zinc-400/30 bg-white/30 p-5">
+							<h2 className="text-lg font-semibold text-zinc-900">Analytics preference</h2>
+							<p className="mt-2 text-sm">Current choice: <strong>{analyticsConsent === 'granted' ? 'Accepted' : analyticsConsent === 'denied' ? 'Rejected' : 'Not selected'}</strong>.</p>
+							<div className="mt-4 flex flex-wrap gap-3">
+								<button onClick={() => updateAnalyticsConsent('granted')} className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700">Accept analytics</button>
+								<button onClick={() => updateAnalyticsConsent('denied')} className="rounded-lg border border-zinc-400 px-4 py-2 text-sm font-medium text-zinc-800 transition-colors hover:bg-zinc-100">Reject analytics</button>
+							</div>
+						</section>
 						<p>
 							I collect this information strictly for technical research and professional development. It helps me optimize interactive 3D performance, identify high-interest research topics, and monitor the accessibility of the platform across different regions. If you use the contact form, the information you provide (Name, Email, Message) is only used to respond to your inquiry and is never sold or shared with third parties.
 						</p>
