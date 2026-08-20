@@ -168,9 +168,9 @@ export const awardsAndRecognitions: AwardEntry[] = [
     issuer: 'salzburger nachrichten',
     year: '2024',
     description: 'Got featured in the news article for the Intuitve User Interface project',
-    image: '/reward_images/news_salzburg_sept_2024.png',
+    image: '/reward_images/salzburger_nachrichten_2024.png',
     highlight: 'News article',
-    link: 'https://pressreader.com/article/281844354017503'
+    link: '/Docs/Salzburger_Nachrichten.pdf'
   },
   {
     title: "Master's graduation",

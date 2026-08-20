@@ -95,8 +95,9 @@ const AwardTile = ({ award, index, isFeatured }: { award: AwardEntry; index: num
   if (award.link) {
     const isExternal = /^https?:\/\//.test(award.link);
     const href = isExternal ? award.link : award.link.startsWith("/") ? award.link : `/${award.link}`;
+    const isPdf = href.toLowerCase().endsWith(".pdf");
 
-    return isExternal ? (
+    return isExternal || isPdf ? (
       <motion.a
         href={href}
         target="_blank"
