@@ -6,6 +6,8 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    // Keep the existing project-card image quality valid in Next.js 16.
+    qualities: [75, 95],
   },
   // In production, don't use basePath for custom domain
   basePath: '',

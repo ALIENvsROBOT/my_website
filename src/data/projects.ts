@@ -12,7 +12,17 @@
 };
 
 export const projects: Project[] = [
-  
+  {
+    id: 14,
+    title: 'qwen3.8-27b-agentic-nvfp4',
+    description: 'An NVFP4 checkpoint of Qwen3.8-27B for agentic and multimodal applications, combining text, image, and video understanding with configurable reasoning, structured tool calling, and up to 262,144 tokens of native context.',
+    image: '/Project_images/qwen3-8-27b-agentic-nvfp4.png',
+    fallbackImage: 'https://placehold.co/600x350/1f2329/ffffff?text=qwen3.8-27b-agentic-nvfp4',
+    technologies: ['Qwen3.8-27B', 'NVFP4', 'Agentic AI', 'Vision-Language', 'Tool Calling', 'vLLM', 'SGLang'],
+    link: 'https://huggingface.co/reality-interface/qwen3.8-27b-agentic-nvfp4',
+    featured: true
+  },
+
   {
     id: 13,
     title: 'Voice-Interactive Portfolio Agent',

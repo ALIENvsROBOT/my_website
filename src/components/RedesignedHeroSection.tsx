@@ -1,10 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import Scene3D from './3DElements';
 import { FuturisticButton, ScrollIndicator } from './FuturisticElements';
 import ProfileImage from './ProfileImage';
+
+// Keep the large Three.js bundle out of the initial page payload. The hero panel
+// remains in place while the interactive scene is being prepared on the client.
+const Scene3D = dynamic(() => import('./3DElements'), {
+  ssr: false,
+  loading: () => <div className="relative h-full w-full min-h-[250px]" aria-hidden="true" />,
+});
 
 const RedesignedHeroSection = () => {
   const [isMobile, setIsMobile] = useState(false);

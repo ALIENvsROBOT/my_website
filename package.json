@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build && node -e \"try{require('fs').writeFileSync('./out/.nojekyll','');}catch(e){console.log(e);}\"",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

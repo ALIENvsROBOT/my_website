@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 
 import { projects } from '@/data/projects';
@@ -11,9 +11,12 @@ import { trackAnalyticsEvent } from '@/lib/analytics-consent';
 interface ProjectCardProps {
   project: typeof projects[0];
   index: number;
+  reduceMotion: boolean | null;
+  isVisible: boolean;
+  isFeatured: boolean;
 }
 
-const ProjectCard = ({ project, index }: ProjectCardProps) => {
+const ProjectCard = ({ project, index, reduceMotion, isVisible, isFeatured }: ProjectCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
   
@@ -29,21 +32,17 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
   return (
     <motion.div 
       className={`relative group overflow-hidden rounded-xl sci-fi-border glass-effect-dark aspect-square`}
-      variants={{
-        hidden: { y: 50, opacity: 0 },
-        visible: { 
-          y: 0, 
-          opacity: 1, 
-          transition: { 
-            duration: 0.7,
-            ease: 'easeOut',
-            delay: index * 0.1 
-          } 
-        }
+      initial={reduceMotion ? { opacity: 1 } : { y: 24, opacity: 0 }}
+      animate={isVisible ? { y: 0, opacity: 1 } : { y: 24, opacity: 0 }}
+      transition={{
+        duration: reduceMotion ? 0 : 0.35,
+        ease: 'easeOut',
+        delay: reduceMotion ? 0 : Math.min(index, 5) * 0.04,
       }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       onTap={toggleHover}
+      exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -16 }}
     >
       <div className="relative h-full overflow-hidden">
         <Image
@@ -57,7 +56,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={index < 3}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-darkBg via-darkBg/50 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent opacity-75 transition-opacity duration-300 group-hover:opacity-90"></div>
         
         {/* Subtle texture overlay */}
         <div className="absolute inset-0 opacity-15 bg-scan-lines pointer-events-none"></div>
@@ -79,22 +78,12 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           )}
         </div>
         
-        {/* Project ID and status */}
-        <div className="absolute bottom-4 right-4 z-10">
-          <div className="glass-effect-dark p-1 rounded text-xs tracking-wider border border-secondary/20">
-            <div className="flex items-center space-x-1 px-2">
-              <div className="w-1 h-1 rounded-full bg-secondary/70 animate-pulse"></div>
-              <span className="text-secondary/80">PROJ-{String(project.id).padStart(3, '0')}</span>
-            </div>
-          </div>
-        </div>
-      
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-darkBg/80 backdrop-blur-sm z-10">
-          <h3 className="text-lg font-bold mb-1 text-lightText group-hover:text-secondary transition-colors duration-300 relative truncate">
+        <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/65 p-4 backdrop-blur-sm">
+          <h3 className="relative mb-1 truncate text-lg font-bold text-white transition-colors duration-300 group-hover:text-zinc-200">
             {project.title}
             
             {/* Decorative badge for featured projects */}
-            {project.featured && (
+            {isFeatured && (
               <div className="absolute -left-4 top-1/2 -translate-y-1/2 h-4 w-1 bg-secondary/60"></div>
             )}
           </h3>
@@ -110,7 +99,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               data-analytics-id={`project-${project.id}-view`}
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-secondary hover:text-highlight text-sm font-medium inline-flex items-center gap-1 transition-colors duration-300"
+              className="inline-flex items-center gap-1 text-sm font-medium text-zinc-100 transition-colors duration-300 hover:text-white"
               whileHover={{ x: 5 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -120,8 +109,8 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               </svg>
             </motion.a>
             
-            {project.featured && (
-              <span className="text-xs px-2 py-1 rounded-full bg-highlight/20 text-highlight border border-highlight/30">
+            {isFeatured && (
+              <span className="rounded-full border border-white/25 bg-white/10 px-2 py-1 text-xs text-white">
                 Featured
               </span>
             )}
@@ -162,29 +151,36 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
 
 const ProjectsSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
+  // Keep the section visible after its first reveal. Its height changes when
+  // projects expand, which can otherwise make the observer hide every card.
+  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const reduceMotion = useReducedMotion();
   const [showAll, setShowAll] = useState(false);
   
   // Calculate how many projects to show initially
   const initialProjectCount = 6; // 3 columns x 2 rows or 2 columns x 3 rows
   
-  // All projects sorted by featured first
-  const sortedProjects = [...projects.filter(p => p.featured), ...projects.filter(p => !p.featured)];
+  // Project IDs are assigned chronologically, so descending order keeps the
+  // newest work first even when older entries do not have exact dates.
+  const sortedProjects = [...projects].sort((a, b) => b.id - a.id);
   const totalProjects = sortedProjects.length;
   const visibleProjects = showAll ? sortedProjects : sortedProjects.slice(0, initialProjectCount);
   const remainingProjects = Math.max(totalProjects - visibleProjects.length, 0);
   
-  // Handler for toggling project visibility with explicit touch handling
+  // Native button clicks work for both mouse and touch, avoiding double toggles on phones.
   const handleToggleProjects = () => {
-    setShowAll(!showAll);
-    trackAnalyticsEvent('project_list_toggled', {
-      next_state: showAll ? 'collapsed' : 'expanded',
-      total_projects: totalProjects,
+    setShowAll((previous) => {
+      const next = !previous;
+      trackAnalyticsEvent('project_list_toggled', {
+        next_state: next ? 'expanded' : 'collapsed',
+        total_projects: totalProjects,
+      });
+      return next;
     });
   };
 
   return (
-    <section id="projects" className="py-20 relative" ref={sectionRef}>
+    <section id="projects" className="relative scroll-mt-28 py-20" ref={sectionRef}>
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-secondary/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-highlight/5 rounded-full blur-3xl"></div>
@@ -211,22 +207,24 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Projects grid container with conditional height and scroll */}
-        <div className="relative overflow-hidden">
+        <div className="relative">
           <motion.div
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 transition-[max-height] duration-500 ease-out ${showAll ? 'overflow-visible' : 'max-h-[900px]'}`}
-            style={{ scrollbarWidth: 'thin', scrollbarColor: '#6B7280 #1F2937' }}
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3"
+            id="projects-grid"
           >
-            {/* Show either all projects or just initial count */}
-            {visibleProjects.map((project, index) => (
-              <ProjectCard key={project.id} project={project} index={index} />
-            ))}
+            <AnimatePresence initial={false}>
+              {visibleProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  reduceMotion={reduceMotion}
+                  isVisible={isInView}
+                  isFeatured={index < 3}
+                />
+              ))}
+            </AnimatePresence>
           </motion.div>
-          {!showAll && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-zinc-200/95 via-zinc-200/70 to-transparent" aria-hidden="true" />
-          )}
         </div>
         
         {/* Toggle button - extremely simplified for mobile touch */}
@@ -238,16 +236,15 @@ const ProjectsSection = () => {
               </span>
             </div>
           )}
-          <button 
+          <button
+            type="button"
             onClick={handleToggleProjects}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              handleToggleProjects();
-            }}
+            aria-expanded={showAll}
+            aria-controls="projects-grid"
             className="w-full max-w-xs mx-auto min-h-[48px] py-4 px-6 bg-secondary text-white rounded-md text-lg font-medium shadow-lg active:bg-highlight"
             style={{ touchAction: 'manipulation' }}
           >
-            {showAll ? 'Show Less' : 'Show More Projects'}
+            {showAll ? 'Show fewer projects' : `Show all ${totalProjects} projects`}
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               className={`h-5 w-5 inline-block ml-2 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} 
@@ -266,9 +263,10 @@ const ProjectsSection = () => {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.25 }}
               className="mt-3 text-sm text-lightText/70"
+              aria-live="polite"
             >
               {showAll
-                ? `Displaying all ${totalProjects} projects. Collapse to jump back to highlights.`
+                ? `Showing all ${totalProjects} projects.`
                 : `Showing ${visibleProjects.length} of ${totalProjects} projects • ${remainingProjects} more available`}
             </motion.p>
           </AnimatePresence>

@@ -1,33 +1,25 @@
 "use client";
 
 import React, { useRef, useState, Suspense, useEffect, useMemo } from 'react';
-import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
   Text,
   OrbitControls,
-  useTexture,
-  Instances,
-  Instance,
-  useGLTF,
-  MeshTransmissionMaterial,
-  Environment,
   Trail,
   Float
 } from '@react-three/drei';
 import {
   Vector3,
-  Mesh,
   Group,
   Color,
   MathUtils,
   InstancedMesh,
   Matrix4,
   BufferGeometry,
-  MeshBasicMaterial,
-  ShaderMaterial,
-  IcosahedronGeometry,
-  DoubleSide,
   Line,
+  LineSegments,
+  Points,
+  ShaderMaterial,
   LineBasicMaterial,
   BufferAttribute,
   Plane,
@@ -36,29 +28,6 @@ import {
 
 // Helper function to convert array to Vector3
 const toVector3 = (arr: [number, number, number]): Vector3 => new Vector3(arr[0], arr[1], arr[2]);
-
-// Performance optimization hook
-function usePerformanceSettings() {
-  const { gl } = useThree();
-
-  useEffect(() => {
-    // Optimize performance
-    gl.shadowMap.enabled = false;
-
-    // Use type-safe renderer properties
-    if (gl.outputColorSpace !== undefined) {
-      gl.outputColorSpace = 'srgb';
-    }
-
-    // Disable tone mapping to improve performance
-    gl.toneMapping = 0; // NoToneMapping
-
-    return () => {
-      // Cleanup
-      gl.dispose();
-    };
-  }, [gl]);
-}
 
 // Custom shader material for the neural connections
 const neuralConnectionsVertexShader = `
@@ -97,9 +66,10 @@ const neuralConnectionsFragmentShader = `
 
 // Modern digital DNA/neural network nodes
 function NeuralNetwork({ count = 150, connections = 100 }) {
-  const pointsRef = useRef<any>(null);
-  const linesRef = useRef<any>(null);
+  const pointsRef = useRef<Points>(null);
+  const linesRef = useRef<LineSegments>(null);
   const nodesRef = useRef<InstancedMesh>(null);
+  const nodeMatrix = useMemo(() => new Matrix4(), []);
 
   // Create node positions
   const { positions, sizes, colors, indices } = useMemo(() => {
@@ -127,8 +97,9 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
         positions[i * 3 + 2] = Math.sin(theta + Math.PI) * radius;
       }
 
-      // Randomize sizes slightly
-      sizes[i] = 0.05 + Math.random() * 0.05;
+      // Stable variation keeps the same texture without random work during render.
+      const variation = ((i * 9301 + 49297) % 233280) / 233280;
+      sizes[i] = 0.05 + variation * 0.05;
 
       // Monochrome value shifts for a cleaner editorial look
       const t = i / count;
@@ -150,29 +121,15 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
     return { positions, sizes, colors, indices };
   }, [count, connections]);
 
-  // Matrix for each instance
-  const matrices = useMemo(() => {
-    const matrices = [];
-    const matrix = new Matrix4();
-
-    for (let i = 0; i < count; i++) {
-      matrix.setPosition(
-        positions[i * 3],
-        positions[i * 3 + 1],
-        positions[i * 3 + 2]
-      );
-      matrices.push(matrix.clone());
-    }
-
-    return matrices;
-  }, [positions, count]);
-
   // Update animations
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
 
     if (pointsRef.current) {
-      pointsRef.current.material.uniforms.time.value = time;
+      const material = pointsRef.current.material;
+      if (!Array.isArray(material) && material instanceof ShaderMaterial) {
+        material.uniforms.time.value = time;
+      }
     }
 
     if (linesRef.current) {
@@ -184,11 +141,9 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
         const theta = i * 0.2 + time * 0.3;
         const radius = 2.5 + Math.sin(i * 0.05 + time * 0.2) * 0.5;
 
-        const matrix = new Matrix4();
-
         if (i < count / 2) {
           // First DNA strand
-          matrix.setPosition(
+          nodeMatrix.setPosition(
             Math.cos(theta) * radius,
             (i / count) * 5 - 2.5 + Math.sin(time * 0.5 + i * 0.1) * 0.1,
             Math.sin(theta) * radius
@@ -196,14 +151,14 @@ function NeuralNetwork({ count = 150, connections = 100 }) {
         } else {
           // Second DNA strand (offset)
           const j = i - count / 2;
-          matrix.setPosition(
+          nodeMatrix.setPosition(
             Math.cos(theta + Math.PI) * radius,
             (j / count) * 5 - 2.5 + Math.sin(time * 0.5 + i * 0.1) * 0.1,
             Math.sin(theta + Math.PI) * radius
           );
         }
 
-        nodesRef.current.setMatrixAt(i, matrix);
+        nodesRef.current.setMatrixAt(i, nodeMatrix);
       }
 
       nodesRef.current.instanceMatrix.needsUpdate = true;
@@ -590,25 +545,67 @@ function ConnectionLines({
   return <group ref={lineRef} />;
 }
 
-// Performance wrapper for scene
-function PerformanceScene({ children }: { children: React.ReactNode }) {
-  usePerformanceSettings();
-  return <>{children}</>;
+function StaticSceneFallback() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-transparent text-center" role="img" aria-label="Technologist skills">
+      <h2 className="mb-6 text-2xl font-bold text-zinc-700">Technologist</h2>
+      <div className="flex flex-wrap justify-center gap-4">
+        {['AI', 'HCI', 'UI/UX', 'Robotics', 'XR'].map((skill) => (
+          <span key={skill} className="rounded-full border border-zinc-500/35 bg-zinc-500/15 px-3 py-1 text-zinc-700">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CanvasLifecycle({ onContextLost, onContextRestored }: { onContextLost: () => void; onContextRestored: () => void }) {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const canvas = gl.domElement;
+    const handleContextLost = (event: Event) => {
+      // Allow the browser to restore the canvas instead of permanently losing it.
+      event.preventDefault();
+      onContextLost();
+    };
+
+    canvas.addEventListener('webglcontextlost', handleContextLost, false);
+    canvas.addEventListener('webglcontextrestored', onContextRestored, false);
+
+    return () => {
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored);
+    };
+  }, [gl, onContextLost, onContextRestored]);
+
+  return null;
 }
 
 // Main hero scene
-export function HeroScene() {
-  const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
+export function HeroScene({
+  isMobile,
+  paused,
+  onContextLost,
+  onContextRestored,
+}: {
+  isMobile: boolean;
+  paused: boolean;
+  onContextLost: () => void;
+  onContextRestored: () => void;
+}) {
   return (
     <Canvas
       style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'pan-y' }}
-      dpr={[1, 1.5]}
+      dpr={isMobile ? [1, 1.25] : [1, 1.5]}
+      frameloop={paused ? 'never' : 'always'}
+      fallback={<StaticSceneFallback />}
       gl={{
         alpha: true,
         antialias: true,
         powerPreference: 'low-power',
-        logarithmicDepthBuffer: true
+        logarithmicDepthBuffer: false
       }}
       camera={{ position: [0, 0, 7], fov: 60 }}
       performance={{ min: 0.5 }}
@@ -618,7 +615,8 @@ export function HeroScene() {
       }}
     >
       <Suspense fallback={null}>
-        <PerformanceScene>
+        <>
+          <CanvasLifecycle onContextLost={onContextLost} onContextRestored={onContextRestored} />
           {/* Add ambient and directional lighting */}
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, 5]} intensity={0.3} />
@@ -667,119 +665,9 @@ export function HeroScene() {
             enableDamping
             dampingFactor={0.05}
             // Disable touch control to allow page scrolling
-            enableRotate={!isMobileDevice}
+            enableRotate={!isMobile}
           />
-        </PerformanceScene>
-      </Suspense>
-    </Canvas>
-  );
-}
-
-// Scene optimized for mobile with better visual quality
-export function MobileHeroScene() {
-  const [useStaticMode, setUseStaticMode] = useState(false);
-
-  // Check for extremely low-end mobile devices only, not all mobile devices
-  useEffect(() => {
-    // Only detect very low-end devices
-    const isExtremelyLowEnd =
-      // Only target devices with very limited hardware
-      (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 2) ||
-      // Check for very old browsers
-      /MSIE|Trident/.test(navigator.userAgent);
-
-    setUseStaticMode(isExtremelyLowEnd);
-  }, []);
-
-  // Static render only for extremely low-end devices
-  if (useStaticMode) {
-    return (
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-transparent">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-zinc-700 mb-6">Technologist</h2>
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <span className="px-3 py-1 rounded-full bg-zinc-500/15 text-zinc-700 border border-zinc-500/35">AI</span>
-            <span className="px-3 py-1 rounded-full bg-zinc-500/15 text-zinc-700 border border-zinc-500/35">HCI</span>
-            <span className="px-3 py-1 rounded-full bg-stone-500/15 text-zinc-700 border border-stone-500/35">UI/UX</span>
-            <span className="px-3 py-1 rounded-full bg-neutral-500/15 text-zinc-700 border border-neutral-500/35">Robotics</span>
-            <span className="px-3 py-1 rounded-full bg-zinc-500/15 text-zinc-700 border border-zinc-500/35">XR</span>
-          </div>
-          <div className="opacity-70 text-sm text-zinc-600">Static mode for older devices</div>
-        </div>
-      </div>
-    );
-  }
-
-  // Higher quality mobile scene that more closely matches desktop
-  return (
-    <Canvas
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', touchAction: 'pan-y' }}
-      dpr={[1, 1.5]} // Match desktop DPR for higher resolution
-      gl={{
-        alpha: true,
-        antialias: true,
-        powerPreference: 'default',
-        logarithmicDepthBuffer: true
-      }}
-      camera={{ position: [0, 0, 7], fov: 60 }}
-      performance={{ min: 0.5 }}
-      onCreated={({ gl }) => {
-        // Ensure vertical scrolling works
-        gl.domElement.style.touchAction = 'pan-y';
-      }}
-    >
-      <Suspense fallback={null}>
-        <PerformanceScene>
-          {/* Match desktop lighting setup */}
-          <ambientLight intensity={0.2} />
-          <directionalLight position={[10, 10, 5]} intensity={0.3} />
-          <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#52525B" />
-
-          <NeuralNetwork count={120} connections={60} />
-
-          {/* Interactive particle swarm - same as desktop */}
-          <ParticleSwarm />
-
-          {/* Animated title - same as desktop */}
-          <MorphingText text="Technologist" position={[0, 1.8, 0]} color="#3F3F46" scale={1.2} />
-
-          {/* Connection lines - same as desktop */}
-          <ConnectionLines
-            from={[0, 1.8, 0]}
-            to={[
-              [3, -1.8, 1],     // AI
-              [-1.5, -1.8, 1],  // HCI
-              [0, -1.8, 1],     // UI/UX
-              [1.5, -1.8, 1],   // Robotics
-              [-3, -1.8, 1]     // XR
-            ]}
-            colors={["#52525B", "#52525B", "#3F3F46", "#71717A", "#71717A"]}
-          />
-
-          {/* Skill tags - same positions as desktop */}
-          <group position={[0, -1.8, 1]}>
-            <SkillTag position={[3, 0, 0]} skill="AI" color="#52525B" delay={0.1} />
-            <SkillTag position={[-1.5, 0, 0]} skill="HCI" color="#52525B" delay={0.2} />
-            <SkillTag position={[0, 0, 0]} skill="UI/UX" color="#3F3F46" delay={0.8} />
-            <SkillTag position={[1.5, 0, 0]} skill="Robotics" color="#71717A" delay={0.4} />
-            <SkillTag position={[-3, 0, 0]} skill="XR" color="#71717A" delay={0.5} />
-          </group>
-
-          {/* Improved camera controls for mobile - disable rotation to allow scrolling */}
-          <OrbitControls
-            enableZoom={false}
-            enablePan={false}
-            rotateSpeed={0.5}
-            autoRotate
-            autoRotateSpeed={0.5}
-            minPolarAngle={Math.PI / 3}
-            maxPolarAngle={Math.PI / 1.5}
-            enableDamping
-            dampingFactor={0.05}
-            // Disable touch rotation to allow scrolling
-            enableRotate={false}
-          />
-        </PerformanceScene>
+        </>
       </Suspense>
     </Canvas>
   );
@@ -787,34 +675,15 @@ export function MobileHeroScene() {
 
 // Main component that decides which scene to render based on device
 export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
-  const [shouldRender, setShouldRender] = useState(true);
-  const [lowPerformanceMode, setLowPerformanceMode] = useState(false);
-  const [isPortrait, setIsPortrait] = useState(false);
   const [isInView, setIsInView] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const fpsRafRef = useRef<number | null>(null);
+  const lowPerformanceMode = isMobile && typeof navigator !== 'undefined' && (
+    (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 2) ||
+    /MSIE|Trident/.test(navigator.userAgent)
+  );
 
   // Add orientation and performance monitoring
   useEffect(() => {
-    // Check orientation
-    const checkOrientation = () => {
-      setIsPortrait(window.innerHeight > window.innerWidth);
-    };
-
-    // Initial orientation check
-    checkOrientation();
-
-    // Listen for orientation changes
-    window.addEventListener('resize', checkOrientation);
-
-    // Set initial performance mode, but be more conservative
-    setLowPerformanceMode(isMobile && (
-      // Only set low performance for extremely limited devices
-      (navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency <= 2) ||
-      // Or very old browsers
-      /MSIE|Trident/.test(navigator.userAgent)
-    ));
-
     // Pause heavy rendering when hero leaves viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -827,75 +696,15 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
       observer.observe(containerRef.current);
     }
 
-    // Disable horizontal touch interactions but allow vertical scrolling
-    const preventTouchMove = (e: TouchEvent) => {
-      // Don't stop propagation - this prevents scrolling
-      // Instead, add a passive listener that doesn't interfere with scrolling
-      // No action needed here, the passive listener combined with touchAction: 'pan-y' will allow scrolling
-    };
-
-    if (containerRef.current && isMobile) {
-      containerRef.current.addEventListener('touchmove', preventTouchMove, { passive: true });
-    }
-
-    let frameCount = 0;
-    let lastTime = performance.now();
-    let fps = 60;
-    let fpsHistory: number[] = [];
-
-    // More sophisticated FPS tracker
-    const checkFPS = () => {
-      frameCount++;
-      const currentTime = performance.now();
-
-      if (currentTime - lastTime >= 1000) {
-        fps = frameCount;
-        frameCount = 0;
-        lastTime = currentTime;
-
-        // Keep a short history of FPS 
-        fpsHistory.push(fps);
-        if (fpsHistory.length > 5) fpsHistory.shift();
-
-        // Calculate average FPS
-        const avgFps = fpsHistory.reduce((sum, val) => sum + val, 0) / fpsHistory.length;
-
-        // Only switch to low performance mode in extreme cases
-        if (avgFps < 20 && !lowPerformanceMode && fpsHistory.length >= 3) {
-          setLowPerformanceMode(true);
-        } else if (avgFps > 40 && lowPerformanceMode && fpsHistory.length >= 3) {
-          // Switch back if performance improves significantly
-          setLowPerformanceMode(false);
-        }
-
-        // Only disable rendering entirely in extreme cases
-        if (avgFps < 12 && fpsHistory.length >= 3) {
-          setShouldRender(false);
-        }
-      }
-
-      if (shouldRender && isInView) {
-        fpsRafRef.current = requestAnimationFrame(checkFPS);
-      }
-    };
-
-    // Start monitoring FPS
-    if (shouldRender && isInView) {
-      fpsRafRef.current = requestAnimationFrame(checkFPS);
-    }
-
     return () => {
-      if (fpsRafRef.current !== null) {
-        cancelAnimationFrame(fpsRafRef.current);
-        fpsRafRef.current = null;
-      }
-      window.removeEventListener('resize', checkOrientation);
-      if (containerRef.current && isMobile) {
-        containerRef.current.removeEventListener('touchmove', preventTouchMove);
-      }
       observer.disconnect();
     };
-  }, [isMobile, shouldRender, lowPerformanceMode, isInView]);
+  }, [isMobile]);
+
+  const handleContextLost = () => {
+    // The browser restores the canvas when possible; keeping it mounted avoids
+    // throwing away the scene after a temporary mobile GPU interruption.
+  };
 
   return (
     <div
@@ -907,13 +716,12 @@ export default function Scene3D({ isMobile = false }: { isMobile?: boolean }) {
         userSelect: 'none'
       }}
     >
-      {(shouldRender && isInView) ? (
-        (isMobile && lowPerformanceMode) ? <MobileHeroScene /> : <HeroScene />
-      ) : (
-        <div className="w-full h-full flex items-center justify-center bg-transparent">
-          <p className="text-zinc-600">Interactive 3D elements simplified for better performance.</p>
-        </div>
-      )}
+      <HeroScene
+        isMobile={isMobile || lowPerformanceMode}
+        paused={!isInView}
+        onContextLost={handleContextLost}
+        onContextRestored={handleContextLost}
+      />
     </div>
   );
 } 
