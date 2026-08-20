@@ -315,25 +315,27 @@ const AwardsSection = () => {
 
       <AnimatePresence>
         {pdfPreview && (
-          <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-3 backdrop-blur-md sm:p-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget) setPdfPreview(null);
-            }}
-          >
-            <motion.section
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="award-pdf-preview-title"
-              className="flex h-[86dvh] max-h-[900px] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-black shadow-[0_30px_90px_rgba(0,0,0,0.65)]"
-              initial={{ opacity: 0, scale: 0.96, y: 16 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 16 }}
-              transition={{ duration: reduceMotion ? 0 : 0.2, ease: "easeOut" }}
-            >
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close PDF preview"
+              className="fixed inset-0 z-40 cursor-default bg-black/80 backdrop-blur-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setPdfPreview(null)}
+            />
+            <div className="pointer-events-none fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6">
+              <motion.section
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="award-pdf-preview-title"
+                className="pointer-events-auto flex h-[86dvh] max-h-[900px] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-black shadow-[0_30px_90px_rgba(0,0,0,0.65)]"
+                initial={{ opacity: 0, scale: 0.96, y: 16 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 16 }}
+                transition={{ duration: reduceMotion ? 0 : 0.2, ease: "easeOut" }}
+              >
               <div className="flex min-h-14 items-center justify-between gap-4 border-b border-white/10 bg-black px-4 sm:px-5">
                 <h3 id="award-pdf-preview-title" className="min-w-0 truncate text-sm font-semibold text-white sm:text-base">
                   {pdfPreview.title}
@@ -353,8 +355,9 @@ const AwardsSection = () => {
                 title={`${pdfPreview.title} PDF preview`}
                 className="min-h-0 flex-1 bg-white"
               />
-            </motion.section>
-          </motion.div>
+              </motion.section>
+            </div>
+          </>
         )}
       </AnimatePresence>
     </section>
