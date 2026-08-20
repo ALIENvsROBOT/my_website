@@ -162,8 +162,8 @@ const Navbar = () => {
     <motion.header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/94 backdrop-blur-lg shadow-lg border-b border-zinc-300/80'
-          : 'bg-white/82 backdrop-blur-md shadow-sm border-b border-zinc-200/70'
+          ? 'bg-white/78 backdrop-blur-xl shadow-lg border-b border-zinc-300/70'
+          : 'bg-white/68 backdrop-blur-xl shadow-sm border-b border-zinc-200/60'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
