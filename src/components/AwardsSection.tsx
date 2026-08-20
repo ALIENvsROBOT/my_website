@@ -35,7 +35,7 @@ interface AwardTileProps {
   award: AwardEntry;
   index: number;
   isFeatured: boolean;
-  onPreviewPdf: (title: string, href: string, trigger: HTMLButtonElement) => void;
+  onPreviewPdf: (award: AwardEntry, href: string, trigger: HTMLButtonElement) => void;
 }
 
 const AwardTile = ({ award, index, isFeatured, onPreviewPdf }: AwardTileProps) => {
@@ -107,7 +107,7 @@ const AwardTile = ({ award, index, isFeatured, onPreviewPdf }: AwardTileProps) =
     return isPdf ? (
       <motion.button
         type="button"
-        onClick={(event) => onPreviewPdf(award.title, href, event.currentTarget)}
+        onClick={(event) => onPreviewPdf(award, href, event.currentTarget)}
         aria-haspopup="dialog"
         aria-label={`Preview ${award.title} PDF`}
         className="block w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-darkBg"
@@ -149,6 +149,9 @@ const AwardTile = ({ award, index, isFeatured, onPreviewPdf }: AwardTileProps) =
 };
 
 const AwardsSection = () => {
+  const minPdfZoom = 75;
+  const maxPdfZoom = 175;
+  const pdfZoomStep = 25;
   const sectionRef = useRef<HTMLElement | null>(null);
   const closePreviewButtonRef = useRef<HTMLButtonElement | null>(null);
   const previewTriggerRef = useRef<HTMLButtonElement | null>(null);
@@ -156,7 +159,12 @@ const AwardsSection = () => {
   // intersection threshold cannot hide the cards after they are added.
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const [isExpanded, setIsExpanded] = useState(false);
-  const [pdfPreview, setPdfPreview] = useState<{ title: string; href: string } | null>(null);
+  const [pdfPreview, setPdfPreview] = useState<{
+    title: string;
+    href: string;
+    documentPages: AwardEntry["documentPages"];
+  } | null>(null);
+  const [pdfZoom, setPdfZoom] = useState(100);
   const reduceMotion = useReducedMotion();
   const initialAwardCount = 3;
   const sortedAwards = awardsAndRecognitions
@@ -252,9 +260,14 @@ const AwardsSection = () => {
                         award={award}
                         index={index}
                         isFeatured={index === 0}
-                        onPreviewPdf={(title, href, trigger) => {
+                        onPreviewPdf={(selectedAward, href, trigger) => {
                           previewTriggerRef.current = trigger;
-                          setPdfPreview({ title, href });
+                          setPdfZoom(100);
+                          setPdfPreview({
+                            title: selectedAward.title,
+                            href,
+                            documentPages: selectedAward.documentPages,
+                          });
                         }}
                       />
                     </motion.li>
@@ -327,37 +340,108 @@ const AwardsSection = () => {
               exit={{ opacity: 0 }}
               onClick={() => setPdfPreview(null)}
             />
-            <div className="pointer-events-none fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6">
-              <motion.section
+            <div className="pointer-events-none fixed inset-0 z-[100] flex items-start justify-center px-3 pb-3 pt-20 sm:px-6 sm:pb-6 sm:pt-28">
+              <motion.div
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="award-pdf-preview-title"
-                className="pointer-events-auto flex h-[86dvh] max-h-[900px] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-black shadow-[0_30px_90px_rgba(0,0,0,0.65)]"
+                className="pointer-events-auto flex h-[calc(100dvh-5.5rem)] max-h-[920px] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-zinc-300/90 bg-[#f7f7f5] shadow-[0_30px_90px_rgba(0,0,0,0.48)] sm:h-[calc(100dvh-7.5rem)]"
                 initial={{ opacity: 0, scale: 0.96, y: 16 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 16 }}
                 transition={{ duration: reduceMotion ? 0 : 0.2, ease: "easeOut" }}
               >
-              <div className="flex min-h-14 items-center justify-between gap-4 border-b border-white/10 bg-black px-4 sm:px-5">
-                <h3 id="award-pdf-preview-title" className="min-w-0 truncate text-sm font-semibold text-white sm:text-base">
-                  {pdfPreview.title}
-                </h3>
-                <button
-                  ref={closePreviewButtonRef}
-                  type="button"
-                  onClick={() => setPdfPreview(null)}
-                  className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-3 text-sm font-medium text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                >
-                  <span aria-hidden="true">×</span>
-                  Close
-                </button>
-              </div>
-              <iframe
-                src={`${pdfPreview.href}#view=FitH`}
-                title={`${pdfPreview.title} PDF preview`}
-                className="min-h-0 flex-1 bg-white"
-              />
-              </motion.section>
+                <div className="flex min-h-[72px] items-center justify-between gap-3 border-b border-white/10 bg-[#1a1a1c] px-4 py-3 text-white sm:px-6">
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-zinc-400">Document preview</span>
+                    <h3 id="award-pdf-preview-title" className="mt-1 min-w-0 truncate text-sm font-semibold text-white sm:text-base">
+                      {pdfPreview.title}
+                    </h3>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                    {pdfPreview.documentPages?.length ? (
+                      <div className="inline-flex min-h-10 items-center rounded-lg border border-white/20 bg-white/5" role="group" aria-label="Document zoom">
+                        <button
+                          type="button"
+                          onClick={() => setPdfZoom((zoom) => Math.max(minPdfZoom, zoom - pdfZoomStep))}
+                          disabled={pdfZoom <= minPdfZoom}
+                          aria-label="Zoom out"
+                          className="flex h-9 w-9 items-center justify-center rounded-l-lg text-lg text-white transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
+                        >
+                          −
+                        </button>
+                        <span className="min-w-11 border-x border-white/15 px-2 text-center text-xs font-medium tabular-nums text-zinc-200" aria-live="polite">
+                          {pdfZoom}%
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setPdfZoom((zoom) => Math.min(maxPdfZoom, zoom + pdfZoomStep))}
+                          disabled={pdfZoom >= maxPdfZoom}
+                          aria-label="Zoom in"
+                          className="flex h-9 w-9 items-center justify-center rounded-r-lg text-lg text-white transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : null}
+                    <a
+                      href={pdfPreview.href}
+                      download
+                      className="hidden min-h-10 items-center rounded-lg border border-white/20 px-3 text-sm font-medium text-zinc-100 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:inline-flex"
+                    >
+                      Download PDF
+                    </a>
+                    <button
+                      ref={closePreviewButtonRef}
+                      type="button"
+                      onClick={() => setPdfPreview(null)}
+                      className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-3 text-sm font-medium text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    >
+                      <span aria-hidden="true">×</span>
+                      Close
+                    </button>
+                  </div>
+                </div>
+                <div className="min-h-0 flex-1 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.95),rgba(231,231,229,0.9))]">
+                  {pdfPreview.documentPages?.length ? (
+                    <div className="h-full overflow-auto p-3 sm:p-6">
+                      <div className="flex min-w-full justify-center">
+                        <div
+                          className="flex flex-col gap-5 transition-[width] duration-200 ease-out"
+                          style={{ width: `${pdfZoom}%` }}
+                        >
+                        {pdfPreview.documentPages.map((page, pageIndex) => (
+                          <div key={pageIndex} className="overflow-hidden rounded-lg border border-zinc-300 bg-white shadow-[0_16px_34px_rgba(24,24,27,0.18)]">
+                            <Image
+                              src={page}
+                              alt={`${pdfPreview.title}, page ${pageIndex + 1}`}
+                              width={2400}
+                              height={3400}
+                              sizes="(max-width: 1024px) 100vw, 1024px"
+                              className="h-auto w-full"
+                              priority={pageIndex === 0}
+                            />
+                          </div>
+                        ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <iframe
+                      src={`${pdfPreview.href}#view=FitH`}
+                      title={`${pdfPreview.title} PDF preview`}
+                      className="h-full w-full bg-white"
+                    />
+                  )}
+                </div>
+                <div className="flex min-h-10 items-center justify-between border-t border-zinc-200 bg-white/85 px-4 text-xs text-zinc-500 sm:px-6">
+                  <span>{pdfPreview.documentPages?.length ? `${pdfPreview.documentPages.length} page${pdfPreview.documentPages.length === 1 ? "" : "s"}` : "PDF document"}</span>
+                  <a href={pdfPreview.href} download className="font-medium text-zinc-700 underline-offset-4 hover:underline sm:hidden">
+                    Download PDF
+                  </a>
+                  <span className="hidden sm:inline">Press Escape to close</span>
+                </div>
+              </motion.div>
             </div>
           </>
         )}

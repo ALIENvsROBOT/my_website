@@ -27,6 +27,8 @@ export type AwardEntry = {
   description: string;
   image: string | StaticImageData;
   fallbackImage?: string | StaticImageData;
+  /** Rendered pages used by the in-site reader for linked PDF awards. */
+  documentPages?: readonly (string | StaticImageData)[];
   highlight?: string;
   link?: string;
 };
@@ -169,6 +171,7 @@ export const awardsAndRecognitions: AwardEntry[] = [
     year: '2024',
     description: 'Got featured in the news article for the Intuitve User Interface project',
     image: '/reward_images/salzburger_nachrichten_2024.png',
+    documentPages: ['/reward_images/salzburger_nachrichten_2024.png'],
     highlight: 'News article',
     link: '/Docs/Salzburger_Nachrichten.pdf'
   },
