@@ -16,7 +16,19 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
       {
+        userAgent: 'OAI-SearchBot',
+        allow: '/',
+      },
+      {
         userAgent: 'Google-Extended',
+        allow: '/',
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+      },
+      {
+        userAgent: 'bingbot',
         allow: '/',
       },
       {
@@ -24,7 +36,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
       {
-        userAgent: 'anthropic-ai',
+        userAgent: 'ClaudeBot',
         allow: '/',
       },
       {

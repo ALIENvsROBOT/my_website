@@ -141,7 +141,6 @@ export default function RootLayout({
           mainEntityOfPage="https://www.gowthamsridhar.com"
           url="https://www.gowthamsridhar.com"
           affiliation="Austrian Institute of Technology"
-          hIndex={15}
           researchInterests={[
             "Applied AI",
             "Human-Computer Interaction (HCI)",
