@@ -316,7 +316,7 @@ const AwardsSection = () => {
       <AnimatePresence>
         {pdfPreview && (
           <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm md:p-8"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-3 backdrop-blur-md sm:p-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -328,13 +328,13 @@ const AwardsSection = () => {
               role="dialog"
               aria-modal="true"
               aria-labelledby="award-pdf-preview-title"
-              className="flex h-[88dvh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-white/20 bg-zinc-950 shadow-2xl"
+              className="flex h-[86dvh] max-h-[900px] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-black shadow-[0_30px_90px_rgba(0,0,0,0.65)]"
               initial={{ opacity: 0, scale: 0.96, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 16 }}
               transition={{ duration: reduceMotion ? 0 : 0.2, ease: "easeOut" }}
             >
-              <header className="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3 sm:px-6">
+              <div className="flex min-h-14 items-center justify-between gap-4 border-b border-white/10 bg-black px-4 sm:px-5">
                 <h3 id="award-pdf-preview-title" className="min-w-0 truncate text-sm font-semibold text-white sm:text-base">
                   {pdfPreview.title}
                 </h3>
@@ -342,12 +342,12 @@ const AwardsSection = () => {
                   ref={closePreviewButtonRef}
                   type="button"
                   onClick={() => setPdfPreview(null)}
-                  className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md border border-white/20 px-3 text-sm font-medium text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-3 text-sm font-medium text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 >
                   <span aria-hidden="true">×</span>
                   Close
                 </button>
-              </header>
+              </div>
               <iframe
                 src={`${pdfPreview.href}#view=FitH`}
                 title={`${pdfPreview.title} PDF preview`}
