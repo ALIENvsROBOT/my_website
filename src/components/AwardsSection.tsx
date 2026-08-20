@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
@@ -31,7 +31,14 @@ const resolveImageSource = (source: AwardEntry["image"]) => {
   return normalized;
 };
 
-const AwardTile = ({ award, index, isFeatured }: { award: AwardEntry; index: number; isFeatured: boolean }) => {
+interface AwardTileProps {
+  award: AwardEntry;
+  index: number;
+  isFeatured: boolean;
+  onPreviewPdf: (title: string, href: string, trigger: HTMLButtonElement) => void;
+}
+
+const AwardTile = ({ award, index, isFeatured, onPreviewPdf }: AwardTileProps) => {
   const [imageError, setImageError] = useState(false);
   const imageSrc = resolveImageSource(
     imageError && award.fallbackImage ? award.fallbackImage : award.image,
@@ -95,9 +102,21 @@ const AwardTile = ({ award, index, isFeatured }: { award: AwardEntry; index: num
   if (award.link) {
     const isExternal = /^https?:\/\//.test(award.link);
     const href = isExternal ? award.link : award.link.startsWith("/") ? award.link : `/${award.link}`;
-    const isPdf = href.toLowerCase().endsWith(".pdf");
+    const isPdf = href.split(/[?#]/, 1)[0].toLowerCase().endsWith(".pdf");
 
-    return isExternal || isPdf ? (
+    return isPdf ? (
+      <motion.button
+        type="button"
+        onClick={(event) => onPreviewPdf(award.title, href, event.currentTarget)}
+        aria-haspopup="dialog"
+        aria-label={`Preview ${award.title} PDF`}
+        className="block w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-darkBg"
+        whileHover={{ y: -6 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        {tileContent}
+      </motion.button>
+    ) : isExternal ? (
       <motion.a
         href={href}
         target="_blank"
@@ -131,10 +150,13 @@ const AwardTile = ({ award, index, isFeatured }: { award: AwardEntry; index: num
 
 const AwardsSection = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const closePreviewButtonRef = useRef<HTMLButtonElement | null>(null);
+  const previewTriggerRef = useRef<HTMLButtonElement | null>(null);
   // Expanding changes the section height. Reveal only once so that the
   // intersection threshold cannot hide the cards after they are added.
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const [isExpanded, setIsExpanded] = useState(false);
+  const [pdfPreview, setPdfPreview] = useState<{ title: string; href: string } | null>(null);
   const reduceMotion = useReducedMotion();
   const initialAwardCount = 3;
   const sortedAwards = awardsAndRecognitions
@@ -149,6 +171,25 @@ const AwardsSection = () => {
   const handleToggle = () => {
     setIsExpanded((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (!pdfPreview) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setPdfPreview(null);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    closePreviewButtonRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+      previewTriggerRef.current?.focus();
+    };
+  }, [pdfPreview]);
 
   return (
     <section id="awards" className="relative scroll-mt-28 py-20" ref={sectionRef}>
@@ -205,7 +246,15 @@ const AwardsSection = () => {
                       exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -16, scale: 0.98 }}
                       transition={{ duration: reduceMotion ? 0 : 0.35, ease: "easeOut", delay: reduceMotion ? 0 : Math.min(index, 5) * 0.04 }}
                     >
-                      <AwardTile award={award} index={index} isFeatured={index === 0} />
+                      <AwardTile
+                        award={award}
+                        index={index}
+                        isFeatured={index === 0}
+                        onPreviewPdf={(title, href, trigger) => {
+                          previewTriggerRef.current = trigger;
+                          setPdfPreview({ title, href });
+                        }}
+                      />
                     </motion.li>
                   ))}
                   </AnimatePresence>
@@ -263,6 +312,51 @@ const AwardsSection = () => {
           </>
         )}
       </div>
+
+      <AnimatePresence>
+        {pdfPreview && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm md:p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setPdfPreview(null);
+            }}
+          >
+            <motion.section
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="award-pdf-preview-title"
+              className="flex h-[88dvh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-white/20 bg-zinc-950 shadow-2xl"
+              initial={{ opacity: 0, scale: 0.96, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 16 }}
+              transition={{ duration: reduceMotion ? 0 : 0.2, ease: "easeOut" }}
+            >
+              <header className="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3 sm:px-6">
+                <h3 id="award-pdf-preview-title" className="min-w-0 truncate text-sm font-semibold text-white sm:text-base">
+                  {pdfPreview.title}
+                </h3>
+                <button
+                  ref={closePreviewButtonRef}
+                  type="button"
+                  onClick={() => setPdfPreview(null)}
+                  className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md border border-white/20 px-3 text-sm font-medium text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  <span aria-hidden="true">×</span>
+                  Close
+                </button>
+              </header>
+              <iframe
+                src={`${pdfPreview.href}#view=FitH`}
+                title={`${pdfPreview.title} PDF preview`}
+                className="min-h-0 flex-1 bg-white"
+              />
+            </motion.section>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
