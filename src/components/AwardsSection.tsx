@@ -181,11 +181,13 @@ const AwardsSection = () => {
     };
 
     document.body.style.overflow = "hidden";
+    document.body.classList.add("pdf-preview-open");
     window.addEventListener("keydown", handleKeyDown);
     closePreviewButtonRef.current?.focus();
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.body.classList.remove("pdf-preview-open");
       window.removeEventListener("keydown", handleKeyDown);
       previewTriggerRef.current?.focus();
     };
