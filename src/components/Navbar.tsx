@@ -163,7 +163,7 @@ const Navbar = () => {
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled
           ? 'bg-white/94 backdrop-blur-lg shadow-lg border-b border-zinc-300/80'
-          : 'bg-transparent border-b border-transparent'
+          : 'bg-white/82 backdrop-blur-md shadow-sm border-b border-zinc-200/70'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
