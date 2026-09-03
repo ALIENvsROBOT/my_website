@@ -139,7 +139,7 @@ const RedesignedHeroSection = () => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6, duration: 0.8 }}
                 >
-                  Obsessed with HCI and AI, I craft intuitive interfaces powered by smart, ethical intelligence that predict needs, reduce friction, and make complex systems feel effortless. Design + AI = delightful experiences that practically read your mind.
+                  I shape how people and AI work together—turning powerful models into experiences people can understand, trust, and actually use. I bridge HCI and applied AI to build intelligent products that reduce friction, improve decisions, and create real business value.
                 </motion.p>
 
                 {/* CTA Buttons */}
