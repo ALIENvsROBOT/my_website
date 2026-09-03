@@ -3,16 +3,22 @@
 import { motion } from "framer-motion";
 import type { CSSProperties } from "react";
 import type { IconType } from "react-icons";
+import { LuServerCog } from "react-icons/lu";
 import {
+  SiAngular,
   SiArduino,
   SiCplusplus,
   SiDocker,
   SiGit,
   SiHuggingface,
   SiKubernetes,
+  SiLangchain,
+  SiLanggraph,
   SiLinux,
+  SiN8N,
   SiNvidia,
   SiOpencv,
+  SiOpenapiinitiative,
   SiOpenai,
   SiPython,
   SiReact,
@@ -33,7 +39,9 @@ const PRIMARY_ROW: SkillLogo[] = [
   { label: "LLM Inferencing", icon: SiHuggingface },
   { label: "Python", icon: SiPython },
   { label: "TensorFlow", icon: SiTensorflow },
-  { label: "Computer Vision", icon: SiOpencv }
+  { label: "Computer Vision", icon: SiOpencv },
+  { label: "Angular", icon: SiAngular },
+  { label: "vLLM", icon: LuServerCog },
 ];
 
 const SECONDARY_ROW: SkillLogo[] = [
@@ -43,6 +51,8 @@ const SECONDARY_ROW: SkillLogo[] = [
   { label: "Robotics", icon: SiArduino },
   { label: "HW Interfaces", icon: SiRaspberrypi },
   { label: "Git", icon: SiGit },
+  { label: "n8n", icon: SiN8N },
+  { label: "API Development", icon: SiOpenapiinitiative },
 ];
 
 const TERTIARY_ROW: SkillLogo[] = [
@@ -52,6 +62,8 @@ const TERTIARY_ROW: SkillLogo[] = [
   { label: "React", icon: SiReact },
   { label: "Docker", icon: SiDocker },
   { label: "Kubernetes", icon: SiKubernetes },
+  { label: "LangChain", icon: SiLangchain },
+  { label: "LangGraph", icon: SiLanggraph },
 ];
 
 const Row = ({ skills, reverse = false, duration = 34 }: { skills: SkillLogo[]; reverse?: boolean; duration?: number }) => {
