@@ -822,6 +822,22 @@ a, button, [role="button"], input, select, textarea {
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
 
+/* Hero scene: crossfade for the morphing domain caption */
+@keyframes captionSwap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.caption-swap {
+  animation: captionSwap 0.5s ease both;
+}
+
 /* Disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion) {
   * {
