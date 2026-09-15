@@ -13,6 +13,19 @@
 
 export const projects: Project[] = [
   {
+    id: 15,
+    title: 'WISPER – AI-Based Language Support for Kindergarten Children',
+    description: 'WISPER (Wiener Spracherfahrung) is a child-friendly, AI-based language learning experience developed by the AIT Center for Technology Experience with MA 10 – Stadt Wien Kindergärten. Children use a playful telephone interface to create adaptive stories at their own pace; WISPER understands multiple languages, responds in German, and prints a picture from each story.',
+    image: '/Project_images/WISPER_2026.jpg',
+    fallbackImage: 'https://placehold.co/600x350/3d4463/ffffff?text=WISPER',
+    technologies: ['Applied AI', 'Speech Technology', 'User-Centered Design', 'Multilingual Interaction', 'UX Research'],
+    link: 'https://www.ait.ac.at/themen/experience-measurement/projecte/wisper',
+    date: 'March 2025 – August 2026',
+    datePublished: '2025-03-01',
+    featured: true
+  },
+
+  {
     id: 14,
     title: 'qwen3.8-27b-agentic-nvfp4',
     description: 'An NVFP4 checkpoint of Qwen3.8-27B for agentic and multimodal applications, combining text, image, and video understanding with configurable reasoning, structured tool calling, and up to 262,144 tokens of native context.',
