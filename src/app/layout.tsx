@@ -178,6 +178,7 @@ export default function RootLayout({
             { name: "ACM SIGCHI", url: "https://sigchi.org/" }
           ]}
           awards={[
+            "eAward 2026 Winner: WISPER – Wiener Spracherfahrung",
             "eAward 2025: Best digitalization projects",
             "Schmiede 2024 Hallein Salzburg Feature",
             "Best Paper Award IVC RAISE 2020"

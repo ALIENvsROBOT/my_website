@@ -157,6 +157,15 @@ export const educationEntries: EducationEntry[] = [
 
 export const awardsAndRecognitions: AwardEntry[] = [
   {
+    title: 'eAward 2026 Winner: WISPER – Wiener Spracherfahrung',
+    issuer: 'Report Verlag',
+    year: '2026',
+    description: 'WISPER, developed by Stadt Wien – Kindergärten and the AIT Center for Technology Experience, won the eAward 2026 in the Education and Social Affairs category. The AI-based, child-friendly language learning experience helps children aged three to six develop stories at their own pace while learning German.',
+    image: '/reward_images/E-Award_2026-cropped.jpg',
+    highlight: 'Category winner',
+    link: 'https://www.report.at/tech/eaward-2026-einsatz-von-technologie-hoher-nutzen-fuer-die-menschen#:~:text=Projekt%3A%20WISPER%20%E2%80%93%20Wiener%20Spracherfahrung'
+  },
+  {
     title: 'eAward 2025: Best digitalization projects from business and administration awarded',
     issuer: 'report.at',
     year: '2025',
