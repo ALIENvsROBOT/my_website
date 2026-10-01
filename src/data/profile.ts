@@ -130,13 +130,6 @@ export const experienceEntries: ExperienceEntry[] = [
     period: '2022 - 2023',
     location: 'Salzburg, Austria',
     description: 'Improved navigation systems, delivered AruCo marker detection, implemented collision avoidance for a Panda robotic arm, and created voice-controlled robot manipulation solutions.'
-  },
-  {
-    title: 'Intern',
-    company: 'E-Yantra (IIT Bombay)',
-    period: '2021',
-    location: 'Mumbai, India',
-    description: 'Developed robot soccer automation with object tracking, image processing, navigation, multi-robot communication, path planning, and localization algorithms.'
   }
 ];
 
