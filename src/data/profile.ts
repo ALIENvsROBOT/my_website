@@ -122,7 +122,7 @@ export const experienceEntries: ExperienceEntry[] = [
     company: 'AIT - Center for Technology Experience',
     period: '2023 - Present',
     location: 'Vienna, Austria',
-    description: 'Prototyping XR applications, creating innovative real-world interactions with technology, researching interfaces beyond screens, and developing tangible user interfaces with hardware prototyping.'
+    description: 'Designing and developing human-centered AI experiences, including WISPER, an AI-powered language-support experience for young children with natural, adaptive, and age-appropriate voice interactions. Architecting multi-agent workflows with LangGraph, n8n, and Model Context Protocol (MCP), connecting self-hosted LLMs to tools and services for autonomous and human-in-the-loop tasks. Developing multimodal AI agents that combine vision, Llama-based models, Whisper Large V3 speech recognition, and neural text-to-speech. Designing and deploying privacy-sensitive, data-resident AI infrastructure with vLLM, Ollama, SearXNG, and Docker/Podman, while optimizing model deployment, LLM inference, and GPU infrastructure for interactive applications and internal AI services.'
   },
   {
     title: 'Junior Researcher',
