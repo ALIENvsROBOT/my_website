@@ -70,6 +70,8 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_key
 
 ## 🚀 Deployment Workflow
 
+In GitHub **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**. Do not publish the raw `main` branch root: it does not contain the built `out` site and can compete with the deployment workflow. This setting was corrected for the live repository on October 6, 2026.
+
 The project uses a custom GitHub Action located in `.github/workflows/deploy.yml`. It handles:
 1. Installing dependencies with `--legacy-peer-deps`.
 2. Injecting secrets into the static build.
