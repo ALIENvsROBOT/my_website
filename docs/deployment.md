@@ -20,13 +20,25 @@ To ensure the live site functions correctly, you must add the following **Secret
 
 ## 📊 Analytics Setup (PostHog)
 
-This project uses **PostHog** for consent-based product analytics. It does not enable autocapture, heatmaps, or session replay.
+This project uses **PostHog** for consent-based Web Analytics and product events, link/button click autocapture, heatmaps, and masked session replay. It keeps existing custom events for contact and project insights.
 
 1. **Account**: Create a free account at [PostHog](https://posthog.com/).
-2. **Consent**: Analytics starts only after a visitor selects **Accept analytics**; a visitor can reject or later revoke the preference from `/privacy`.
+2. **Consent**: PostHog starts only after **Accept analytics**; visitors can reject or later revoke the preference from `/privacy`. Previous acceptance requires a new choice because replay and heatmaps have been added. Do Not Track is respected.
 3. **Data Residency**: Set `POSTHOG_HOST` to your project region. No default host is used, so a missing host disables analytics instead of silently sending data to the wrong region.
 4. **IP policy**: In PostHog, set **Settings → Project → General → IP data capture** to **Discard IP addresses**. This cannot be controlled by the static site build.
 5. **Schema**: See [analytics.md](./analytics.md) for the complete event/property contract and data boundaries.
+
+The deployment maps your existing `POSTHOG_KEY` secret to `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`; no secret rename is needed. It validates the token format and host before building, without logging either value. Known EU/US dashboard host origins are converted to their ingestion origins by the client; use the ingestion host directly in settings. A missing host or invalid token now fails deployment instead of publishing a site with disabled analytics.
+
+### Verify after deploying
+
+1. In PostHog, enable **Session Replay** and use account sampling/minimum duration controls to stay within the free allowance. Keep IP data capture set to **Discard IP addresses**.
+2. Open the live site in a fresh browser with tracking extensions disabled and Do Not Track off, then select **Accept analytics**. Navigate to another page and click a project link.
+3. In PostHog **Activity**, check for `$pageview`, `page_viewed`, and click events in the last hour. Web Analytics uses `$pageview`; old custom-only pageviews do not populate it.
+4. In browser Network tools, check event delivery to the configured ingestion host. A `200` response can still report `quota_limited`; check Billing & usage if data does not appear. Never share request payloads containing the project token.
+5. Reject analytics at `/privacy`, then navigate again. No new capture or recording should occur. If requests are blocked by a browser extension, consider [PostHog's managed proxy](https://posthog.com/docs/advanced/proxy) and use its supplied host in `POSTHOG_HOST`; GitHub Pages cannot run a Next.js server rewrite.
+
+GitHub Secrets are build-time settings for this static site. Changes to them require a new deployment. The SDK uses a public project token; never put a PostHog personal API key in a `NEXT_PUBLIC_` variable. Sources: [Next.js setup](https://posthog.com/docs/libraries/next-js), [API response/quota behavior](https://posthog.com/docs/api), [pricing and free allowances](https://posthog.com/pricing).
 
 ---
 
@@ -62,4 +74,4 @@ The project uses a custom GitHub Action located in `.github/workflows/deploy.yml
 1. Installing dependencies with `--legacy-peer-deps`.
 2. Injecting secrets into the static build.
 3. Exporting the project as a static site (`/out` folder).
-4. Deploying to the `gh-pages` branch.
+4. Deploying the exported artifact with GitHub Pages Actions.

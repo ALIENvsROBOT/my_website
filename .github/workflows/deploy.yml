@@ -39,8 +39,13 @@ jobs:
       - name: Type-check
         run: npx tsc --noEmit
 
+      - name: Check analytics behavior
+        run: node --test tests/analytics.test.cjs
+
       - name: Build with Next.js
-        run: npm run build
+        run: |
+          node scripts/validate-posthog-config.mjs
+          npm run build
         env:
           # For custom domain, we don't need a base path
           NEXT_PUBLIC_BASE_PATH: ""
@@ -48,7 +53,7 @@ jobs:
           NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
           NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
           NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
-          NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: ${{ secrets.POSTHOG_KEY }}
           NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.POSTHOG_HOST || vars.POSTHOG_HOST }}
           NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ secrets.GOOGLE_SITE_VERIFICATION }}
 

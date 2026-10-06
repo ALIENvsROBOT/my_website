@@ -3,7 +3,7 @@
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { onCLS, onINP, onLCP } from 'web-vitals'
 import {
 	ANALYTICS_CONSENT_EVENT,
@@ -17,24 +17,28 @@ let posthogInitiated = false
 
 const POSTHOG_DEFAULTS_DATE = '2026-05-30'
 const SENSITIVE_PROPERTY_NAMES = new Set([
-	'$current_url',
-	'$referrer',
-	'$referring_domain',
 	'$elements',
 	'$elements_chain',
-	'$event_type',
+	'$el_text',
 ])
 
 function getPostHogConfig() {
 	const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN?.trim()
-		?? process.env.NEXT_PUBLIC_POSTHOG_KEY?.trim()
+		|| process.env.NEXT_PUBLIC_POSTHOG_KEY?.trim()
 	const host = process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim()
 
 	if (!token || !host) return null
 
 	try {
 		const url = new URL(host)
-		if (url.protocol !== 'https:') return null
+		if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash) return null
+		const ingestionHosts: Record<string, string> = {
+			'eu.posthog.com': 'eu.i.posthog.com',
+			'us.posthog.com': 'us.i.posthog.com',
+			'app.posthog.com': 'us.i.posthog.com',
+		}
+		if (ingestionHosts[url.hostname] && url.pathname !== '/') return null
+		url.hostname = ingestionHosts[url.hostname] || url.hostname
 		return { token, host: url.origin + url.pathname.replace(/\/$/, '') }
 	} catch {
 		return null
@@ -74,20 +78,29 @@ function getCampaignProperties(search: string) {
 }
 
 function capture(event: string, properties: AnalyticsProperties) {
-	if (posthogInitiated && posthog.has_opted_in_capturing()) {
+	if (getAnalyticsConsent() === 'granted' && posthogInitiated && !posthog.has_opted_out_capturing()) {
 		posthog.capture(event, properties)
 	}
 }
 
+function sanitizeUrl(value: unknown, referrer = false) {
+	if (typeof value !== 'string' || !value) return ''
+	try {
+		const url = new URL(value)
+		if (url.protocol !== 'https:' && url.protocol !== 'http:') return ''
+		return referrer ? url.origin : url.origin + url.pathname
+	} catch {
+		return ''
+	}
+}
+
 function initializePostHog() {
-	if (typeof window === 'undefined') return false
+	if (typeof window === 'undefined' || getAnalyticsConsent() !== 'granted') return false
 	if (posthogInitiated) return true
 
 	const config = getPostHogConfig()
 	if (!config) {
-		if (process.env.NODE_ENV !== 'production') {
-			console.warn('[Analytics] PostHog is disabled: configure NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN and NEXT_PUBLIC_POSTHOG_HOST.')
-		}
+		console.warn('[Analytics] PostHog is disabled: configure the project token and HTTPS ingestion host at build time.')
 		return false
 	}
 
@@ -95,21 +108,54 @@ function initializePostHog() {
 		api_host: config.host,
 		defaults: POSTHOG_DEFAULTS_DATE,
 		opt_out_capturing_by_default: true,
+		opt_out_persistence_by_default: true,
 		respect_dnt: true,
 		capture_pageview: false,
-		capture_pageleave: false,
-		capture_performance: false,
-		autocapture: false,
-		disable_session_recording: true,
+		capture_pageleave: true,
+		capture_performance: { web_vitals: true, network_timing: false },
+		autocapture: {
+			dom_event_allowlist: ['click'],
+			element_allowlist: ['a', 'button'],
+			capture_copied_text: false,
+		},
+		mask_all_text: true,
+		mask_all_element_attributes: true,
+		capture_heatmaps: { flush_interval_milliseconds: 5000 },
+		disable_session_recording: false,
+		enable_recording_console_log: false,
+		session_recording: {
+			maskAllInputs: true,
+			blockSelector: 'form, [contenteditable="true"], .ph-no-capture',
+			recordHeaders: false,
+			recordBody: false,
+			captureCanvas: { recordCanvas: false },
+		},
+		capture_exceptions: false,
+		disable_surveys: true,
+		save_campaign_params: false,
+		save_referrer: false,
+		debug: false,
 		person_profiles: 'identified_only',
 		property_denylist: Array.from(SENSITIVE_PROPERTY_NAMES),
-		sanitize_properties: (properties) => Object.fromEntries(
-			Object.entries(properties).filter(([key]) => !SENSITIVE_PROPERTY_NAMES.has(key)),
-		),
+		before_send: (event) => {
+			if (!event || getAnalyticsConsent() !== 'granted') return null
+			// Keep PostHog's dashboard properties while removing query strings and fragments.
+			for (const properties of [event.properties, event.$set_once, event.$set]) {
+				if (!properties) continue
+				for (const key of ['$current_url', '$initial_current_url', '$session_entry_url', '$session_exit_url']) {
+					if (key in properties) properties[key] = sanitizeUrl(properties[key])
+				}
+				for (const key of ['$referrer', '$initial_referrer']) {
+					if (key in properties) properties[key] = sanitizeUrl(properties[key], true)
+				}
+			}
+			for (const key of Array.from(SENSITIVE_PROPERTY_NAMES)) delete event.properties[key]
+			return event
+		},
 	})
 
-	posthogInitiated = true
-	return true
+	posthogInitiated = posthog.__loaded
+	return posthogInitiated
 }
 
 function PostHogAnalytics(): null {
@@ -118,9 +164,10 @@ function PostHogAnalytics(): null {
 	const [consent, setConsent] = useState<AnalyticsConsent>(null)
 	const pagePath = getPagePath(pathname)
 	const search = searchParams?.toString() ?? ''
+	const lastPageview = useRef<string | null>(null)
+	const vitalsStarted = useRef(false)
 
 	useEffect(() => {
-		initializePostHog()
 		setConsent(getAnalyticsConsent())
 
 		const handleConsentChange = (event: Event) => {
@@ -128,7 +175,9 @@ function PostHogAnalytics(): null {
 			setConsent(nextConsent)
 
 			if (nextConsent === 'denied' && posthogInitiated) {
+				posthog.stopSessionRecording()
 				posthog.opt_out_capturing()
+				lastPageview.current = null
 			}
 		}
 
@@ -146,20 +195,28 @@ function PostHogAnalytics(): null {
 	}, [])
 
 	useEffect(() => {
-		if (consent === 'granted' && posthogInitiated) {
-			posthog.opt_in_capturing()
+		if (consent === 'granted' && initializePostHog()) {
+			posthog.opt_in_capturing({ captureEventName: false })
 		}
 	}, [consent])
 
 	useEffect(() => {
 		if (consent !== 'granted' || !posthogInitiated) return
 
-		capture('page_viewed', {
+		const pageviewKey = `${pagePath}?${search}`
+		if (lastPageview.current === pageviewKey) return
+		lastPageview.current = pageviewKey
+		const properties = {
 			page_path: pagePath,
 			page_title: document.title.slice(0, 160),
 			referrer_domain: getReferrerDomain(),
+			$referrer: sanitizeUrl(document.referrer, true),
+			$referring_domain: document.referrer ? getReferrerDomain() : '$direct',
 			...getCampaignProperties(search),
-		})
+		}
+		capture('$pageview', properties)
+		// Preserve existing custom insights while enabling the built-in Web Analytics dashboard.
+		capture('page_viewed', properties)
 	}, [consent, pagePath, search])
 
 	useEffect(() => {
@@ -317,13 +374,14 @@ function PostHogAnalytics(): null {
 	}, [consent, pagePath])
 
 	useEffect(() => {
-		if (consent !== 'granted' || !posthogInitiated) return
+		if (consent !== 'granted' || !posthogInitiated || vitalsStarted.current) return
+		vitalsStarted.current = true
 
 		const captureVital = (metric: { name: string; value: number; rating: string }) => {
 			capture('web_vital_measured', {
 				page_path: window.location.pathname,
 				metric_name: metric.name,
-				metric_value: Math.round(metric.value),
+				metric_value: Math.round(metric.value * 1000) / 1000,
 				metric_rating: metric.rating,
 			})
 		}

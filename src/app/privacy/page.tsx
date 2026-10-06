@@ -50,7 +50,7 @@ export default function PrivacyPolicy() {
 							As an HCI (Human-Computer Interaction) researcher, I value digital ethics and data transparency. This policy outlines how information is handled when you interact with this professional portfolio. To understand how visitors interact with my research and 3D demonstrations, I use <strong>PostHog</strong>, an open-source, privacy-focused analytics platform.
 						</p>
 						<p>
-							Optional analytics begins only if you explicitly accept it. It records page paths, referrer domains, safe campaign labels, engagement time, scroll depth, outbound-link destinations, downloads, copy interaction length, Web Vitals, and anonymized error counts. It does not use session replay, heatmaps, autocapture, form values, copied text, full URLs, arbitrary URL query strings, or user identification. The configured PostHog region determines where analytics data is processed.
+							Optional analytics begins only if you explicitly accept it. It records page visits, referrer domains, safe campaign labels, engagement time, scroll depth, link and button clicks, downloads, copy interaction length, Web Vitals, and error counts without error content. Heatmaps show click positions. Session replays record the visible page and interactions, with all input values masked and forms excluded. Console logs, network headers and bodies, and canvas contents are not recorded. Analytics event URLs exclude query strings and fragments. Replay may include the page address and visible public text, so avoid putting personal information in URLs. PostHog uses browser storage to recognise returning browsers after consent; I do not identify visitors by name or email. You can reject or revoke analytics below. Do Not Track is respected. The configured PostHog region determines where analytics data is processed.
 						</p>
 						<section className="rounded-xl border border-zinc-400/30 bg-white/30 p-5">
 							<h2 className="text-lg font-semibold text-zinc-900">Analytics preference</h2>
@@ -69,7 +69,7 @@ export default function PrivacyPolicy() {
 
 						{/* Manual timestamp for static export accuracy */}
 						<div className="pt-10 border-t border-zinc-400/30 text-xs text-zinc-500 font-mono tracking-wider uppercase">
-							Last Updated: February 03, 2026
+							Last Updated: October 06, 2026
 						</div>
 					</div>
 				</motion.div>

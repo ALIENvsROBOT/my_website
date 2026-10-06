@@ -2,7 +2,8 @@
 
 export type AnalyticsConsent = 'granted' | 'denied' | null
 
-export const ANALYTICS_CONSENT_KEY = 'analytics-consent:v1'
+// Replay and heatmaps need a new choice from visitors who accepted the older policy.
+export const ANALYTICS_CONSENT_KEY = 'analytics-consent:v2'
 export const ANALYTICS_CONSENT_EVENT = 'analytics-consent-changed'
 export const ANALYTICS_TRACK_EVENT = 'analytics-track'
 
@@ -11,7 +12,8 @@ export type AnalyticsProperties = Record<string, string | number | boolean>
 export function getAnalyticsConsent(): AnalyticsConsent {
 	try {
 		const consent = window.localStorage.getItem(ANALYTICS_CONSENT_KEY)
-		return consent === 'granted' || consent === 'denied' ? consent : null
+		if (consent === 'granted' || consent === 'denied') return consent
+		return window.localStorage.getItem('analytics-consent:v1') === 'denied' ? 'denied' : null
 	} catch {
 		return null
 	}
