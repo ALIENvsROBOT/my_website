@@ -2,7 +2,7 @@
 
 export type AnalyticsConsent = 'granted' | 'denied' | null
 
-// Replay and heatmaps need a new choice from visitors who accepted the older policy.
+// Heatmaps need a new choice from visitors who accepted the older policy.
 export const ANALYTICS_CONSENT_KEY = 'analytics-consent:v2'
 export const ANALYTICS_CONSENT_EVENT = 'analytics-consent-changed'
 export const ANALYTICS_TRACK_EVENT = 'analytics-track'

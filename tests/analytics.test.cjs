@@ -116,17 +116,13 @@ test('SDK initial metadata cannot leak the original query string', () => {
 	assert.equal(result.$set_once.$referrer, 'https://referrer.com')
 })
 
-test('replay, heatmaps and native metrics are enabled with form/network masking', () => {
+test('recording stays disabled while heatmaps and native metrics remain enabled', () => {
 	const state = setup({ 'analytics-consent:v2': 'granted' })
 	state.api.initializePostHog()
 	const config = state.sdk.config
-	assert.equal(config.disable_session_recording, false)
+	assert.equal(config.disable_session_recording, true)
 	assert.equal(config.capture_heatmaps.flush_interval_milliseconds, 5000)
-	assert.equal(config.session_recording.maskAllInputs, true)
-	assert.ok(config.session_recording.blockSelector.includes('form'))
-	assert.equal(config.session_recording.recordHeaders, false)
-	assert.equal(config.session_recording.recordBody, false)
-	assert.equal(config.enable_recording_console_log, false)
+	assert.equal(config.session_recording, undefined)
 	assert.equal(config.capture_performance.web_vitals, true)
 	assert.equal(config.respect_dnt, true)
 })

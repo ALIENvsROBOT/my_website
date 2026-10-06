@@ -20,10 +20,10 @@ To ensure the live site functions correctly, you must add the following **Secret
 
 ## 📊 Analytics Setup (PostHog)
 
-This project uses **PostHog** for consent-based Web Analytics and product events, link/button click autocapture, heatmaps, and masked session replay. It keeps existing custom events for contact and project insights.
+This project uses **PostHog** for consent-based Web Analytics and product events, link/button click autocapture, and heatmaps. Session recording is disabled. It keeps existing custom events for contact and project insights.
 
 1. **Account**: Create a free account at [PostHog](https://posthog.com/).
-2. **Consent**: PostHog starts only after **Accept analytics**; visitors can reject or later revoke the preference from `/privacy`. Previous acceptance requires a new choice because replay and heatmaps have been added. Do Not Track is respected.
+2. **Consent**: PostHog starts only after **Accept analytics**; visitors can reject or later revoke the preference from `/privacy`. Previous acceptance requires a new choice because heatmaps have been added. Do Not Track is respected.
 3. **Data Residency**: Set `POSTHOG_HOST` to your project region. No default host is used, so a missing host disables analytics instead of silently sending data to the wrong region.
 4. **IP policy**: In PostHog, set **Settings → Project → General → IP data capture** to **Discard IP addresses**. This cannot be controlled by the static site build.
 5. **Schema**: See [analytics.md](./analytics.md) for the complete event/property contract and data boundaries.
@@ -32,7 +32,7 @@ The deployment maps your existing `POSTHOG_KEY` secret to `NEXT_PUBLIC_POSTHOG_P
 
 ### Verify after deploying
 
-1. In PostHog, enable **Session Replay** and use account sampling/minimum duration controls to stay within the free allowance. Keep IP data capture set to **Discard IP addresses**.
+1. In PostHog, keep **Record user sessions** off and check **Billing & usage** for the free-plan allowance. Keep IP data capture set to **Discard IP addresses**.
 2. Open the live site in a fresh browser with tracking extensions disabled and Do Not Track off, then select **Accept analytics**. Navigate to another page and click a project link.
 3. In PostHog **Activity**, check for `$pageview`, `page_viewed`, and click events in the last hour. Web Analytics uses `$pageview`; old custom-only pageviews do not populate it.
 4. In browser Network tools, check event delivery to the configured ingestion host. A `200` response can still report `quota_limited`; check Billing & usage if data does not appear. Never share request payloads containing the project token.

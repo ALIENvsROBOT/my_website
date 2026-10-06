@@ -57,7 +57,7 @@ const PrivacyNotice = () => {
 							</div>
 							<div>
 								<p className="text-[11px] text-lightText/90 leading-tight">
-									May I use optional analytics, heatmaps, and session replays to understand visits and improve this site? Form contents are hidden from recordings. View my
+									May I use optional analytics and click heatmaps to understand visits and improve this site? Session recording is disabled. View my
 									<Link href="/privacy" className="text-secondary hover:underline mx-1">Privacy Policy</Link>
 									for details.
 								</p>

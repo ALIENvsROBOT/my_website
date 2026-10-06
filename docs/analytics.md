@@ -1,10 +1,10 @@
 # Analytics event schema
 
-Analytics is optional. PostHog initializes only after a visitor selects **Accept analytics**, then opts that browser in. The `analytics-consent:v2` preference covers analytics, replay, and heatmaps. Visitors who accepted the previous policy must choose again; previous rejections remain respected. Do Not Track blocks capture even after acceptance.
+Analytics is optional. PostHog initializes only after a visitor selects **Accept analytics**, then opts that browser in. The `analytics-consent:v2` preference covers analytics and heatmaps. Visitors who accepted the previous policy must choose again; previous rejections remain respected. Do Not Track blocks capture even after acceptance.
 
 ## Data boundaries
 
-- After consent, Web Analytics, click heatmaps, masked session replay, and link/button click autocapture are enabled. Forms and editable content are blocked in replay; all input values are masked. Console logs, network headers/bodies, and canvas recording are disabled. Replay can contain the page address and visible public text; do not put personal information in URLs.
+- After consent, Web Analytics, click heatmaps, and link/button click autocapture are enabled. Session recording is disabled in both the SDK and project settings: portfolio trends and contact funnels provide the needed information without recordings. Console logs, network headers/bodies, and canvas contents are not recorded.
 - Analytics event URL properties retain only origin and path. Referrer URLs retain only origin. Element text and attributes are masked, and element trees are dropped before events are sent. No form values, selected text, or visitor names/emails are intentionally collected. Only URL-safe `utm_source`, `utm_medium`, and `utm_campaign` labels are added by the application.
 - The PostHog host is required. Use `https://eu.i.posthog.com` for EU data residency; the application will not silently fall back to the US host.
 - Visitors can decline on the banner or change/revoke their choice on the Privacy Policy page. Revocation opts the browser out of all subsequent PostHog capture.
@@ -16,7 +16,7 @@ Analytics is optional. PostHog initializes only after a visitor selects **Accept
 | --- | --- | --- |
 | `$pageview` | Populate the built-in Web Analytics dashboard and page paths. | Sanitized `$current_url`, SDK device/session properties, `page_path`, `page_title`, `referrer_domain`, optional UTM source/medium/campaign |
 | `page_viewed` | Preserve existing custom pageview insights. | Same safe application properties as `$pageview` |
-| `$pageleave`, `$autocapture`, `$web_vitals`, `$$heatmap`, `$snapshot` | Native page duration/scroll, link/button clicks, performance, heatmaps, and masked replay. | SDK-managed properties, with the boundaries above; `$$heatmap` carries `$heatmap_data`; replay depends on project recording settings. |
+| `$pageleave`, `$autocapture`, `$web_vitals`, `$$heatmap` | Native page duration/scroll, link/button clicks, performance, and heatmaps. | SDK-managed properties, with the boundaries above; `$$heatmap` carries `$heatmap_data`. |
 | `section_viewed` | Measure which named content sections are actually read. | `page_path`, `section_id` |
 | `page_engagement_completed` | Measure meaningful time and scroll depth per page. | `page_path`, `engaged_seconds`, `max_scroll_depth_percent`, `exit_reason` |
 | `internal_navigation_clicked` | Understand navigation journeys within the portfolio. | `page_path`, `section_id`, `link_id`, `destination_path` |
@@ -38,7 +38,7 @@ Native SDK events include browser, device, and session metadata. Standard URL pr
 2. **Contact funnel**: `$pageview` → `contact_form_started` → `contact_form_submit_attempted` → `contact_form_submit_succeeded`. Use `contact_form_validation_failed` and `contact_form_submit_failed` to investigate failures.
 3. **Project interest**: trends for `project_card_toggled`, `project_list_toggled`, and `outbound_link_clicked`, broken down by their project/link properties.
 4. **Engagement and reliability**: `section_viewed`, `page_engagement_completed`, `file_download_clicked`, `web_vital_measured`, and `frontend_error_observed`. Error events count failures without exposing error messages.
-5. **Replay and heatmaps**: enable recording in PostHog project settings and choose sampling/minimum duration there. The code leaves sampling under account control. Avoid long idle/animation-heavy recordings if replay usage grows.
+5. **Click heatmaps**: inspect where visitors click on key portfolio pages. Keep **Record user sessions** off; heatmaps work independently of replay.
 
 As checked on October 6, 2026, the free plan includes **1 million analytics events** and **5,000 recordings per month**. It drops additional data after a product reaches its free allowance; allowances reset monthly. Check Billing & usage and leave the account on the no-card free plan for a hard spending boundary. The application cannot enforce an account-wide monthly quota. Historical missing events cannot be reconstructed.
 
