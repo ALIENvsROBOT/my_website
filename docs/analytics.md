@@ -36,6 +36,8 @@ Pageviews update profile properties without sending additional `$set` events: `l
 
 In **Settings → Product analytics**, enable **Person last seen tracking**, then use **People → Configure columns → Last seen** and sort newest first. This project setting was enabled on October 6, 2026. The built-in Last seen value updates hourly; use Activity for exact event timestamps. Old visitors appear when they return and consent; missing historical person properties cannot be reconstructed.
 
+Event timestamps use the SDK's UTC timestamps unchanged. The project's **Settings → Customization → Date & time** reporting timezone is **Europe/Vienna**, set on October 6, 2026. This IANA timezone handles CET/CEST automatically; do not replace it with a fixed UTC offset. UTC preserves the order of visits during the repeated autumn hour. Daily report buckets follow Vienna local time and can span 23 or 25 hours on clock-change days. A private **Latest visitors** People view is saved with Last seen sorted newest first.
+
 ## Useful free-plan views
 
 1. **Web Analytics**: visitors, pageviews, top paths, sources/UTMs, devices, and performance. Set `contact_form_submit_succeeded` as a conversion goal.
@@ -46,4 +48,4 @@ In **Settings → Product analytics**, enable **Person last seen tracking**, the
 
 As checked on October 6, 2026, the free plan includes **1 million analytics events** and **5,000 recordings per month**. The first million events are free whether or not they process person profiles; after that, events with profiles cost more on paid plans. Replay remains disabled. The no-card free plan drops additional data after a product reaches its allowance; allowances reset monthly. Check Billing & usage and leave the account on the no-card free plan for a hard spending boundary. The application cannot enforce an account-wide monthly quota. Historical missing events cannot be reconstructed.
 
-Sources: [Web Analytics setup](https://posthog.com/docs/web-analytics/start-here), [dashboard requirements](https://posthog.com/docs/web-analytics/dashboard), [Next.js integration](https://posthog.com/docs/libraries/next-js), [People and Last seen](https://posthog.com/docs/data/persons), [profiles and free allowance](https://posthog.com/docs/data/anonymous-vs-identified-events), [pricing](https://posthog.com/pricing).
+Sources: [Web Analytics setup](https://posthog.com/docs/web-analytics/start-here), [dashboard requirements and timezone](https://posthog.com/docs/web-analytics/dashboard), [Next.js integration](https://posthog.com/docs/libraries/next-js), [People and Last seen](https://posthog.com/docs/data/persons), [profiles and free allowance](https://posthog.com/docs/data/anonymous-vs-identified-events), [pricing](https://posthog.com/pricing).
