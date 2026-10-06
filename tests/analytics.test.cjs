@@ -116,6 +116,44 @@ test('SDK initial metadata cannot leak the original query string', () => {
 	assert.equal(result.$set_once.$referrer, 'https://referrer.com')
 })
 
+test('consenting visitors get People profiles without extra profile events', () => {
+	const state = setup({ 'analytics-consent:v2': 'granted' })
+	state.api.initializePostHog()
+	assert.equal(state.sdk.config.person_profiles, 'always')
+	state.optIn()
+	state.api.capture('$pageview', {
+		page_path: '/projects', referrer_domain: 'example.com',
+		$browser: 'Firefox', $os: 'Windows', $device_type: 'Desktop',
+		utm_source: 'linkedin', utm_medium: 'social', utm_campaign: 'portfolio',
+	})
+	assert.equal(state.captured.length, 1)
+	const event = state.captured[0]
+	assert.equal(event.$set.last_page_path, '/projects')
+	assert.equal(event.$set.$browser, 'Firefox')
+	assert.equal(event.$set.$os, 'Windows')
+	assert.equal(event.$set.$device_type, 'Desktop')
+	assert.equal(event.$set.utm_source, 'linkedin')
+	assert.equal(event.$set_once.first_page_path, '/projects')
+	assert.equal(event.$set_once.first_referrer_domain, 'example.com')
+	assert.equal(event.$set_once.$initial_utm_campaign, 'portfolio')
+})
+
+test('profile enrichment rejects unsafe campaigns and preserves sanitized SDK metadata', () => {
+	const state = setup({ 'analytics-consent:v2': 'granted' })
+	state.api.initializePostHog()
+	const event = state.sdk.config.before_send({
+		event: '$pageview',
+		properties: { page_path: '/', referrer_domain: 'direct', utm_source: 'private@email.com' },
+		$set: { $current_url: 'https://example.com/?email=private' },
+		$set_once: { $initial_current_url: 'https://example.com/?token=private' },
+	})
+	assert.equal(event.$set.$current_url, 'https://example.com/')
+	assert.equal(event.$set_once.$initial_current_url, 'https://example.com/')
+	assert.equal('utm_source' in event.$set, false)
+	assert.equal('$initial_utm_source' in event.$set_once, false)
+	assert.equal('email' in event.$set, false)
+})
+
 test('recording stays disabled while heatmaps and native metrics remain enabled', () => {
 	const state = setup({ 'analytics-consent:v2': 'granted' })
 	state.api.initializePostHog()

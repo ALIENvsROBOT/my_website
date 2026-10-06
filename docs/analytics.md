@@ -30,7 +30,11 @@ Analytics is optional. PostHog initializes only after a visitor selects **Accept
 | `web_vital_measured` | Monitor client performance. | `page_path`, `metric_name`, `metric_value`, `metric_rating` |
 | `frontend_error_observed` | Count client errors without recording error content. | `page_path`, `error_type` |
 
-Native SDK events include browser, device, and session metadata. Standard URL properties are sanitized rather than removed because Web Analytics and Paths rely on them. The custom events remain available for existing insights. The app does not call `identify`, so anonymous browser IDs do not create person profiles with the current configuration.
+Native SDK events include browser, device, and session metadata. Standard URL properties are sanitized rather than removed because Web Analytics and Paths rely on them. The custom events remain available for existing insights. After consent, `person_profiles: 'always'` creates People profiles using unnamed browser IDs; the app does not call `identify` or collect names/emails. Browser IDs represent browsers, not a guaranteed count of individual people.
+
+Pageviews update profile properties without sending additional `$set` events: `last_page_path`, browser/version, OS/version, device type, and valid campaign source/medium/name. `first_page_path`, `first_referrer_domain`, and `$initial_utm_*` are set once. Existing URL/referrer sanitization also covers SDK person metadata.
+
+In **Settings → Product analytics**, enable **Person last seen tracking**, then use **People → Configure columns → Last seen** and sort newest first. This project setting was enabled on October 6, 2026. The built-in Last seen value updates hourly; use Activity for exact event timestamps. Old visitors appear when they return and consent; missing historical person properties cannot be reconstructed.
 
 ## Useful free-plan views
 
@@ -40,6 +44,6 @@ Native SDK events include browser, device, and session metadata. Standard URL pr
 4. **Engagement and reliability**: `section_viewed`, `page_engagement_completed`, `file_download_clicked`, `web_vital_measured`, and `frontend_error_observed`. Error events count failures without exposing error messages.
 5. **Click heatmaps**: inspect where visitors click on key portfolio pages. Keep **Record user sessions** off; heatmaps work independently of replay.
 
-As checked on October 6, 2026, the free plan includes **1 million analytics events** and **5,000 recordings per month**. It drops additional data after a product reaches its free allowance; allowances reset monthly. Check Billing & usage and leave the account on the no-card free plan for a hard spending boundary. The application cannot enforce an account-wide monthly quota. Historical missing events cannot be reconstructed.
+As checked on October 6, 2026, the free plan includes **1 million analytics events** and **5,000 recordings per month**. The first million events are free whether or not they process person profiles; after that, events with profiles cost more on paid plans. Replay remains disabled. The no-card free plan drops additional data after a product reaches its allowance; allowances reset monthly. Check Billing & usage and leave the account on the no-card free plan for a hard spending boundary. The application cannot enforce an account-wide monthly quota. Historical missing events cannot be reconstructed.
 
-Sources: [Web Analytics setup](https://posthog.com/docs/web-analytics/start-here), [dashboard requirements](https://posthog.com/docs/web-analytics/dashboard), [Next.js integration](https://posthog.com/docs/libraries/next-js), [replay recording controls](https://posthog.com/docs/session-replay/how-to-control-which-sessions-you-record), [pricing](https://posthog.com/pricing).
+Sources: [Web Analytics setup](https://posthog.com/docs/web-analytics/start-here), [dashboard requirements](https://posthog.com/docs/web-analytics/dashboard), [Next.js integration](https://posthog.com/docs/libraries/next-js), [People and Last seen](https://posthog.com/docs/data/persons), [profiles and free allowance](https://posthog.com/docs/data/anonymous-vs-identified-events), [pricing](https://posthog.com/pricing).

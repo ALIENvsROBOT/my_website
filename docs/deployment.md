@@ -32,7 +32,7 @@ The deployment maps your existing `POSTHOG_KEY` secret to `NEXT_PUBLIC_POSTHOG_P
 
 ### Verify after deploying
 
-1. In PostHog, keep **Record user sessions** off and check **Billing & usage** for the free-plan allowance. Keep IP data capture set to **Discard IP addresses**.
+1. In PostHog, keep **Record user sessions** off and check **Billing & usage** for the free-plan allowance. Enable **Settings → Product analytics → Person last seen tracking** and show **Last seen** in People. This updates hourly and requires profiles, which the site now creates only after consent. Keep IP data capture set to **Discard IP addresses**.
 2. Open the live site in a fresh browser with tracking extensions disabled and Do Not Track off, then select **Accept analytics**. Navigate to another page and click a project link.
 3. In PostHog **Activity**, check for `$pageview`, `page_viewed`, and click events in the last hour. Web Analytics uses `$pageview`; old custom-only pageviews do not populate it.
 4. In browser Network tools, check event delivery to the configured ingestion host. A `200` response can still report `quota_limited`; check Billing & usage if data does not appear. Never share request payloads containing the project token.

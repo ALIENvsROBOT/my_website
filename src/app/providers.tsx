@@ -127,7 +127,8 @@ function initializePostHog() {
 		save_campaign_params: false,
 		save_referrer: false,
 		debug: false,
-		person_profiles: 'identified_only',
+		// People needs profiles even though visitors remain unnamed browser IDs.
+		person_profiles: 'always',
 		property_denylist: Array.from(SENSITIVE_PROPERTY_NAMES),
 		before_send: (event) => {
 			if (!event || getAnalyticsConsent() !== 'granted') return null
@@ -142,6 +143,26 @@ function initializePostHog() {
 				}
 			}
 			for (const key of Array.from(SENSITIVE_PROPERTY_NAMES)) delete event.properties[key]
+			if (event.event === '$pageview') {
+				// Attach profile details to an existing event instead of sending extra $set events.
+				event.$set = { ...event.$set, last_page_path: event.properties.page_path }
+				event.$set_once = {
+					...event.$set_once,
+					first_page_path: event.properties.page_path,
+					first_referrer_domain: event.properties.referrer_domain,
+				}
+				for (const key of ['$browser', '$browser_version', '$os', '$os_version', '$device_type']) {
+					const value = event.properties[key]
+					if (typeof value === 'string') event.$set[key] = value
+				}
+				for (const key of ['utm_source', 'utm_medium', 'utm_campaign']) {
+					const value = event.properties[key]
+					if (typeof value === 'string' && /^[A-Za-z0-9._-]{1,100}$/.test(value)) {
+						event.$set[key] = value
+						event.$set_once[`$initial_${key}`] = value
+					}
+				}
+			}
 			return event
 		},
 	})
