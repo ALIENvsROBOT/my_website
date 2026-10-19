@@ -120,14 +120,14 @@ export const experienceEntries: ExperienceEntry[] = [
   {
     title: 'Junior Scientist',
     company: 'AIT - Center for Technology Experience',
-    period: '2023 - November 2026',
+    period: '10/2023 – 11/2026',
     location: 'Vienna, Austria',
     description: 'Helped design and develop WISPER, a human-centered, generative AI language-support experience for young children with natural, adaptive, intuitive, and age-appropriate voice interactions. Architected autonomous and human-in-the-loop multi-agent workflows with LangGraph, n8n, and Model Context Protocol (MCP), connecting self-hosted LLMs to tools and external services. Developed a multimodal virtual AI agent combining vision, Llama-based models, Whisper Large V3 speech recognition, and neural text-to-speech for natural Human–AI interaction. Designed and deployed self-hosted, privacy-sensitive, data-resident AI infrastructure with vLLM, Ollama, SearXNG, Docker/Podman, and local compute; worked on LLM inference, model deployment, and GPU optimization for interactive applications and internal AI services. Contributed to Human–AI interaction design for XR safety with AI-assisted hazard recognition.'
   },
   {
     title: 'Junior Researcher',
     company: 'Salzburg Research',
-    period: '2022 - 2023',
+    period: '04/2022 – 05/2023',
     location: 'Salzburg, Austria',
     description: 'Contributed to applied AI and intelligent robotics research through ArUco marker detection for computer vision and navigation, Panda robotic arm collision avoidance, and voice-controlled robot manipulation, combining visual perception, motion control, and intuitive interaction for human–robot collaboration.'
   }
