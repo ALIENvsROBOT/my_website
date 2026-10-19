@@ -120,16 +120,16 @@ export const experienceEntries: ExperienceEntry[] = [
   {
     title: 'Junior Scientist',
     company: 'AIT - Center for Technology Experience',
-    period: '2023 - Present',
+    period: '2023 - November 2026',
     location: 'Vienna, Austria',
-    description: 'Designing and developing human-centered AI experiences, including WISPER, an AI-powered language-support experience for young children with natural, adaptive, and age-appropriate voice interactions. Architecting multi-agent workflows with LangGraph, n8n, and Model Context Protocol (MCP), connecting self-hosted LLMs to tools and services for autonomous and human-in-the-loop tasks. Developing multimodal AI agents that combine vision, Llama-based models, Whisper Large V3 speech recognition, and neural text-to-speech. Designing and deploying privacy-sensitive, data-resident AI infrastructure with vLLM, Ollama, SearXNG, and Docker/Podman, while optimizing model deployment, LLM inference, and GPU infrastructure for interactive applications and internal AI services.'
+    description: 'Contributed to human-centered AI research and development at AIT’s Center for Technology Experience in Vienna, spanning conversational systems, agentic workflows, multimodal interaction, and extended reality. Helped design and develop WISPER, an AI-powered language-support experience for young children, creating natural, adaptive voice interactions with generative AI that prioritize intuitive use and age-appropriate experiences. Architected multi-agent workflows using LangGraph, n8n, and Model Context Protocol (MCP), connecting self-hosted LLMs with tools and external services for autonomous and human-in-the-loop task execution. Developed a vision- and voice-enabled virtual AI agent integrating Llama-based models, Whisper Large V3 speech recognition, and neural text-to-speech to support natural multimodal Human–AI interaction. Designed and deployed self-hosted AI infrastructure using vLLM, Ollama, SearXNG, Docker/Podman, and local compute environments to support privacy-sensitive, data-resident applications. Worked on LLM inference, model deployment, and GPU infrastructure optimization for interactive AI applications and internal services. Also contributed to Human–AI interaction design in an XR safety environment integrating AI-assisted hazard recognition.'
   },
   {
     title: 'Junior Researcher',
     company: 'Salzburg Research',
     period: '2022 - 2023',
     location: 'Salzburg, Austria',
-    description: 'Improved navigation systems, delivered AruCo marker detection, implemented collision avoidance for a Panda robotic arm, and created voice-controlled robot manipulation solutions.'
+    description: 'Contributed to applied AI and intelligent robotics research, with a focus on computer vision, voice-based interaction, and robotic navigation. Developed ArUco marker detection to support visual perception and navigation, implemented collision avoidance for a Panda robotic arm, and created voice-controlled robot manipulation solutions. Combined perception, motion control, and intuitive interaction to support human–robot collaboration.'
   }
 ];
 
