@@ -1,15 +1,15 @@
 /**
  * @file privacy/page.tsx
  * @description The Privacy Policy page. 
- * Designed as a minimalist, text-focused page consistent with the portfolio's aesthetics.
+ * A readable overview with optional analytics details and consent controls.
  */
 
 'use client'
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { getAnalyticsConsent, setAnalyticsConsent, type AnalyticsConsent } from '@/lib/analytics-consent';
+import styles from './privacy.module.css';
 
 export default function PrivacyPolicy() {
 	const [analyticsConsent, setAnalyticsConsentState] = React.useState<AnalyticsConsent>(null);
@@ -24,56 +24,61 @@ export default function PrivacyPolicy() {
 	};
 
 	return (
-		<main className="relative z-10 min-h-screen bg-transparent text-zinc-900 py-20 px-4 md:px-8">
-			<div className="max-w-4xl mx-auto">
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6 }}
-					className="page-card p-8 md:p-10"
-				>
-					{/* Navigation link back to the main 3D scene */}
-					<Link
-						href="/"
-						className="text-zinc-600 hover:text-zinc-800 transition-colors duration-300 mb-8 inline-flex items-center gap-2 font-medium"
-					>
-						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-						</svg>
-						Back to Home
-					</Link>
+		<main className={styles.page}>
+			<article className={styles.document}>
+				<Link href="/" className={styles.backLink}>
+					<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+						<path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+					</svg>
+					Back to home
+				</Link>
+				<header className={styles.header}>
+					<h1>Privacy Policy</h1>
+					<p>I want this portfolio to be useful and enjoyable. Optional analytics helps me improve it, and you decide whether to take part.</p>
+				</header>
 
-					<h1 className="text-5xl md:text-6xl font-bold mb-12 text-zinc-900">Privacy Policy</h1>
-
-					<div className="text-zinc-700 leading-relaxed font-light space-y-6">
-						<p>
-							As an HCI (Human-Computer Interaction) researcher, I value digital ethics and data transparency. This policy outlines how information is handled when you interact with this professional portfolio. To understand how visitors interact with my research and 3D demonstrations, I use <strong>PostHog</strong>, an open-source, privacy-focused analytics platform.
-						</p>
-						<p>
-							Optional analytics begins only if you explicitly accept it. It records page visits, referrer domains, safe campaign labels, engagement time, scroll depth, link and button clicks, downloads, copy interaction length, Web Vitals, and error counts without error content. Heatmaps show click positions. Session recording is disabled. Form values, console logs, network headers and bodies, and canvas contents are not recorded. Analytics event URLs exclude query strings and fragments. PostHog uses browser storage to recognise returning browsers after consent. It creates a visitor profile using an unnamed browser ID, with first and latest page paths, first referrer domain, safe campaign labels, browser/device details, and last activity time. I do not identify visitors by name or email. You can reject or revoke analytics below. Do Not Track is respected. The configured PostHog region determines where analytics data is processed.
-						</p>
-						<section className="rounded-xl border border-zinc-400/30 bg-white/30 p-5">
-							<h2 className="text-lg font-semibold text-zinc-900">Analytics preference</h2>
-							<p className="mt-2 text-sm">Current choice: <strong>{analyticsConsent === 'granted' ? 'Accepted' : analyticsConsent === 'denied' ? 'Rejected' : 'Not selected'}</strong>.</p>
-							<div className="mt-4 flex flex-wrap gap-3">
-								<button onClick={() => updateAnalyticsConsent('granted')} className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700">Accept analytics</button>
-								<button onClick={() => updateAnalyticsConsent('denied')} className="rounded-lg border border-zinc-400 px-4 py-2 text-sm font-medium text-zinc-800 transition-colors hover:bg-zinc-100">Reject analytics</button>
-							</div>
-						</section>
-						<p>
-							I collect this information strictly for technical research and professional development. It helps me optimize interactive 3D performance, identify high-interest research topics, and monitor the accessibility of the platform across different regions. If you use the contact form, the information you provide (Name, Email, Message) is only used to respond to your inquiry and is never sold or shared with third parties.
-						</p>
-						<p>
-							Under GDPR, you have the right to access, rectify, or request the deletion of your data. For any inquiries regarding your privacy or data removal, please contact me directly at: <a href="mailto:gowtham.sridher5@gmail.com" className="text-zinc-600 hover:text-zinc-800 transition-colors underline decoration-zinc-500/30 underline-offset-4">gowtham.sridher5@gmail.com</a>.
-						</p>
-
-						{/* Manual timestamp for static export accuracy */}
-						<div className="pt-10 border-t border-zinc-400/30 text-xs text-zinc-500 font-mono tracking-wider uppercase">
-							Last Updated: October 06, 2026
-						</div>
+				{/* A region avoids the global decorative styles applied to section elements. */}
+				<div className={styles.preferences} role="region" aria-labelledby="analytics-choice">
+					<h2 id="analytics-choice">Your analytics choice</h2>
+					<p>Analytics starts only with your permission. You can change your choice here at any time.</p>
+					<p className={styles.status} role="status">
+						Current choice: <strong>{analyticsConsent === 'granted' ? 'Accepted' : analyticsConsent === 'denied' ? 'Rejected' : 'Not selected'}</strong>
+					</p>
+					<div className={styles.actions}>
+						<button type="button" onClick={() => updateAnalyticsConsent('denied')} aria-pressed={analyticsConsent === 'denied'}>Reject analytics</button>
+						<button type="button" onClick={() => updateAnalyticsConsent('granted')} aria-pressed={analyticsConsent === 'granted'}>Accept analytics</button>
 					</div>
-				</motion.div>
-			</div>
+				</div>
+
+				<div className={styles.content}>
+					<h2>How it helps</h2>
+					<p>With your permission, I use PostHog analytics and click heatmaps to see which projects interest visitors and where the site could work better. This helps me improve the content, accessibility, and performance of the portfolio.</p>
+					<p>Session recording is disabled, and analytics does not identify you by name or email.</p>
+
+					<details className={styles.details}>
+						<summary>What optional analytics includes</summary>
+						<div className={styles.detailContent}>
+							<p>If you accept, analytics includes:</p>
+							<ul>
+								<li>Page visits, first and latest page paths, referring domains, and safe campaign labels.</li>
+								<li>Time on the site, scroll depth, link and button clicks, downloads, and the length of copy interactions, without the copied text. Heatmaps show click positions.</li>
+								<li>Performance measurements (Web Vitals) and error counts, without error content.</li>
+								<li>An unnamed browser ID, browser and device details, and last activity time. PostHog uses browser storage after consent to recognise returning browsers and create a visitor profile.</li>
+							</ul>
+							<p>Form values, console logs, network headers and bodies, and canvas contents are not recorded. Analytics URLs exclude query strings and fragments.</p>
+							<p>Your browser’s Do Not Track preference is respected. You can reject or revoke analytics using the controls above. The configured PostHog region determines where analytics data is processed.</p>
+						</div>
+					</details>
+
+					<h2>When you get in touch</h2>
+					<p>If you use the contact form, I use your name, email, and message only to reply to your enquiry. I do not sell your contact information.</p>
+
+					<h2>Questions or requests?</h2>
+					<p>You can ask to access, correct, or delete your personal data under GDPR. For a privacy question or request, email me at{' '}<a href="mailto:gowtham.sridher5@gmail.com">gowtham.sridher5@gmail.com</a>.</p>
+				</div>
+
+				<footer className={styles.updated}>Last updated <time dateTime="2026-10-20">20 October 2026</time></footer>
+			</article>
 		</main>
 	);
 }

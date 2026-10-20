@@ -57,9 +57,8 @@ const PrivacyNotice = () => {
 							</div>
 							<div>
 								<p className="text-[11px] text-lightText/90 leading-tight">
-									May I use optional analytics and click heatmaps to understand visits and improve this site? Session recording is disabled. View my
-									<Link href="/privacy" className="text-secondary hover:underline mx-1">Privacy Policy</Link>
-									for details.
+									Help me make this site better. Optional analytics and click heatmaps show what visitors find useful, with no session recordings. It’s your choice. Read my{' '}
+									<Link href="/privacy" className="font-semibold text-secondary underline decoration-current underline-offset-2 hover:decoration-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">Privacy Policy</Link>.
 								</p>
 							</div>
 						</div>
